@@ -1,4 +1,5 @@
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../polymer/lib/elements/dom-if.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-offscreen/d2l-offscreen.html">
@@ -131,37 +132,36 @@
 				outline: 0;
 			}
 			
-			.flyout-tab > span {
+			.flyout-tab > d2l-icon {
 				margin: auto;
 				vertical-align: top !important;
 			}
 		</style>
 		
-		<template is="dom-if" if="[[!_optOutDialogOpen]]" restamp>
-			<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="[[_confirmOptOut]]">
+		<template is="dom-if" if="[[_optOutDialogOpen]]" restamp="true">
+			<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="_confirmOptOut">
 				<slot></slot>
 			</opt-out-dialog>
 		</template>
 		<div
 			id="flyout"
-			role$="dialog"
-			aria-labelledby$="title"
-			aria-describedby$="description"
-			class$="[[_getFlyoutClass(open, _transitioning)]]"
-			on-transitionend="[[_onTransitionComplete]]"
+			role="dialog"
+			aria-labelledby="title"
+			aria-describedby="description"
+			class$="[[_getFlyoutClass(_visibleState)]]"
 		>
-			<div class$="flyout-content" hidden="[[!_isFullyClosed(open, _transitioning)]]">
-				<div class$="flyout-text">
+			<div class="flyout-content" hidden="[[_isFullyClosed(_visibleState)]]">
+				<div class="flyout-text">
 					<h1 id="title">[[title]]</h1>
 					<p id="description">
 						<span>[[_getDescriptionPart(0)]]</span>
 						<strong>[[_getDescriptionPart(1)]]</strong>
 						<span>[[_getDescriptionPart(2)]]</span>
 					</p>
-					<p class$="flyout-details" hidden="[[!details]]">
+					<p class="flyout-details" hidden="[[!details]]">
 						[[details]]
 					</p>
-					<p class$="flyout-tutorial">
+					<p class="flyout-tutorial">
 					
 						<template is="dom-if" if="[[_getTutorialLink(tutorialLink,helpDocsLink,0)]]">
 							<span>[[_getTutorialTextPart(tutorialLink,helpDocsLink,0)]]</span>
@@ -179,22 +179,23 @@
 						</template>
 					</p>
 				</div>
-				<div class$="flyout-buttons">
-					<d2l-button primary on-tap="[[_clickOptIn]]">[[_primaryButtonText]]</d2l-button>
-					<d2l-button on-tap="[[_clickOptOut]]">[[_secondaryButtonText]]</d2l-button>
+				<div class="flyout-buttons">
+					<d2l-button primary on-tap="_clickOptIn">[[_primaryButtonText]]</d2l-button>
+					<d2l-button on-tap="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
 				</div>
 			</div>
 			<d2l-offscreen>
 				<label id="tab-label">[[translate('Close')]]</label>
 			</d2l-offscreen>
-			<div class$="flyout-tab-container">
+			<div class="flyout-tab-container">
 				<div
-					class$="flyout-tab"
+					class="flyout-tab"
 					style$="[[_getTabStyle( tabPosition )]]"
 					tabindex="0"
-					aria-labelledby$="tab-label"
+					aria-labelledby="tab-label"
+					on-tap="_clickTab"
 				>
-					<d2l-icon icon="[[_getTabIcon(open, _transitioning)]]"></span>
+					<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></span>
 				</div>
 			</div>
 		</div>
@@ -238,9 +239,9 @@
 				},
 				_primaryButtonText: String,
 				_secondaryButtonText: String,
-				_transitioning: {
-					type: bool,
-					value: false
+				_visibleState: {
+					type: String,
+					value: 'CLOSED'
 				}
 			},
 			
@@ -251,14 +252,41 @@
 			attached: function() {
 				this._primaryButtonText = this.translate( this.optOut ? 'LeaveOn' : 'TurnOn' );
 				this._secondaryButtonText = this.translate( this.optOut ? 'TurnOff' : 'LeaveOff' );
+				this._visibleState = this.open ? 'OPENED' : 'CLOSED';
+				
+				// Polymer doesn't correctly support this event, so we have to add it manually
+				this._onTransitionComplete = this._onTransitionComplete.bind( this );
+				this.$.flyout.addEventListener( 'transitionend', this._onTransitionComplete );
 			},
 			
-			_openChanged: function() {
-				this._transitioning = true;
+			detached: function() {
+				this.$.flyout.removeEventListener( 'transitionend', this._onTransitionComplete );
+			},
+			
+			_openChanged: function( open, previousValue ) {
+				if( open && this._visibleState === 'CLOSED' || this._visibleState === 'CLOSING' ) {
+					this._visibleState = 'OPENING';
+				} else if( !open && this._visibleState === 'OPENED' || this._visibleState === 'OPENING' ) {
+					this._visibleState = 'CLOSING';
+				}
+				
+				if( previousValue !== undefined ) {
+					this.fire( open ? 'flyout-opened' : 'flyout-closed' );
+				}
 			},
 			
 			_onTransitionComplete: function() {
-				this._transitioning = false;
+				if( this._visibleState === 'OPENING' ) {
+					this._visibleState = 'OPENED';
+				} else if( this._visibleState === 'CLOSING' ) {
+					this._visibleState = 'CLOSED';
+				}
+			},
+			
+			_clickTab: function() {
+				if( this._visibleState === 'OPENED' || this._visibleState === 'CLOSED' ) {
+					this.open = !this.open;
+				}
 			},
 			
 			_clickOptIn: function() {
@@ -287,31 +315,33 @@
 				event.stopPropagation();
 			},
 			
-			_isFullyClosed( open, transitioning ) {
-				return !open && !transitioning;
+			_isFullyClosed( visibleState ) {
+				return visibleState === 'CLOSED';
 			},
 			
-			_getFlyoutClass( open, _transitioning ) {
-				var classes = open ? 'flyout-opened' : 'flyout-closed';
-				if( _transitioning ) {
-					classes += 'flyout-transition';
+			_getFlyoutClass( visibleState ) {
+				switch( visibleState ) {
+					case 'CLOSED': return 'flyout-closed';
+					case 'OPENING': return 'flyout-opened flyout-transition';
+					case 'OPENED': return 'flyout-opened';
+					case 'CLOSING': return 'flyout-closed flyout-transition';
+					default: return '';
 				}
-				return classes;
 			},
 			
 			_getTabStyle( position ) {
 				var rtl = window.document.body.getAttribute( 'dir' ) === 'rtl';
 				
 				if( position === 'left' ) {
-					position = '2.5rem + 15px';
+					position = 'calc( 2.5rem + 15px )';
 				} else if( position === 'right' || position === 'default' || !position ) {
-					position = '2.5rem + 15px';
+					position = 'calc( 2.5rem + 15px )';
 					rtl = !rtl;
 				} else if( position === 'center' || position === 'centre' ) {
 					position = '50%';
 				} else if( !/^\d+(?:\.\d+)?%$/.test( position ) ) {
 					console.warn( 'Invalid position supplied to opt-in flyout' );
-					position = '2.5rem + 15px';
+					position = 'calc( 2.5rem + 15px )';
 					rtl = !rtl;
 				}
 				
@@ -321,9 +351,12 @@
 				return side + ': ' + position + '; transform: translateX( ' + shift + ' );';
 			},
 			
-			_getTabIcon( open, transitioning ) {
-				// open XOR transitioning
-				return ( !open !== !transitioning ) ? 'd2l-tier1:chevron-up' : 'd2l-tier1:chevron-down';
+			_getTabIcon( visibleState ) {
+				if( visibleState === 'CLOSED' || visibleState === 'OPENING' ) {
+					return 'd2l-tier1:chevron-down';
+				} else {
+					return 'd2l-tier1:chevron-up'
+				}
 			},
 			
 			_getDescriptionPart( i ) {

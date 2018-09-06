@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		
+		<title>flyout demo</title>
+		
+		<script src="../webcomponentsjs/webcomponents-lite.js"></script>
+		<link rel="import" href="../d2l-typography/d2l-typography.html">
+		
+		<link rel="import" href="./d2l-opt-in-flyout.html">
+		<link rel="import" href="./d2l-opt-out-flyout.html">
+		
+		<custom-style include="d2l-typography">
+			<style is="custom-style" include="d2l-typography">
+				html {
+					font-size: 20px;
+				}
+				
+				body {
+					margin: 0;
+					padding: 16px;
+					height: 100vh;
+					box-sizing: border-box;
+				}
+				
+				.vertical-split {
+					position: relative;
+					box-sizing: border-box;
+					width: 100%;
+					height: 50%;
+					border: 2px solid black;
+				}
+				
+				pre {
+					position: absolute;
+					right: 0;
+					bottom: 0;
+					height: 60%;
+					width: 500px;
+					overflow-y: auto;
+					border: 1px solid grey;
+				}
+			</style>
+		</custom-style>
+	</head>
+	
+	<body class="d2l-typography">
+		<div class="vertical-split">
+			<d2l-opt-in-flyout id="opt-in"
+				open
+				title="Flyout Demo"
+				details="This is a demo of the opt-in flyout."
+				tab-position="right"
+				tutorial-link="https://www.example.com"
+				help-docs-link="https://www.example.com"
+			></d2l-opt-in-flyout>
+			<pre id="opt-in-log"></pre>
+		</div>
+		<div class="vertical-split">
+			<d2l-opt-out-flyout id="opt-out"
+				open
+				title="Flyout Demo"
+				details="This is a demo of the opt-out flyout."
+				tab-position="right"
+				tutorial-link="https://www.example.com"
+				help-docs-link="https://www.example.com"
+			></d2l-opt-out-flyout>
+			<pre id="opt-out-log"></pre>
+		</div>
+		
+		<script>
+			var printEvent = function( loggingElement, event ) {
+				if( loggingElement.textContent ) {
+					loggingElement.textContent += '\n';
+				} else {
+					loggingElement.textContent = '';
+				}
+				loggingElement.textContent += event.type;
+				if( event.detail ) {
+					loggingElement.textContent += ': ' + JSON.stringify( event.detail, null, 2 );
+				}
+			};
+			
+			var optInFlyout = document.getElementById( 'opt-in' );
+			var optOutFlyout = document.getElementById( 'opt-out' );
+			
+			var optInLog = document.getElementById( 'opt-in-log' );
+			var optOutLog = document.getElementById( 'opt-out-log' );
+			
+			optInFlyout.addEventListener( 'flyout-opened', printEvent.bind( null, optInLog ) );
+			optInFlyout.addEventListener( 'flyout-closed', printEvent.bind( null, optInLog ) );
+			optInFlyout.addEventListener( 'opt-in', printEvent.bind( null, optInLog ) );
+			optInFlyout.addEventListener( 'opt-out', printEvent.bind( null, optInLog ) );
+			
+			optOutFlyout.addEventListener( 'flyout-opened', printEvent.bind( null, optOutLog ) );
+			optOutFlyout.addEventListener( 'flyout-closed', printEvent.bind( null, optOutLog ) );
+			optOutFlyout.addEventListener( 'opt-in', printEvent.bind( null, optOutLog ) );
+			optOutFlyout.addEventListener( 'opt-out', printEvent.bind( null, optOutLog ) );
+		</script>
+	</body>
+</html>

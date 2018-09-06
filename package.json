@@ -5,10 +5,8 @@
 	"private": true,
 	"scripts": {
 		"postinstall": "polymer install --variants",
-		"lint": "polymer lint --rules=polymer-2-hybrid && eslint *.html",
-		"build": "polymer build --js-compile",
-		"build:prod": "npm run lint && polymer build --preset es5-bundled",
-		"serve": "polymer serve --compile always"
+		"lint": "polymer lint && eslint *.html",
+		"serve": "polymer serve"
 	},
 	"repository": {
 		"type": "git",

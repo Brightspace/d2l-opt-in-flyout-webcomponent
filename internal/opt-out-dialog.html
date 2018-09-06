@@ -28,7 +28,7 @@
 				z-index: 1;
 			}
 			
-			.opt-out-dialog {
+			.dialog {
 				position: absolute;
 				box-sizing: border-box;
 				top: 7.5%;
@@ -107,19 +107,25 @@
 			
 		</style>
 		
-		<div class$="opt-out-modal-fade"></div>
-		<div class$="opt-out-dialog" role$="dialog" arial-labelledby$="title-label">
-			<label id="title-label">[[translate('Title')]]</label>
+		<div class="opt-out-modal-fade"></div>
+		<div class="dialog" role="dialog" arial-labelledby="title-label">
+			<label id="title-label">[[translate('Feedback.Title')]]</label>
 			<br><br>
 			<div>
-				<label id="reason-label">[[translate('ReasonLabel')]]</label>
-				<select id="reason-selector" aria-labelledby$="reason-label" on-change="_reasonSelected">
-					<slot></slot>
+				<label id="reason-label">[[translate('Feedback.ReasonLabel')]]</label>
+				<select id="reason-selector" aria-labelledby="reason-label" on-change="_reasonSelected">
+					<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
+					<slot>
+						<option value="NotReadyForSomethingNew">[[translate('Feedback.Reason.NotReadyForSomethingNew')]]</option>
+						<option value="MissingFeature">[[translate('Feedback.Reason.MissingFeature')]]</option>
+						<option value="JustCheckingSomething">[[translate('Feedback.Reason.JustCheckingSomething')]]</option>
+					</slot>
+					<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
 				</select>
 			</div>
 			<div>
-				<label id="feedback-label">[[translate('FeedbackLabel')]]</label>
-				<d2l-textarea id="feedback" aria-labelledby$="feedback-label">
+				<label id="feedback-label">[[translate('Feedback.FeedbackLabel')]]</label>
+				<d2l-textarea id="feedback" aria-labelledby="feedback-label"></d2l-textarea>
 			</div>
 			<div>
 				<d2l-button disabled="[[!_canConfirm]]" primary on-tap="_confirm">[[translate('Done')]]</d2l-button>
@@ -129,10 +135,10 @@
 				<label id="close-label">[[translate('Close')]]</label>
 			</d2l-offscreen>
 			<div
-				class$="close-button"
+				class="close-button"
 				tabindex="0"
-				role$="button"
-				aria-labelledby$="close-label"
+				role="button"
+				aria-labelledby="close-label"
 				on-tap="_cancel"
 			>
 				<d2l-icon icon="d2l-tier1:close-small"></d2l-icon>
@@ -168,7 +174,6 @@
 			},
 			
 			_cancel: function() {
-				//TODO: can this be made to fire non-globally?
 				this.fire( 'cancel' );
 			},
 			

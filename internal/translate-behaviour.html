@@ -26,12 +26,12 @@
 			_fallbackLangTag: String
 		},
 		
-		attached: function() {
+		created: function() {
 			var rootElement = window.document.documentElement;
 			var fallbackLanguage = rootElement.getAttribute('data-lang-default') || 'en';
 			var desiredLanguage = rootElement.getAttribute('lang') || fallbackLanguage;
-			_langTag = desiredLanguage.toLowerCase();
-			_fallbackLangTag = fallbackLanguage.toLowerCase();
+			this._langTag = desiredLanguage.toLowerCase();
+			this._fallbackLangTag = fallbackLanguage.toLowerCase();
 		},
 		
 		_tryGetTerm: function( langPack, langTerm ) {
@@ -59,7 +59,7 @@
 				return this._getTranslation( langTerm, langTag.substring( 0, langTag.indexOf( '-' ) ), isFallback );
 			} else if( !isFallback && this._langTag !== this._fallbackLangTag ) {
 				return this._getTranslation( langTerm, this._fallbackLangTag, true );
-			} else if( _langTag !== 'en' ) {
+			} else if( this._langTag !== 'en' ) {
 				return this._getTranslation( langTerm, 'en', true );
 			}
 			return null;

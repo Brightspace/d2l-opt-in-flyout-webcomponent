@@ -1,26 +1,22 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-typography/d2l-typography.html">
 <link rel="import" href="./internal/flyout-impl.html">
-<link rel="import" href="./internal/translate-behaviour.html">
 
 <dom-module id="d2l-opt-out-flyout">
 	<template strip-whitespace>
+		<style include="d2l-typography">
+			flyout-impl { font-size: 20px; }
+		</style>
 		<flyout-impl
-			opt-out=""
-			open="{{open}}",
+			class="d2l-typography"
+			opt-out
+			open="{{open}}"
 			title="[[title]]"
 			details="[[details]]"
 			tab-position="[[tabPosition]]"
 			tutorial-link="[[tutorialLink]]"
 			help-docs-link="[[helpDocsLink]]"
-		>
-			<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
-			<slot>
-				<option value="NotReadyForSomethingNew">[[translate('Feedback.Reason.NotReadyForSomethingNew')]]</option>
-				<option value="MissingFeature">[[translate('Feedback.Reason.MissingFeature')]]</option>
-				<option value="JustCheckingSomething">[[translate('Feedback.Reason.JustCheckingSomething')]]</option>
-			</slot>
-			<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
-		</d2l-opt-in-flyout-internal>
+		><slot></slot></d2l-opt-in-flyout-internal>
 	</template>
 	<script>
 		Polymer({
@@ -30,7 +26,6 @@
 				open: {
 					type: Boolean,
 					value: false,
-					notify: true,
 					reflectToAttribute: true
 				},
 				title: String,
@@ -38,11 +33,8 @@
 				tabPosition: String,
 				tutorialLink: String,
 				helpDocsLink: String
-			},
+			}
 			
-			behaviors: [
-				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
-			]
 		});
 	</script>
 </dom-module>
