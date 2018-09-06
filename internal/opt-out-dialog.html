@@ -1,0 +1,196 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../d2l-colors/d2l-colors.html">
+<link rel="import" href="../../d2l-offscreen/d2l-offscreen.html">
+<link rel="import" href="../../d2l-icons/d2l-icons.html">
+<link rel="import" href="../../d2l-button/d2l-button.html">
+<link rel="import" href="../../d2l-textarea/d2l-textarea.html">
+<link rel="import" href="../../d2l-text-input/d2l-text-input-shared-styles.html">
+<link rel="import" href="./translate-behaviour.html">
+
+<dom-module id="opt-out-dialog">
+	<template strip-whitespace>
+		<style>
+			:host {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				z-index: 950;
+				pointer-events: auto;
+			}
+			
+			.opt-out-modal-fade {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: var(--d2l-color-white);
+				opacity: 0.7;
+				z-index: 1;
+			}
+			
+			.opt-out-dialog {
+				position: absolute;
+				box-sizing: border-box;
+				top: 7.5%;
+				left: 50%;
+				width: 90%;
+				max-width: 680px;
+				padding: 1rem;
+				transform: translateX( -50% );
+				z-index: 2;
+				
+				border-radius: 0.4rem;
+				border: 1px solid var(--d2l-color-mica);
+				background-color: var(--d2l-color-white);
+				box-shadow: 0 2px 12px rgba( 86, 90, 92, 0.25);
+			}
+			
+			label {
+				margin-bottom: 0.5rem;
+			}
+			
+			#title-label {
+				font-weight: bold;
+				margin-bottom: 0;
+			}
+			
+			select {
+				@apply --d2l-input;
+				position: relative;
+				display: block;
+				width: 80%;
+				margin-bottom: 1.5rem;
+			}
+			
+			select:hover, select:focus {
+				@apply --d2l-input-hover;
+			}
+			
+			d2l-textarea {
+				height: 5rem;
+				margin-bottom: 1rem;
+				resize: none;
+				overflow: auto;
+			}
+			
+			d2l-button {
+				margin-right: 1rem;
+			}
+			
+			.close-button {
+				box-sizing: border-box;
+				position: absolute;
+				top: 1rem;
+				right: 1rem;
+				height: 1.4rem;
+				width: 1.4rem;
+				
+				border: 1px solid transparent;
+				border-radius: 0.3rem;
+			}
+			
+			.close-button > d2l-icon {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate( -50%, -50% );
+			}
+			
+			.close-button:hover, .close-button:focus {
+				border-color: var(--d2l-color-mica);
+			}
+			
+			.close-button[dir="rtl"] {
+				right: unset;
+				left: 1rem;
+			}
+			
+		</style>
+		
+		<div class$="opt-out-modal-fade"></div>
+		<div class$="opt-out-dialog" role$="dialog" arial-labelledby$="title-label">
+			<label id="title-label">[[translate('Title')]]</label>
+			<br><br>
+			<div>
+				<label id="reason-label">[[translate('ReasonLabel')]]</label>
+				<select id="reason-selector" aria-labelledby$="reason-label" on-change="_reasonSelected">
+					<slot></slot>
+				</select>
+			</div>
+			<div>
+				<label id="feedback-label">[[translate('FeedbackLabel')]]</label>
+				<d2l-textarea id="feedback" aria-labelledby$="feedback-label">
+			</div>
+			<div>
+				<d2l-button disabled="[[!_canConfirm]]" primary on-tap="_confirm">[[translate('Done')]]</d2l-button>
+				<d2l-button on-tap="_cancel">[[translate('Cancel')]]</d2l-button>
+			</div>
+			<d2l-offscreen>
+				<label id="close-label">[[translate('Close')]]</label>
+			</d2l-offscreen>
+			<div
+				class$="close-button"
+				tabindex="0"
+				role$="button"
+				aria-labelledby$="close-label"
+				on-tap="_cancel"
+			>
+				<d2l-icon icon="d2l-tier1:close-small"></d2l-icon>
+			</div>
+		</div>
+	</template>
+	
+	<script>
+		Polymer({
+			is: 'opt-out-dialog',
+			
+			properties: {
+				_textDirection: {
+					type: String,
+					value: 'ltr'
+				},
+				_canConfirm: {
+					type: Boolean,
+					value: false
+				}
+			},
+			
+			behaviors: [
+				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
+			],
+			
+			attached: function() {
+				this._textDirection = window.document.body.getAttribute( 'dir' ) || 'ltr';
+			},
+			
+			_reasonSelected: function() {
+				this._canConfirm = true;
+			},
+			
+			_cancel: function() {
+				//TODO: can this be made to fire non-globally?
+				this.fire( 'cancel' );
+			},
+			
+			_confirm: function() {
+				var reasonSelector = this.$['reason-selector'];
+				if( !reasonSelector || reasonSelector.selectedIndex < 1 ) {
+					return;
+				}
+				
+				var reason = reasonSelector.childNodes[reasonSelector.selectedIndex];
+				var feedback = this.$.feedback.value || '';
+				
+				if( !reason || !reason.value ) {
+					return;
+				}
+				
+				this.fire( 'confirm', {
+					reason: reason.value,
+					feedback: feedback.trim()
+				});
+			},
+			
+		});
+	</script>
+</dom-module>

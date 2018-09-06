@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./internal/flyout-impl.html">
+
+<dom-module id="d2l-opt-in-flyout">
+	<template strip-whitespace>
+		<flyout-impl
+			open="{{open}}",
+			title="[[title]]"
+			details="[[details]]"
+			tab-position="[[tabPosition]]"
+			tutorial-link="[[tutorialLink]]"
+			help-docs-link="[[helpDocsLink]]"
+		></d2l-opt-in-flyout-internal>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-opt-in-flyout',
+			
+			properties: {
+				open: {
+					type: Boolean,
+					value: false,
+					notify: true,
+					reflectToAttribute: true
+				},
+				title: String,
+				details: String,
+				tabPosition: String,
+				tutorialLink: String,
+				helpDocsLink: String
+			}
+		});
+	</script>
+</dom-module>

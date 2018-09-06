@@ -1,0 +1,29 @@
+{
+	"name": "d2l-opt-in-flyout-webcomponent",
+	"version": "1.0.0",
+	"description": "A webcomponent for an opt-in/opt-out flyout widget",
+	"private": true,
+	"scripts": {
+		"postinstall": "polymer install --variants",
+		"lint": "polymer lint --rules=polymer-2-hybrid && eslint *.html",
+		"build": "polymer build --js-compile",
+		"build:prod": "npm run lint && polymer build --preset es5-bundled",
+		"serve": "polymer serve --compile always"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Brightspace/d2l-rubric.git"
+	},
+	"keywords": [
+		"d2l",
+		"opt-in",
+		"opt-out"
+	],
+	"author": "D2l Corporation",
+	"devDependencies": {
+		"polymer-cli": "^1.7.7",
+		"eslint": "^4.19.1",
+		"eslint-config-brightspace": "^0.4.0",
+		"eslint-plugin-html": "^4.0.5"
+	}
+}

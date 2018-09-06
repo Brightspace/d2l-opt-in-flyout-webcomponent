@@ -1,0 +1,92 @@
+<link rel="import" href="../lang/ar.html">
+<link rel="import" href="../lang/de.html">
+<link rel="import" href="../lang/en.html">
+<link rel="import" href="../lang/es.html">
+<link rel="import" href="../lang/fr.html">
+<link rel="import" href="../lang/ja.html">
+<link rel="import" href="../lang/ko.html">
+<link rel="import" href="../lang/nb.html">
+<link rel="import" href="../lang/nl.html">
+<link rel="import" href="../lang/pt.html">
+<link rel="import" href="../lang/sv.html">
+<link rel="import" href="../lang/tr.html">
+<link rel="import" href="../lang/zh-TW.html">
+<link rel="import" href="../lang/zh.html">
+
+<script>
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	window.D2L.PolymerBehaviors.OptInFlyout = window.D2L.PolymerBehaviors.OptInFlyout || {};
+	
+	/** @polymerBehavior D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior */
+	D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl = {
+		
+		properties: {
+			_langTag: String,
+			_fallbackLangTag: String
+		},
+		
+		attached: function() {
+			var rootElement = window.document.documentElement;
+			var fallbackLanguage = rootElement.getAttribute('data-lang-default') || 'en';
+			var desiredLanguage = rootElement.getAttribute('lang') || fallbackLanguage;
+			_langTag = desiredLanguage.toLowerCase();
+			_fallbackLangTag = fallbackLanguage.toLowerCase();
+		},
+		
+		_tryGetTerm: function( langPack, langTerm ) {
+			var langPath = langTerm.split( '.' );
+			langPath.forEach( function( langPart ) {
+				if( !langPack || typeof langPack !== 'object' ) {
+					return null;
+				}
+				langPack = langPack[langPart];
+			});
+			
+			if( typeof langPack !== 'string' ) {
+				return null;
+			}
+			
+			return langPack;
+		},
+		
+		_getTranslation: function( langTerm, langTag, isFallback ) {
+			var languagePack = this['translations_' + langTag];
+			var translation = this._tryGetTerm( languagePack, langTerm );
+			if( translation ) {
+				return translation;
+			} else if( langTag.indexOf( '-' ) > -1 ) {
+				return this._getTranslation( langTerm, langTag.substring( 0, langTag.indexOf( '-' ) ), isFallback );
+			} else if( !isFallback && this._langTag !== this._fallbackLangTag ) {
+				return this._getTranslation( langTerm, this._fallbackLangTag, true );
+			} else if( _langTag !== 'en' ) {
+				return this._getTranslation( langTerm, 'en', true );
+			}
+			return null;
+		},
+		
+		translate: function( langTerm ) {
+			return this._getTranslation( langTerm, this._langTag, false );
+		}
+		
+	};
+	
+	/** @polymerBehavior */
+	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = [
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangArBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangDeBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangEnBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangEsBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangFrBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangJaBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangKoBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangNbBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangNlBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangPtBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangSvBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangTrBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangZhBehavior,
+		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangZhTwBehavior
+	];
+</script>

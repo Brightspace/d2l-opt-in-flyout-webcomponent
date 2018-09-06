@@ -1,0 +1,356 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
+<link rel="import" href="../../d2l-colors/d2l-colors.html">
+<link rel="import" href="../../d2l-offscreen/d2l-offscreen.html">
+<link rel="import" href="../../d2l-icons/d2l-icons.html">
+<link rel="import" href="../../d2l-button/d2l-button.html">
+<link rel="import" href="./opt-out-dialog.html">
+<link rel="import" href="./translate-behaviour.html">
+
+<dom-module id="flyout-impl">
+	<template strip-whitespace>
+		<style>
+			:host {
+				position: absolute;
+				overflow: hidden;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				@apply --d2l-body-standard-text;
+			}
+			
+			
+			#flyout {
+				position: absolute;
+				top: 0;
+				width: 100%;
+				z-index: 900;
+				overflow: visible;
+				pointer-events: auto;
+				
+				padding-bottom: 2rem;
+				
+				box-sizing: border-box;
+				background-color: white;
+				border-bottom: 1px solid var(--d2l-color-mica);
+			}
+			
+			.flyout-opened {
+				transform: translateY( 0 );
+			}
+			.flyout-closed {
+				transform: translateY( -100% );
+			}
+			.flyout-transition {
+				transition: transform 0.5s ease-out;
+			}
+			
+			.flyout-content {
+				text-align: center;
+			}
+			
+			.flyout-content h1 {
+				@apply --d2l-heading-1;
+				margin-bottom: 0;
+			}
+			
+			.flyout-text {
+				margin-left: auto;
+				margin-right: auto;
+				margin-bottom: 2rem;
+			}
+			
+			#description {
+				margin-top: 0;
+				margin-bottom: 0.5rem;
+			}
+			
+			.flyout-details {
+				max-width: 800px;
+				margin: auto;
+				margin-bottom: 0;
+			}
+			
+			.flyout-tutorial {
+				margin: auto;
+				margin-top: 0.5em;
+			}
+			
+			.flyout-tutorial a {
+				color: var(--d2l-color-celestine);
+				text-decoration: none;
+			}
+			
+			.flyout-tutorial a:hover, .flyout-tutorial a:focus {
+				text-decoration: underline;
+			}
+			
+			.flyout-buttons {
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+			.flyout-buttons d2l-button {
+				margin-left: 1rem;
+			}
+			
+			.flyout-tab-container {
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translateX( -50% );
+				height: 1rem;
+				width: 100%;
+				max-width: 1230px;
+				pointer-events: none;
+			}
+			
+			.flyout-tab {
+				pointer-events: auto;
+				position: absolute;
+				top: 0;
+				width: 5rem;
+				height: 1rem;
+				padding: 1px;
+				text-align: center;
+				
+				box-sizing: border-box;
+				background-color: white;
+				border: 1px solid var(--d2l-color-mica);
+				border-top: none;
+				border-radius: 0 0 8px 8px;
+				
+				cursor: pointer;
+			}
+			
+			.flyout-tab:hover, .flyout-tab:focus {
+				background-color: var(--d2l-color-regolith);
+			}
+			
+			.flyout-tab:active, .flyout-tab:focus {
+				outline: 0;
+			}
+			
+			.flyout-tab > span {
+				margin: auto;
+				vertical-align: top !important;
+			}
+		</style>
+		
+		<template is="dom-if" if="[[!_optOutDialogOpen]]" restamp>
+			<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="[[_confirmOptOut]]">
+				<slot></slot>
+			</opt-out-dialog>
+		</template>
+		<div
+			id="flyout"
+			role$="dialog"
+			aria-labelledby$="title"
+			aria-describedby$="description"
+			class$="[[_getFlyoutClass(open, _transitioning)]]"
+			on-transitionend="[[_onTransitionComplete]]"
+		>
+			<div class$="flyout-content" hidden="[[!_isFullyClosed(open, _transitioning)]]">
+				<div class$="flyout-text">
+					<h1 id="title">[[title]]</h1>
+					<p id="description">
+						<span>[[_getDescriptionPart(0)]]</span>
+						<strong>[[_getDescriptionPart(1)]]</strong>
+						<span>[[_getDescriptionPart(2)]]</span>
+					</p>
+					<p class$="flyout-details" hidden="[[!details]]">
+						[[details]]
+					</p>
+					<p class$="flyout-tutorial">
+					
+						<template is="dom-if" if="[[_getTutorialLink(tutorialLink,helpDocsLink,0)]]">
+							<span>[[_getTutorialTextPart(tutorialLink,helpDocsLink,0)]]</span>
+							<a href="[[_getTutorialLink(tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+								[[_getTutorialTextPart(tutorialLink,helpDocsLink,1)]]
+							</a>
+							<span>[[_getTutorialTextPart(tutorialLink,helpDocsLink,2)]]</span>
+						</template>
+						
+						<template is="dom-if" if="[[_getTutorialLink(tutorialLink,helpDocsLink,1)]]">
+							<a href="[[_getTutorialLink(tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
+								[[_getTutorialTextPart(tutorialLink,helpDocsLink,3)]]
+							</a>
+							<span>[[_getTutorialTextPart(tutorialLink,helpDocsLink,4)]]</span>
+						</template>
+					</p>
+				</div>
+				<div class$="flyout-buttons">
+					<d2l-button primary on-tap="[[_clickOptIn]]">[[_primaryButtonText]]</d2l-button>
+					<d2l-button on-tap="[[_clickOptOut]]">[[_secondaryButtonText]]</d2l-button>
+				</div>
+			</div>
+			<d2l-offscreen>
+				<label id="tab-label">[[translate('Close')]]</label>
+			</d2l-offscreen>
+			<div class$="flyout-tab-container">
+				<div
+					class$="flyout-tab"
+					style$="[[_getTabStyle( tabPosition )]]"
+					tabindex="0"
+					aria-labelledby$="tab-label"
+				>
+					<d2l-icon icon="[[_getTabIcon(open, _transitioning)]]"></span>
+				</div>
+			</div>
+		</div>
+	</template>
+	
+	<script>
+		Polymer({
+			is: 'flyout-impl',
+			
+			properties: {
+				optOut: {
+					type: Boolean,
+					value: false
+				},
+				open: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true,
+					observer: '_openChanged'
+				},
+				title: String,
+				details: {
+					type: String,
+					value: ''
+				},
+				tabPosition: {
+					type: String,
+					value: 'right'
+				},
+				tutorialLink: {
+					type: String,
+					value: null
+				},
+				helpDocsLink: {
+					type: String,
+					value: null
+				},
+				_optOutDialogOpen: {
+					type: Boolean,
+					value: false
+				},
+				_primaryButtonText: String,
+				_secondaryButtonText: String,
+				_transitioning: {
+					type: bool,
+					value: false
+				}
+			},
+			
+			behaviors: [
+				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
+			],
+			
+			attached: function() {
+				this._primaryButtonText = this.translate( this.optOut ? 'LeaveOn' : 'TurnOn' );
+				this._secondaryButtonText = this.translate( this.optOut ? 'TurnOff' : 'LeaveOff' );
+			},
+			
+			_openChanged: function() {
+				this._transitioning = true;
+			},
+			
+			_onTransitionComplete: function() {
+				this._transitioning = false;
+			},
+			
+			_clickOptIn: function() {
+				this.fire( 'opt-in' );
+				this.open = false;
+			},
+			
+			_clickOptOut: function() {
+				if( this.optOut ) {
+					this._optOutDialogOpen = true;
+				} else {
+					this.fire( 'opt-out' );
+					this.open = false;
+				}
+			},
+			
+			_cancelOptOut: function( event ) {
+				this._optOutDialogOpen = false;
+				event.stopPropagation();
+			},
+			
+			_confirmOptOut: function( event ) {
+				this._optOutDialogOpen = false;
+				this.fire( 'opt-out', event.detail );
+				this.open = false;
+				event.stopPropagation();
+			},
+			
+			_isFullyClosed( open, transitioning ) {
+				return !open && !transitioning;
+			},
+			
+			_getFlyoutClass( open, _transitioning ) {
+				var classes = open ? 'flyout-opened' : 'flyout-closed';
+				if( _transitioning ) {
+					classes += 'flyout-transition';
+				}
+				return classes;
+			},
+			
+			_getTabStyle( position ) {
+				var rtl = window.document.body.getAttribute( 'dir' ) === 'rtl';
+				
+				if( position === 'left' ) {
+					position = '2.5rem + 15px';
+				} else if( position === 'right' || position === 'default' || !position ) {
+					position = '2.5rem + 15px';
+					rtl = !rtl;
+				} else if( position === 'center' || position === 'centre' ) {
+					position = '50%';
+				} else if( !/^\d+(?:\.\d+)?%$/.test( position ) ) {
+					console.warn( 'Invalid position supplied to opt-in flyout' );
+					position = '2.5rem + 15px';
+					rtl = !rtl;
+				}
+				
+				var side = rtl ? 'right' : 'left';
+				var shift = rtl ? '50%' : '-50%';
+				
+				return side + ': ' + position + '; transform: translateX( ' + shift + ' );';
+			},
+			
+			_getTabIcon( open, transitioning ) {
+				// open XOR transitioning
+				return ( !open !== !transitioning ) ? 'd2l-tier1:chevron-up' : 'd2l-tier1:chevron-down';
+			},
+			
+			_getDescriptionPart( i ) {
+				return this.translate( this.optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
+			},
+			
+			_getTutorialTextPart( tutorialLink, helpDocsLink, i ) {
+				if( tutorialLink && helpDocsLink ) {
+					var translation = this.translate( 'TutorialAndHelpMessage' );
+					return translation.split(  /\*|~/ )[i] || '';
+				} else if( tutorialLink || helpDocsLink ) {
+					var translation = this.translate( tutorialLink ? 'TutorialMessage' : 'HelpMessage' );
+					return translation.split( '*' )[i] || '';
+				} else {
+					return null;
+				}
+			},
+			
+			_getTutorialLink( tutorialLink, helpDocsLink, i ) {
+				if( tutorialLink && helpDocsLink ) {
+					var translation = this.translate( 'TutorialAndHelpMessage' );
+					var videoFirst = translation.indexOf( '*' ) < translation.indexOf( '~' );
+					return videoFirst ? tutorialLink : helpDocsLink;
+				}
+				return tutorialLink || helpDocsLink || null;
+			}
+			
+		});
+	</script>
+</dom-module>

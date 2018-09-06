@@ -1,0 +1,48 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./internal/flyout-impl.html">
+<link rel="import" href="./internal/translate-behaviour.html">
+
+<dom-module id="d2l-opt-out-flyout">
+	<template strip-whitespace>
+		<flyout-impl
+			opt-out=""
+			open="{{open}}",
+			title="[[title]]"
+			details="[[details]]"
+			tab-position="[[tabPosition]]"
+			tutorial-link="[[tutorialLink]]"
+			help-docs-link="[[helpDocsLink]]"
+		>
+			<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
+			<slot>
+				<option value="NotReadyForSomethingNew">[[translate('Feedback.Reason.NotReadyForSomethingNew')]]</option>
+				<option value="MissingFeature">[[translate('Feedback.Reason.MissingFeature')]]</option>
+				<option value="JustCheckingSomething">[[translate('Feedback.Reason.JustCheckingSomething')]]</option>
+			</slot>
+			<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
+		</d2l-opt-in-flyout-internal>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-opt-out-flyout',
+			
+			properties: {
+				open: {
+					type: Boolean,
+					value: false,
+					notify: true,
+					reflectToAttribute: true
+				},
+				title: String,
+				details: String,
+				tabPosition: String,
+				tutorialLink: String,
+				helpDocsLink: String
+			},
+			
+			behaviors: [
+				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
+			]
+		});
+	</script>
+</dom-module>
