@@ -34,6 +34,8 @@
 				box-sizing: border-box;
 				background-color: white;
 				border-bottom: 1px solid var(--d2l-color-mica);
+				
+				transition: transform 0.5s ease-out;
 			}
 			
 			.flyout-opened {
@@ -41,9 +43,6 @@
 			}
 			.flyout-closed {
 				transform: translateY( -100% );
-			}
-			.flyout-transition {
-				transition: transform 0.5s ease-out;
 			}
 			
 			.flyout-content {
@@ -150,7 +149,7 @@
 			aria-describedby="description"
 			class$="[[_getFlyoutClass(_visibleState)]]"
 		>
-			<div class="flyout-content" hidden="[[_isFullyClosed(_visibleState)]]">
+			<div class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
 				<div class="flyout-text">
 					<h1 id="title">[[title]]</h1>
 					<p id="description">
@@ -190,7 +189,7 @@
 			<div class="flyout-tab-container">
 				<div
 					class="flyout-tab"
-					style$="[[_getTabStyle( tabPosition )]]"
+					style$="[[_getTabStyle(tabPosition)]]"
 					tabindex="0"
 					aria-labelledby="tab-label"
 					on-tap="_clickTab"
@@ -315,17 +314,15 @@
 				event.stopPropagation();
 			},
 			
-			_isFullyClosed( visibleState ) {
-				return visibleState === 'CLOSED';
+			_getContentStyle( visibleState ) {
+				return visibleState === 'CLOSED' ? 'visibility: hidden;' : 'visibility: visible;';
 			},
 			
 			_getFlyoutClass( visibleState ) {
-				switch( visibleState ) {
-					case 'CLOSED': return 'flyout-closed';
-					case 'OPENING': return 'flyout-opened flyout-transition';
-					case 'OPENED': return 'flyout-opened';
-					case 'CLOSING': return 'flyout-closed flyout-transition';
-					default: return '';
+				if( visibleState === 'OPENING' || visibleState === 'OPENED' ) {
+					return 'flyout-opened';
+				} else {
+					return 'flyout-closed';
 				}
 			},
 			

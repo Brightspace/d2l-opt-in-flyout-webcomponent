@@ -167,10 +167,11 @@
 			
 			attached: function() {
 				this._textDirection = window.document.body.getAttribute( 'dir' ) || 'ltr';
+				this.$['reason-selector'].selectedIndex = 0;
 			},
 			
 			_reasonSelected: function() {
-				this._canConfirm = true;
+				this._canConfirm = this.$['reason-selector'].selectedIndex > 0;
 			},
 			
 			_cancel: function() {

@@ -33,14 +33,22 @@
 					border: 2px solid black;
 				}
 				
+				.flyout-region {
+					position: relative;
+					width: 75%;
+					height: 100%;
+				}
+				
 				pre {
 					position: absolute;
+					margin: 0;
+					top: 0;
 					right: 0;
-					bottom: 0;
-					height: 60%;
-					width: 500px;
+					height: 100%;
+					width: 25%;
 					overflow-y: auto;
-					border: 1px solid grey;
+					border-left: 2px solid black;
+					box-sizing: border-box;
 				}
 			</style>
 		</custom-style>
@@ -48,25 +56,29 @@
 	
 	<body class="d2l-typography">
 		<div class="vertical-split">
-			<d2l-opt-in-flyout id="opt-in"
-				open
-				title="Flyout Demo"
-				details="This is a demo of the opt-in flyout."
-				tab-position="right"
-				tutorial-link="https://www.example.com"
-				help-docs-link="https://www.example.com"
-			></d2l-opt-in-flyout>
+			<div class="flyout-region">
+				<d2l-opt-in-flyout id="opt-in"
+					open
+					title="Flyout Demo"
+					details="This is a demo of the opt-in flyout."
+					tab-position="right"
+					tutorial-link="https://www.example.com"
+					help-docs-link="https://www.example.com"
+				></d2l-opt-in-flyout>
+			</div>
 			<pre id="opt-in-log"></pre>
 		</div>
 		<div class="vertical-split">
-			<d2l-opt-out-flyout id="opt-out"
-				open
-				title="Flyout Demo"
-				details="This is a demo of the opt-out flyout."
-				tab-position="right"
-				tutorial-link="https://www.example.com"
-				help-docs-link="https://www.example.com"
-			></d2l-opt-out-flyout>
+			<div class="flyout-region">
+				<d2l-opt-out-flyout id="opt-out"
+					open
+					title="Flyout Demo"
+					details="This is a demo of the opt-out flyout."
+					tab-position="right"
+					tutorial-link="https://www.example.com"
+					help-docs-link="https://www.example.com"
+				></d2l-opt-out-flyout>
+			</div>
 			<pre id="opt-out-log"></pre>
 		</div>
 		
