@@ -1,5 +1,4 @@
 <link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../../polymer/lib/elements/dom-if.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-offscreen/d2l-offscreen.html">
@@ -153,28 +152,28 @@
 				<div class="flyout-text">
 					<h1 id="title">[[title]]</h1>
 					<p id="description">
-						<span>[[_getDescriptionPart(0)]]</span>
-						<strong>[[_getDescriptionPart(1)]]</strong>
-						<span>[[_getDescriptionPart(2)]]</span>
+						<span>[[_getDescriptionPart(translate,0)]]</span>
+						<strong>[[_getDescriptionPart(translate,1)]]</strong>
+						<span>[[_getDescriptionPart(translate,2)]]</span>
 					</p>
 					<p class="flyout-details" hidden="[[!details]]">
 						[[details]]
 					</p>
 					<p class="flyout-tutorial">
 					
-						<template is="dom-if" if="[[_getTutorialLink(tutorialLink,helpDocsLink,0)]]">
-							<span>[[_getTutorialTextPart(tutorialLink,helpDocsLink,0)]]</span>
-							<a href="[[_getTutorialLink(tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
-								[[_getTutorialTextPart(tutorialLink,helpDocsLink,1)]]
+						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]">
+							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
+							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
 							</a>
-							<span>[[_getTutorialTextPart(tutorialLink,helpDocsLink,2)]]</span>
+							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
 						</template>
 						
-						<template is="dom-if" if="[[_getTutorialLink(tutorialLink,helpDocsLink,1)]]">
-							<a href="[[_getTutorialLink(tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
-								[[_getTutorialTextPart(tutorialLink,helpDocsLink,3)]]
+						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]">
+							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
+								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,3)]]
 							</a>
-							<span>[[_getTutorialTextPart(tutorialLink,helpDocsLink,4)]]</span>
+							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,4)]]</span>
 						</template>
 					</p>
 				</div>
@@ -356,25 +355,25 @@
 				}
 			},
 			
-			_getDescriptionPart( i ) {
-				return this.translate( this.optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
+			_getDescriptionPart( translate, i ) {
+				return translate( this.optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
 			},
 			
-			_getTutorialTextPart( tutorialLink, helpDocsLink, i ) {
+			_getTutorialTextPart( translate, tutorialLink, helpDocsLink, i ) {
 				if( tutorialLink && helpDocsLink ) {
-					var translation = this.translate( 'TutorialAndHelpMessage' );
+					var translation = translate( 'TutorialAndHelpMessage' );
 					return translation.split(  /\*|~/ )[i] || '';
 				} else if( tutorialLink || helpDocsLink ) {
-					var translation = this.translate( tutorialLink ? 'TutorialMessage' : 'HelpMessage' );
+					var translation = translate( tutorialLink ? 'TutorialMessage' : 'HelpMessage' );
 					return translation.split( '*' )[i] || '';
 				} else {
 					return null;
 				}
 			},
 			
-			_getTutorialLink( tutorialLink, helpDocsLink, i ) {
+			_getTutorialLink( translate, tutorialLink, helpDocsLink, i ) {
 				if( tutorialLink && helpDocsLink ) {
-					var translation = this.translate( 'TutorialAndHelpMessage' );
+					var translation = translate( 'TutorialAndHelpMessage' );
 					var videoFirst = translation.indexOf( '*' ) < translation.indexOf( '~' );
 					return videoFirst ? tutorialLink : helpDocsLink;
 				}

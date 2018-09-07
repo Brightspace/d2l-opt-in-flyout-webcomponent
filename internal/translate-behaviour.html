@@ -1,3 +1,4 @@
+<link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../lang/ar.html">
 <link rel="import" href="../lang/de.html">
 <link rel="import" href="../lang/en.html">
@@ -22,51 +23,67 @@
 	D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl = {
 		
 		properties: {
-			_langTag: String,
-			_fallbackLangTag: String
+			
+			_fallbackLangTag: {
+				type: String,
+				value: function() {
+					var rootElement = window.document.documentElement;
+					var fallbackLanguage = rootElement.getAttribute('data-lang-default') || 'en';
+					return fallbackLanguage.toLowerCase();
+				}
+			},
+			
+			_langTag: {
+				type: String,
+				value: function() {
+					var rootElement = window.document.documentElement;
+					var fallbackLanguage = rootElement.getAttribute('data-lang-default') || 'en';
+					var desiredLanguage = rootElement.getAttribute('lang') || fallbackLanguage;
+					return desiredLanguage.toLowerCase();
+				}
+			},
+			
+			translate: {
+				type: Function,
+				computed: '_getTranslateFunction(_langTag,_fallbackLangTag)'
+			}
 		},
 		
-		created: function() {
-			var rootElement = window.document.documentElement;
-			var fallbackLanguage = rootElement.getAttribute('data-lang-default') || 'en';
-			var desiredLanguage = rootElement.getAttribute('lang') || fallbackLanguage;
-			this._langTag = desiredLanguage.toLowerCase();
-			this._fallbackLangTag = fallbackLanguage.toLowerCase();
-		},
-		
-		_tryGetTerm: function( langPack, langTerm ) {
-			var langPath = langTerm.split( '.' );
-			langPath.forEach( function( langPart ) {
-				if( !langPack || typeof langPack !== 'object' ) {
+		_getTranslateFunction: function( __langTag, __fallbackLangTag ) {
+			var tryGetTerm = function( langPack, langTerm ) {
+				var langPath = langTerm.split( '.' );
+				langPath.forEach( function( langPart ) {
+					if( !langPack || typeof langPack !== 'object' ) {
+						return null;
+					}
+					langPack = langPack[langPart];
+				});
+				
+				if( typeof langPack !== 'string' ) {
 					return null;
 				}
-				langPack = langPack[langPart];
-			});
+				
+				return langPack;
+			};
 			
-			if( typeof langPack !== 'string' ) {
-				return null;
-			}
-			
-			return langPack;
-		},
-		
-		_getTranslation: function( langTerm, langTag, isFallback ) {
-			var languagePack = this['translations_' + langTag];
-			var translation = this._tryGetTerm( languagePack, langTerm );
-			if( translation ) {
-				return translation;
-			} else if( langTag.indexOf( '-' ) > -1 ) {
-				return this._getTranslation( langTerm, langTag.substring( 0, langTag.indexOf( '-' ) ), isFallback );
-			} else if( !isFallback && this._langTag !== this._fallbackLangTag ) {
-				return this._getTranslation( langTerm, this._fallbackLangTag, true );
-			} else if( this._langTag !== 'en' ) {
-				return this._getTranslation( langTerm, 'en', true );
-			}
-			return null;
-		},
-		
-		translate: function( langTerm ) {
-			return this._getTranslation( langTerm, this._langTag, false );
+			return function( langTag, fallbackLangTag, langTerm ) {
+				while( true ) {
+					var languagePack = this['translations_' + langTag];
+					var translation = tryGetTerm( languagePack, langTerm ); 
+					if( translation ) {
+						return translation;
+					} else if( langTag.indexOf( '-' ) > -1 ) {
+						langTag = langTag.substring( 0, langTag.indexOf( '-' ) );
+					} else if( fallbackLangTag ) {
+						langTag = fallbackLangTag;
+						fallbackLangTag = null;
+					} else if( langTag !== 'en' ) {
+						langTag = 'en';
+					} else {
+						return null;
+					}
+				}
+			}.bind( this, __langTag, __fallbackLangTag );
 		}
 		
 	};
