@@ -25,9 +25,7 @@
 		</style>
 		<select id="selector" on-change="_reasonSelected">
 			<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
-			<template is="dom-repeat" items="[[_reasons]]" as="reason">
-				<option value="[[reason.key]]">[[reason.text]]</option>
-			</template>
+			<!-- element generated from [[_reasons]] go here -->
 			<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
 		</select>
 		<div id="options">
@@ -50,7 +48,8 @@
 				},
 				_reasons: {
 					type: Array,
-					value: []
+					value: [],
+					observer: '_reasonsChanged'
 				}
 			},
 			
@@ -126,6 +125,21 @@
 				}
 				
 				this._setSelected( selection.value );
+			},
+			
+			_reasonsChanged: function( reasons ) {
+				// [Workaround] dom-repeat inside a <select> element doesn't work in IE11
+				var selectElement = this.$.selector;
+				while( selectElement.childNodes.length > 2 ) {
+					selectElement.removeChild( selectElement.childNodes[1] );
+				}
+				
+				reasons.forEach( function( reason ) {
+					var option = document.createElement( 'option' );
+					option.value = reason.key;
+					option.textContent = reason.text;
+					selectElement.insertBefore( option, selectElement.lastChild );
+				});
 			}
 			
 		});
