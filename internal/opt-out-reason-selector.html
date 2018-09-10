@@ -25,7 +25,9 @@
 		</style>
 		<select id="selector" on-change="_reasonSelected">
 			<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
-			<!-- other options get rendered here -->
+			<template is="dom-repeat" items="[[_reasons]]" as="reason">
+				<option value="[[reason.key]]">[[reason.text]]</option>
+			</template>
 			<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
 		</select>
 		<div id="options">
@@ -45,6 +47,10 @@
 					reflectToAttribute: true,
 					notify: true,
 					value: null
+				},
+				_reasons: {
+					type: Array,
+					value: []
 				}
 			},
 			
@@ -63,11 +69,6 @@
 					return child && child.tagName === 'D2L-OPT-OUT-REASON' && child.key && child.text;
 				});
 				
-				var selectElement = this.$.selector;
-				while( selectElement.childNodes.length > 2 ) {
-					selectElement.removeChild( selectElement.childNodes[1] );
-				}
-				
 				if( children.length <= 0 ) {
 					// Use default options if no valid options were provided
 					children = [
@@ -75,24 +76,24 @@
 						{ key: 'MissingFeature', text: this.translate( 'Feedback.Reason.MissingFeature' ) },
 						{ key: 'JustCheckingSomething', text: this.translate( 'Feedback.Reason.JustCheckingSomething' ) }
 					];
+				} else {
+					// convert to simple javascript object
+					children = children.map( function( child ) {
+						return { key: child.key, text: child.text };
+					});
 				}
 				
-				children.forEach( function( option ) {
-					var optionElement = document.createElement( 'option' );
-					optionElement.value = option.key;
-					optionElement.textContent = option.text;
-					selectElement.insertBefore( optionElement, selectElement.lastChild );
-				});
+				this.set( '_reasons', children );
 			},
 			
-			_reasonSelected: function() {
+			_reasonSelected: function( event ) {
 				var selectionIndex = this.$.selector.selectedIndex;
 				if( selectionIndex < 1 ) {
 					this._setSelected( null );
 					return;
 				}
 				
-				var selection = this.$.selector.childNodes[selectionIndex];
+				var selection = this.$.selector.options[selectionIndex];
 				if( !selection || !selection.value ) {
 					this._setSelected( null );
 					return;

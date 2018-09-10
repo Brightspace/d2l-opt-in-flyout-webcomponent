@@ -85,7 +85,7 @@
 		</div>
 		<div class="vertical-split">
 			<div class="flyout-region">
-				<d2l-opt-out-flyout id="opt-out"
+				<d2l-opt-out-flyout id="opt-out-2"
 					open
 					title="Flyout Demo"
 					details="This is a demo of the opt-out flyout with custom opt-out reasons."
@@ -97,7 +97,7 @@
 					<d2l-opt-out-reason key="test-2" text="Test Option 2"></d2l-opt-out-reason>
 				</d2l-opt-out-flyout>
 			</div>
-			<pre id="opt-out-log"></pre>
+			<pre id="opt-out-2-log"></pre>
 		</div>
 		
 		<script>
@@ -115,21 +115,16 @@
 				}
 			};
 			
-			var optInFlyout = document.getElementById( 'opt-in' );
-			var optOutFlyout = document.getElementById( 'opt-out' );
+			[ 'opt-in', 'opt-out', 'opt-out-2' ].forEach( function( demo ) {
+				var flyout = document.getElementById( demo );
+				var log = document.getElementById( demo + '-log' );
+				
+				flyout.addEventListener( 'flyout-opened', printEvent.bind( null, log ) );
+				flyout.addEventListener( 'flyout-closed', printEvent.bind( null, log ) );
+				flyout.addEventListener( 'opt-in', printEvent.bind( null, log ) );
+				flyout.addEventListener( 'opt-out', printEvent.bind( null, log ) );
+			});
 			
-			var optInLog = document.getElementById( 'opt-in-log' );
-			var optOutLog = document.getElementById( 'opt-out-log' );
-			
-			optInFlyout.addEventListener( 'flyout-opened', printEvent.bind( null, optInLog ) );
-			optInFlyout.addEventListener( 'flyout-closed', printEvent.bind( null, optInLog ) );
-			optInFlyout.addEventListener( 'opt-in', printEvent.bind( null, optInLog ) );
-			optInFlyout.addEventListener( 'opt-out', printEvent.bind( null, optInLog ) );
-			
-			optOutFlyout.addEventListener( 'flyout-opened', printEvent.bind( null, optOutLog ) );
-			optOutFlyout.addEventListener( 'flyout-closed', printEvent.bind( null, optOutLog ) );
-			optOutFlyout.addEventListener( 'opt-in', printEvent.bind( null, optOutLog ) );
-			optOutFlyout.addEventListener( 'opt-out', printEvent.bind( null, optOutLog ) );
 		</script>
 	</body>
 </html>
