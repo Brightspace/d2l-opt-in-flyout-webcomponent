@@ -11,6 +11,7 @@
 		
 		<link rel="import" href="./d2l-opt-in-flyout.html">
 		<link rel="import" href="./d2l-opt-out-flyout.html">
+		<link rel="import" href="./d2l-opt-out-reason.html">
 		
 		<custom-style include="d2l-typography">
 			<style is="custom-style" include="d2l-typography">
@@ -29,8 +30,9 @@
 					position: relative;
 					box-sizing: border-box;
 					width: 100%;
-					height: 50%;
+					height: 450px;
 					border: 2px solid black;
+					margin-bottom: 16px;
 				}
 				
 				.flyout-region {
@@ -73,11 +75,27 @@
 				<d2l-opt-out-flyout id="opt-out"
 					open
 					title="Flyout Demo"
-					details="This is a demo of the opt-out flyout."
+					details="This is a demo of the opt-out flyout with default opt-out reasons."
 					tab-position="right"
 					tutorial-link="https://www.example.com"
 					help-docs-link="https://www.example.com"
 				></d2l-opt-out-flyout>
+			</div>
+			<pre id="opt-out-log"></pre>
+		</div>
+		<div class="vertical-split">
+			<div class="flyout-region">
+				<d2l-opt-out-flyout id="opt-out"
+					open
+					title="Flyout Demo"
+					details="This is a demo of the opt-out flyout with custom opt-out reasons."
+					tab-position="right"
+					tutorial-link="https://www.example.com"
+					help-docs-link="https://www.example.com"
+				>
+					<d2l-opt-out-reason key="test-1" text="Test Option 1"></d2l-opt-out-reason>
+					<d2l-opt-out-reason key="test-2" text="Test Option 2"></d2l-opt-out-reason>
+				</d2l-opt-out-flyout>
 			</div>
 			<pre id="opt-out-log"></pre>
 		</div>

@@ -4,7 +4,7 @@
 <link rel="import" href="../../d2l-icons/d2l-icons.html">
 <link rel="import" href="../../d2l-button/d2l-button.html">
 <link rel="import" href="../../d2l-textarea/d2l-textarea.html">
-<link rel="import" href="../../d2l-text-input/d2l-text-input-shared-styles.html">
+<link rel="import" href="./opt-out-reason-selector.html">
 <link rel="import" href="./translate-behaviour.html">
 
 <dom-module id="opt-out-dialog">
@@ -54,18 +54,6 @@
 				margin-bottom: 0;
 			}
 			
-			select {
-				@apply --d2l-input;
-				position: relative;
-				display: block;
-				width: 80%;
-				margin-bottom: 1.5rem;
-			}
-			
-			select:hover, select:focus {
-				@apply --d2l-input-hover;
-			}
-			
 			d2l-textarea {
 				height: 5rem;
 				margin-bottom: 1rem;
@@ -113,22 +101,18 @@
 			<br><br>
 			<div>
 				<label id="reason-label">[[translate('Feedback.ReasonLabel')]]</label>
-				<select id="reason-selector" aria-labelledby="reason-label" on-change="_reasonSelected">
-					<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
-					<slot>
-						<option value="NotReadyForSomethingNew">[[translate('Feedback.Reason.NotReadyForSomethingNew')]]</option>
-						<option value="MissingFeature">[[translate('Feedback.Reason.MissingFeature')]]</option>
-						<option value="JustCheckingSomething">[[translate('Feedback.Reason.JustCheckingSomething')]]</option>
-					</slot>
-					<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
-				</select>
+				<opt-out-reason-selector
+					id="reason-selector"
+					aria-labelledby="reason-label"
+					selected="{{_reason}}"
+				><slot></slot></opt-out-reason-selector>
 			</div>
 			<div>
 				<label id="feedback-label">[[translate('Feedback.FeedbackLabel')]]</label>
 				<d2l-textarea id="feedback" aria-labelledby="feedback-label"></d2l-textarea>
 			</div>
 			<div>
-				<d2l-button disabled="[[!_canConfirm]]" primary on-tap="_confirm">[[translate('Done')]]</d2l-button>
+				<d2l-button disabled="[[!_reason]]" primary on-tap="_confirm">[[translate('Done')]]</d2l-button>
 				<d2l-button on-tap="_cancel">[[translate('Cancel')]]</d2l-button>
 			</div>
 			<d2l-offscreen>
@@ -155,9 +139,9 @@
 					type: String,
 					value: 'ltr'
 				},
-				_canConfirm: {
-					type: Boolean,
-					value: false
+				_reason: {
+					type: String,
+					value: null
 				}
 			},
 			
@@ -167,11 +151,6 @@
 			
 			attached: function() {
 				this._textDirection = window.document.body.getAttribute( 'dir' ) || 'ltr';
-				this.$['reason-selector'].selectedIndex = 0;
-			},
-			
-			_reasonSelected: function() {
-				this._canConfirm = this.$['reason-selector'].selectedIndex > 0;
 			},
 			
 			_cancel: function() {
@@ -179,21 +158,13 @@
 			},
 			
 			_confirm: function() {
-				var reasonSelector = this.$['reason-selector'];
-				if( !reasonSelector || reasonSelector.selectedIndex < 1 ) {
-					return;
-				}
-				
-				var reason = reasonSelector.childNodes[reasonSelector.selectedIndex];
-				var feedback = this.$.feedback.value || '';
-				
-				if( !reason || !reason.value ) {
+				if( !this._reason ) {
 					return;
 				}
 				
 				this.fire( 'confirm', {
-					reason: reason.value,
-					feedback: feedback.trim()
+					reason: this._reason,
+					feedback: (this.$.feedback.value || '').trim()
 				});
 			},
 			

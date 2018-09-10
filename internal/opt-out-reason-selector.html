@@ -1,0 +1,106 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../polymer/lib/utils/flattened-nodes-observer.html">
+<link rel="import" href="../../d2l-text-input/d2l-text-input-shared-styles.html">
+<link rel="import" href="../d2l-opt-out-reason.html">
+<link rel="import" href="./translate-behaviour.html">
+
+<dom-module id="opt-out-reason-selector">
+	<template strip-whitespace>
+		<style>
+			select {
+				@apply --d2l-input;
+				position: relative;
+				display: block;
+				width: 80%;
+				margin-bottom: 1.5rem;
+			}
+			
+			select:hover, select:focus {
+				@apply --d2l-input-hover;
+			}
+			
+			#options {
+				display: none;
+			}
+		</style>
+		<select id="selector" on-change="_reasonSelected">
+			<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
+			<!-- other options get rendered here -->
+			<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
+		</select>
+		<div id="options">
+			<slot on-slotchange="_onSlotChanged"></slot>
+		</div>
+	</template>
+	<script>
+		'use strict';
+		
+		Polymer({
+			is: 'opt-out-reason-selector',
+			
+			properties: {
+				selected: {
+					type: String,
+					readOnly: true,
+					reflectToAttribute: true,
+					notify: true,
+					value: null
+				}
+			},
+			
+			behaviors: [
+				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
+			],
+			
+			_onSlotChanged: function() {
+				/* Passing <option> elements directly into a <select> tag with a slot doesn't work.
+				 * Instead, pass in <d2l-opt-out-reason> elements, and this component will construct
+				 * the options from the passed in options.
+				 */
+				
+				this.$.selector.selectedIndex = 0;
+				var children = Polymer.FlattenedNodesObserver.getFlattenedNodes( this.$.options ).filter( function( child ) {
+					return child && child.tagName === 'D2L-OPT-OUT-REASON' && child.key && child.text;
+				});
+				
+				var selectElement = this.$.selector;
+				while( selectElement.childNodes.length > 2 ) {
+					selectElement.removeChild( selectElement.childNodes[1] );
+				}
+				
+				if( children.length <= 0 ) {
+					// Use default options if no valid options were provided
+					children = [
+						{ key: 'NotReadyForSomethingNew', text: this.translate( 'Feedback.Reason.NotReadyForSomethingNew' ) },
+						{ key: 'MissingFeature', text: this.translate( 'Feedback.Reason.MissingFeature' ) },
+						{ key: 'JustCheckingSomething', text: this.translate( 'Feedback.Reason.JustCheckingSomething' ) }
+					];
+				}
+				
+				children.forEach( function( option ) {
+					var optionElement = document.createElement( 'option' );
+					optionElement.value = option.key;
+					optionElement.textContent = option.text;
+					selectElement.insertBefore( optionElement, selectElement.lastChild );
+				});
+			},
+			
+			_reasonSelected: function() {
+				var selectionIndex = this.$.selector.selectedIndex;
+				if( selectionIndex < 1 ) {
+					this._setSelected( null );
+					return;
+				}
+				
+				var selection = this.$.selector.childNodes[selectionIndex];
+				if( !selection || !selection.value ) {
+					this._setSelected( null );
+					return;
+				}
+				
+				this._setSelected( selection.value );
+			}
+			
+		});
+	</script>
+</dom-module>
