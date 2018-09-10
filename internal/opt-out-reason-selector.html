@@ -58,6 +58,21 @@
 				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
 			],
 			
+			attached: function() {
+				// Polymer 1 compatability
+				if( !Polymer.FlattenedNodesObserver ) {
+					this._observer = Polymer.dom( this.$.options ).observeNodes( this._onSlotChanged.bind( this ) );
+					this._onSlotChanged();
+				}
+			},
+			
+			detached: function() {
+				// Polymer 1 compatability
+				if( this._observer && !Polymer.FlattenedNodesObserver ) {
+					Polymer.dom( this.$.options ).unobserveNodes( this._observer );
+				}
+			},
+			
 			_onSlotChanged: function() {
 				/* Passing <option> elements directly into a <select> tag with a slot doesn't work.
 				 * Instead, pass in <d2l-opt-out-reason> elements, and this component will construct
@@ -65,8 +80,23 @@
 				 */
 				
 				this.$.selector.selectedIndex = 0;
-				var children = Polymer.FlattenedNodesObserver.getFlattenedNodes( this.$.options ).filter( function( child ) {
+				var children = [];
+				
+				if( Polymer.FlattenedNodesObserver ) {
+					// Polymer 2
+					children = Polymer.FlattenedNodesObserver.getFlattenedNodes( this.$.options )
+				} else {
+					// Polymer 1
+					children = Polymer.dom( this.$.options ).getEffectiveChildNodes();
+				}
+				
+				children = children.filter( function( child ) {
 					return child && child.tagName === 'D2L-OPT-OUT-REASON' && child.key && child.text;
+				}).map( function( child ) {
+					return {
+						key: child.key,
+						text: child.text
+					};
 				});
 				
 				if( children.length <= 0 ) {
@@ -76,14 +106,10 @@
 						{ key: 'MissingFeature', text: this.translate( 'Feedback.Reason.MissingFeature' ) },
 						{ key: 'JustCheckingSomething', text: this.translate( 'Feedback.Reason.JustCheckingSomething' ) }
 					];
-				} else {
-					// convert to simple javascript object
-					children = children.map( function( child ) {
-						return { key: child.key, text: child.text };
-					});
 				}
 				
-				this.set( '_reasons', children );
+				this._reasons = [];
+				this._reasons = children;
 			},
 			
 			_reasonSelected: function( event ) {
