@@ -189,7 +189,7 @@
 			<div class="flyout-tab-container">
 				<div
 					class="flyout-tab"
-					style$="[[_getTabStyle(tabPosition)]]"
+					style$="[[_getTabStyle(tabPosition,documentTextDirection)]]"
 					tabindex="0"
 					aria-labelledby="tab-label"
 					on-tap="_clickTab"
@@ -236,8 +236,14 @@
 					type: Boolean,
 					value: false
 				},
-				_primaryButtonText: String,
-				_secondaryButtonText: String,
+				_primaryButtonText: {
+					type: String,
+					computed: '_getPrimaryButtonText(translate,optOut)'
+				},
+				_secondaryButtonText: {
+					type: String,
+					computed: '_getSecondaryButtonText(translate,optOut)'
+				},
 				_visibleState: {
 					type: String,
 					value: 'CLOSED'
@@ -249,8 +255,6 @@
 			],
 			
 			attached: function() {
-				this._primaryButtonText = this.translate( this.optOut ? 'LeaveOn' : 'TurnOn' );
-				this._secondaryButtonText = this.translate( this.optOut ? 'TurnOff' : 'LeaveOff' );
 				this._visibleState = this.open ? 'OPENED' : 'CLOSED';
 				
 				// Polymer doesn't correctly support this event, so we have to add it manually
@@ -260,6 +264,14 @@
 			
 			detached: function() {
 				this.$.flyout.removeEventListener( 'transitionend', this._onTransitionComplete );
+			},
+			
+			_getPrimaryButtonText: function( translate, optOut ) {
+				return translate( optOut ? 'LeaveOn' : 'TurnOn' );
+			},
+			
+			_getSecondaryButtonText: function( translate, optOut ) {
+				return translate( optOut ? 'TurnOff' : 'LeaveOff' );
 			},
 			
 			_openChanged: function( open, previousValue ) {
@@ -326,8 +338,8 @@
 				}
 			},
 			
-			_getTabStyle( position ) {
-				var rtl = window.document.body.getAttribute( 'dir' ) === 'rtl';
+			_getTabStyle( position, documentTextDirection ) {
+				var rtl = documentTextDirection === 'rtl';
 				
 				if( position === 'left' ) {
 					position = 'calc( 2.5rem + 15px )';

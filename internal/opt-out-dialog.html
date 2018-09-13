@@ -124,6 +124,7 @@
 				role="button"
 				aria-labelledby="close-label"
 				on-tap="_cancel"
+				dir$="[[documentTextDirection]]"
 			>
 				<d2l-icon icon="d2l-tier1:close-small"></d2l-icon>
 			</div>
@@ -135,10 +136,6 @@
 			is: 'opt-out-dialog',
 			
 			properties: {
-				_textDirection: {
-					type: String,
-					value: 'ltr'
-				},
 				_reason: {
 					type: String,
 					value: null
@@ -148,10 +145,6 @@
 			behaviors: [
 				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
 			],
-			
-			attached: function() {
-				this._textDirection = window.document.body.getAttribute( 'dir' ) || 'ltr';
-			},
 			
 			_cancel: function() {
 				this.fire( 'cancel' );

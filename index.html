@@ -36,7 +36,8 @@
 				}
 				
 				.flyout-region {
-					position: relative;
+					position: absolute;
+					left: 0;
 					width: 75%;
 					height: 100%;
 				}
@@ -57,6 +58,15 @@
 	</head>
 	
 	<body class="d2l-typography">
+		<div dir="ltr">
+			<a id="lang-en" href="#">English</a>
+			:
+			<a id="lang-ja" href="#">Japanese</a>
+			:
+			<a id="lang-ar" href="#">Arabic</a>
+			<br><br>
+		</div>
+		
 		<div class="vertical-split">
 			<div class="flyout-region">
 				<d2l-opt-in-flyout id="opt-in"
@@ -68,7 +78,7 @@
 					help-docs-link="https://www.example.com"
 				></d2l-opt-in-flyout>
 			</div>
-			<pre id="opt-in-log"></pre>
+			<pre id="opt-in-log" dir="ltr"></pre>
 		</div>
 		<div class="vertical-split">
 			<div class="flyout-region">
@@ -81,7 +91,7 @@
 					help-docs-link="https://www.example.com"
 				></d2l-opt-out-flyout>
 			</div>
-			<pre id="opt-out-log"></pre>
+			<pre id="opt-out-log" dir="ltr"></pre>
 		</div>
 		<div class="vertical-split">
 			<div class="flyout-region">
@@ -97,7 +107,7 @@
 					<d2l-opt-out-reason key="test-2" text="Test Option 2"></d2l-opt-out-reason>
 				</d2l-opt-out-flyout>
 			</div>
-			<pre id="opt-out-2-log"></pre>
+			<pre id="opt-out-2-log" dir="ltr"></pre>
 		</div>
 		
 		<script>
@@ -125,6 +135,14 @@
 				flyout.addEventListener( 'opt-out', printEvent.bind( null, log ) );
 			});
 			
+			var changeLang = function( langTag, textDirection ) {
+				document.documentElement.setAttribute( 'lang', langTag );
+				document.body.setAttribute( 'dir', textDirection );
+			};
+			
+			document.getElementById( 'lang-en' ).onclick = changeLang.bind( null, 'en-CA', 'ltr' );
+			document.getElementById( 'lang-ja' ).onclick = changeLang.bind( null, 'ja-JP', 'ltr' );
+			document.getElementById( 'lang-ar' ).onclick = changeLang.bind( null, 'ar', 'rtl' );
 		</script>
 	</body>
 </html>
