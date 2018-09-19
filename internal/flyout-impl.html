@@ -286,7 +286,11 @@
 				}
 			},
 			
-			_onTransitionComplete: function() {
+			_onTransitionComplete: function( event ) {
+				if( event.target.id !== 'flyout' || event.propertyName !== 'transform' ) {
+					return null;
+				}
+				
 				if( this._visibleState === 'OPENING' ) {
 					this._visibleState = 'OPENED';
 				} else if( this._visibleState === 'CLOSING' ) {
