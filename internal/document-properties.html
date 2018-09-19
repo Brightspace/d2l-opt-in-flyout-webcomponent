@@ -29,8 +29,11 @@
 		
 		attached: function() {
 			var updateLang = function() {
-				this.documentFallbackLanguage = window.document.documentElement.getAttribute( 'data-lang-default' ) || null;
-				this.documentLanguage = window.document.documentElement.getAttribute( 'lang' ) || this.documentFallbackLanguage || 'en';
+				var fallbackLang = window.document.documentElement.getAttribute( 'data-lang-default' ) || null;
+				var requestedLang = window.document.documentElement.getAttribute( 'lang' ) || fallbackLang || 'en';
+				
+				this.documentFallbackLanguage = fallbackLang ? fallbackLang.toLowerCase() : null;
+				this.documentLanguage = requestedLang.toLowerCase();
 			}.bind( this );
 			
 			var updateDir = function() {
