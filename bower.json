@@ -16,9 +16,8 @@
 		"polymer": "1 - 2",
 		"d2l-colors": "^3.1.2",
 		"d2l-icons": "^5.0.3",
+		"d2l-inputs": "^1.0.2",
 		"d2l-offscreen": "^3.0.3",
-		"d2l-textarea": "BrightspaceUI/textarea#^0.6.3",
-		"d2l-text-input": "BrightspaceUI/text-input#^0.6.0",
 		"d2l-button": "BrightspaceUI/button#^4.5.0",
 		"d2l-typography": "^6.1.2"
 	},
