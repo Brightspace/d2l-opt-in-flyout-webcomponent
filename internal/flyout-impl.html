@@ -330,11 +330,11 @@
 				event.stopPropagation();
 			},
 			
-			_getContentStyle( visibleState ) {
+			_getContentStyle: function( visibleState ) {
 				return visibleState === 'CLOSED' ? 'visibility: hidden;' : 'visibility: visible;';
 			},
 			
-			_getFlyoutClass( visibleState ) {
+			_getFlyoutClass: function( visibleState ) {
 				if( visibleState === 'OPENING' || visibleState === 'OPENED' ) {
 					return 'flyout-opened';
 				} else {
@@ -342,7 +342,7 @@
 				}
 			},
 			
-			_getTabStyle( position, documentTextDirection ) {
+			_getTabStyle: function( position, documentTextDirection ) {
 				var rtl = documentTextDirection === 'rtl';
 				
 				if( position === 'left' ) {
@@ -364,7 +364,7 @@
 				return side + ': ' + position + '; transform: translateX( ' + shift + ' );';
 			},
 			
-			_getTabIcon( visibleState ) {
+			_getTabIcon: function( visibleState ) {
 				if( visibleState === 'CLOSED' || visibleState === 'OPENING' ) {
 					return 'd2l-tier1:chevron-down';
 				} else {
@@ -372,11 +372,11 @@
 				}
 			},
 			
-			_getDescriptionPart( translate, i ) {
+			_getDescriptionPart: function( translate, i ) {
 				return translate( this.optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
 			},
 			
-			_getTutorialTextPart( translate, tutorialLink, helpDocsLink, i ) {
+			_getTutorialTextPart: function( translate, tutorialLink, helpDocsLink, i ) {
 				if( tutorialLink && helpDocsLink ) {
 					var translation = translate( 'TutorialAndHelpMessage' );
 					return translation.split(  /\*|~/ )[i] || '';
@@ -388,7 +388,7 @@
 				}
 			},
 			
-			_getTutorialLink( translate, tutorialLink, helpDocsLink, i ) {
+			_getTutorialLink: function( translate, tutorialLink, helpDocsLink, i ) {
 				if( tutorialLink && helpDocsLink ) {
 					var translation = translate( 'TutorialAndHelpMessage' );
 					var videoFirst = translation.indexOf( '*' ) < translation.indexOf( '~' );
