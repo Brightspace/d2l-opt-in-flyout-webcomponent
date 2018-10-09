@@ -1,6 +1,6 @@
 {
 	"name": "d2l-opt-in-flyout-webcomponent",
-	"version": "1.0.4",
+	"version": "1.1.0",
 	"description": "A webcomponent for an opt-in/opt-out flyout widget",
 	"private": true,
 	"scripts": {

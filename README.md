@@ -20,11 +20,12 @@ If the `<d2l-opt-out-flyout>` has children, any `<d2l-opt-out-reason>` child ele
 
 If a `<d2l-opt-out-flyout>` component has no `<d2l-opt-out-reason>` children, it will use the following default reasons (in addition to the always present `Other` option:
 
-| key                     | text (for English localization)        |
-| ----------------------- | -------------------------------------- |
-| NotReadyForSomethingNew | I'm not ready to learn something new   |
-| MissingFeature          | It's missing a feature that I use      |
-| JustCheckingSomething   | Just switching back to check something |
+| key                     | text (for English localization)                 |
+| ----------------------- | ----------------------------------------------- |
+| NotReadyForSomethingNew | It's not a good time for me to try this version |
+| MissingFeature          | It's missing a feature that I use               |
+| JustCheckingSomething   | Just switching back to check something          |
+| PreferOldExperience     | I think the old version is a better experience  |
 
 ### Events
 The `<d2l-opt-in-flyout>` and `<d2l-opt-out-flyout>` components fire the following events:
