@@ -24,11 +24,11 @@
 		</style>
 		<select id="selector" on-change="_reasonSelected">
 			<option disabled value="">[[translate('Feedback.ChooseReason')]]</option>
-			<!-- element generated from [[_reasons]] go here -->
+			<!-- elements generated from [[_reasons]] go here -->
 			<option value="Other">[[translate('Feedback.Reason.Other')]]</option>
 		</select>
 		<div id="options">
-			<slot on-slotchange="_onSlotChanged"></slot>
+			<slot id="options-slot" on-slotchange="_onSlotChanged"></slot>
 		</div>
 	</template>
 	<script>
@@ -58,15 +58,18 @@
 
 			attached: function() {
 				// Polymer 1 compatability
-				if( !Polymer.FlattenedNodesObserver ) {
+				if( this.$['options-slot'].tagName !== 'SLOT' ) {
 					this._observer = Polymer.dom( this.$.options ).observeNodes( this._onSlotChanged.bind( this ) );
+					this._onSlotChanged();
+				} else {
+					// This is required for Safari to work correctly.
 					this._onSlotChanged();
 				}
 			},
 
 			detached: function() {
 				// Polymer 1 compatability
-				if( this._observer && !Polymer.FlattenedNodesObserver ) {
+				if( this._observer && this.$['options-slot'].tagName !== 'SLOT' ) {
 					Polymer.dom( this.$.options ).unobserveNodes( this._observer );
 				}
 			},
@@ -80,9 +83,9 @@
 				this.$.selector.selectedIndex = 0;
 				var children = [];
 
-				if( Polymer.FlattenedNodesObserver ) {
+				if( this.$['options-slot'].tagName === 'SLOT' ) {
 					// Polymer 2
-					children = Polymer.FlattenedNodesObserver.getFlattenedNodes( this.$.options )
+					children = this.$['options-slot'].assignedNodes({ flatten: true });
 				} else {
 					// Polymer 1
 					children = Polymer.dom( this.$.options ).getEffectiveChildNodes();
