@@ -11,131 +11,132 @@
 	<template strip-whitespace>
 		<style>
 			:host {
-				position: absolute;
-				overflow: hidden;
-				width: 100%;
 				height: 100%;
+				overflow: hidden;
 				pointer-events: none;
+				position: absolute;
+				width: 100%;
 				@apply --d2l-body-standard-text;
 			}
-			
-			
+
 			#flyout {
+				background-color: white;
+				border-bottom: 1px solid var(--d2l-color-mica);
+				box-sizing: border-box;
+				overflow: visible;
+				padding-bottom: 2rem;
+				pointer-events: auto;
 				position: absolute;
 				top: 0;
 				width: 100%;
 				z-index: 900;
-				overflow: visible;
-				pointer-events: auto;
-				
-				padding-bottom: 2rem;
-				
-				box-sizing: border-box;
-				background-color: white;
-				border-bottom: 1px solid var(--d2l-color-mica);
-				
-				transition: transform 0.5s ease-out;
 			}
-			
+
+			#flyout.flyout-opened {
+				transition: transform 0.2s ease-out;
+			}
+
+			#flyout.flyout-closed {
+				transition: transform 0.2s ease-in;
+			}
+
 			.flyout-opened {
 				transform: translateY( 0 );
 			}
 			.flyout-closed {
 				transform: translateY( -100% );
 			}
-			
+
 			.flyout-content {
 				text-align: center;
 			}
-			
+
 			.flyout-content h1 {
 				@apply --d2l-heading-1;
-				margin-bottom: 0;
+				margin-bottom: 1.2rem;
 			}
-			
+
 			.flyout-text {
+				margin-bottom: 1.5rem;
 				margin-left: auto;
 				margin-right: auto;
-				margin-bottom: 2rem;
 			}
-			
+
 			#description {
-				margin-top: 0;
 				margin-bottom: 0.5rem;
+				margin-top: 0;
 			}
-			
+
 			.flyout-details {
-				max-width: 800px;
 				margin: auto;
 				margin-bottom: 0;
+				max-width: 800px;
 			}
-			
+
 			.flyout-tutorial {
 				margin: auto;
 				margin-top: 0.5em;
 			}
-			
+
 			.flyout-tutorial a {
 				color: var(--d2l-color-celestine);
 				text-decoration: none;
 			}
-			
+
 			.flyout-tutorial a:hover, .flyout-tutorial a:focus {
 				text-decoration: underline;
 			}
-			
+
 			.flyout-buttons {
 				margin-left: auto;
 				margin-right: auto;
 			}
-			
+
 			.flyout-buttons d2l-button {
 				margin-left: 1rem;
 			}
-			
+
 			.flyout-tab-container {
-				position: absolute;
-				top: 100%;
-				left: 50%;
-				transform: translateX( -50% );
 				height: 1rem;
-				width: 100%;
+				left: 50%;
 				max-width: 1230px;
 				pointer-events: none;
-			}
-			
-			.flyout-tab {
-				pointer-events: auto;
 				position: absolute;
-				top: 0;
-				width: 5rem;
-				height: 1rem;
-				padding: 1px;
-				text-align: center;
-				
-				box-sizing: border-box;
+				top: 100%;
+				transform: translateX( -50% );
+				width: 100%;
+			}
+
+			.flyout-tab {
 				background-color: white;
 				border: 1px solid var(--d2l-color-mica);
-				border-top: none;
 				border-radius: 0 0 8px 8px;
-				
+				border-top: none;
+				box-sizing: border-box;
 				cursor: pointer;
+				height: 1rem;
+				padding: 1px;
+				pointer-events: auto;
+				position: absolute;
+				text-align: center;
+				top: 0;
+				width: 5rem;
 			}
-			
-			.flyout-tab:hover, .flyout-tab:focus {
+
+			.flyout-tab:hover {
 				background-color: var(--d2l-color-regolith);
 			}
-			
+
 			.flyout-tab:active, .flyout-tab:focus {
 				outline: 0;
 			}
-			
+
 			.flyout-tab > d2l-icon {
 				margin: auto;
 				vertical-align: top !important;
 			}
 		</style>
-		
+
 		<template is="dom-if" if="[[_optOutDialogOpen]]" restamp="true">
 			<opt-out-dialog
 				on-cancel="_cancelOptOut"
@@ -161,7 +162,7 @@
 						[[details]]
 					</p>
 					<p class="flyout-tutorial">
-					
+
 						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]">
 							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
 							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
@@ -169,7 +170,7 @@
 							</a>
 							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
 						</template>
-						
+
 						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]">
 							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
 								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,3)]]
@@ -199,11 +200,11 @@
 			</div>
 		</div>
 	</template>
-	
+
 	<script>
 		Polymer({
 			is: 'flyout-impl',
-			
+
 			properties: {
 				optOut: {
 					type: Boolean,
@@ -249,66 +250,66 @@
 					value: 'CLOSED'
 				}
 			},
-			
+
 			behaviors: [
 				D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
 			],
-			
+
 			attached: function() {
 				this._visibleState = this.open ? 'OPENED' : 'CLOSED';
-				
+
 				// Polymer doesn't correctly support this event, so we have to add it manually
 				this._onTransitionComplete = this._onTransitionComplete.bind( this );
 				this.$.flyout.addEventListener( 'transitionend', this._onTransitionComplete );
 			},
-			
+
 			detached: function() {
 				this.$.flyout.removeEventListener( 'transitionend', this._onTransitionComplete );
 			},
-			
+
 			_getPrimaryButtonText: function( translate, optOut ) {
 				return translate( optOut ? 'LeaveOn' : 'TurnOn' );
 			},
-			
+
 			_getSecondaryButtonText: function( translate, optOut ) {
 				return translate( optOut ? 'TurnOff' : 'LeaveOff' );
 			},
-			
+
 			_openChanged: function( open, previousValue ) {
 				if( open && this._visibleState === 'CLOSED' || this._visibleState === 'CLOSING' ) {
 					this._visibleState = 'OPENING';
 				} else if( !open && this._visibleState === 'OPENED' || this._visibleState === 'OPENING' ) {
 					this._visibleState = 'CLOSING';
 				}
-				
+
 				if( previousValue !== undefined ) {
 					this.fire( open ? 'flyout-opened' : 'flyout-closed' );
 				}
 			},
-			
+
 			_onTransitionComplete: function( event ) {
 				if( event.target.id !== 'flyout' || event.propertyName !== 'transform' ) {
 					return null;
 				}
-				
+
 				if( this._visibleState === 'OPENING' ) {
 					this._visibleState = 'OPENED';
 				} else if( this._visibleState === 'CLOSING' ) {
 					this._visibleState = 'CLOSED';
 				}
 			},
-			
+
 			_clickTab: function() {
 				if( this._visibleState === 'OPENED' || this._visibleState === 'CLOSED' ) {
 					this.open = !this.open;
 				}
 			},
-			
+
 			_clickOptIn: function() {
 				this.fire( 'opt-in' );
 				this.open = false;
 			},
-			
+
 			_clickOptOut: function() {
 				if( this.optOut ) {
 					this._optOutDialogOpen = true;
@@ -317,23 +318,23 @@
 					this.open = false;
 				}
 			},
-			
+
 			_cancelOptOut: function( event ) {
 				this._optOutDialogOpen = false;
 				event.stopPropagation();
 			},
-			
+
 			_confirmOptOut: function( event ) {
 				this._optOutDialogOpen = false;
 				this.fire( 'opt-out', event.detail );
 				this.open = false;
 				event.stopPropagation();
 			},
-			
+
 			_getContentStyle: function( visibleState ) {
 				return visibleState === 'CLOSED' ? 'visibility: hidden;' : 'visibility: visible;';
 			},
-			
+
 			_getFlyoutClass: function( visibleState ) {
 				if( visibleState === 'OPENING' || visibleState === 'OPENED' ) {
 					return 'flyout-opened';
@@ -341,10 +342,10 @@
 					return 'flyout-closed';
 				}
 			},
-			
+
 			_getTabStyle: function( position, documentTextDirection ) {
 				var rtl = documentTextDirection === 'rtl';
-				
+
 				if( position === 'left' ) {
 					position = 'calc( 2.5rem + 15px )';
 				} else if( position === 'right' || position === 'default' || !position ) {
@@ -357,25 +358,25 @@
 					position = 'calc( 2.5rem + 15px )';
 					rtl = !rtl;
 				}
-				
+
 				var side = rtl ? 'right' : 'left';
 				var shift = rtl ? '50%' : '-50%';
-				
+
 				return side + ': ' + position + '; transform: translateX( ' + shift + ' );';
 			},
-			
+
 			_getTabIcon: function( visibleState ) {
-				if( visibleState === 'CLOSED' || visibleState === 'OPENING' ) {
+				if( visibleState === 'CLOSED' || visibleState === 'CLOSING') {
 					return 'd2l-tier1:chevron-down';
 				} else {
 					return 'd2l-tier1:chevron-up'
 				}
 			},
-			
+
 			_getDescriptionPart: function( translate, i ) {
 				return translate( this.optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
 			},
-			
+
 			_getTutorialTextPart: function( translate, tutorialLink, helpDocsLink, i ) {
 				if( tutorialLink && helpDocsLink ) {
 					var translation = translate( 'TutorialAndHelpMessage' );
@@ -387,7 +388,7 @@
 					return null;
 				}
 			},
-			
+
 			_getTutorialLink: function( translate, tutorialLink, helpDocsLink, i ) {
 				if( tutorialLink && helpDocsLink ) {
 					var translation = translate( 'TutorialAndHelpMessage' );
@@ -396,7 +397,7 @@
 				}
 				return tutorialLink || helpDocsLink || null;
 			}
-			
+
 		});
 	</script>
 </dom-module>
