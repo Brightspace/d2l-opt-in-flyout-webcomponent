@@ -21,6 +21,11 @@
 				width: 80%;
 			}
 
+			/* for ie11 - avoid displaying default select arrow */
+			select::-ms-expand {
+				display: none;
+			}
+
 			:dir(rtl) select {
 				background-position: left center;
 			}

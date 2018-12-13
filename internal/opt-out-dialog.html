@@ -1,4 +1,6 @@
 <link rel="import" href="../../polymer/polymer.html">
+
+<link rel="import" href="../../d2l-button/d2l-button-icon.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-offscreen/d2l-offscreen.html">
 <link rel="import" href="../../d2l-icons/d2l-icons.html">
@@ -66,30 +68,14 @@
 			}
 
 			.close-button {
-				border: 1px solid transparent;
-				border-radius: 0.3rem;
-				box-sizing: border-box;
-				height: 1.4rem;
 				position: absolute;
-				top: 1rem;
-				right: 1rem;
-				width: 1.4rem;
-			}
-
-			.close-button > d2l-icon {
-				left: 50%;
-				position: absolute;
-				top: 50%;
-				transform: translate( -50%, -50% );
-			}
-
-			.close-button:hover, .close-button:focus {
-				border-color: var(--d2l-color-mica);
+				top: 0.6rem;
+				right: 0.6rem;
 			}
 
 			.close-button[dir="rtl"] {
-				left: 1rem;
-				right: unset;
+				left: 0.6rem;
+				right: auto;
 			}
 
 		</style>
@@ -118,7 +104,15 @@
 			<d2l-offscreen>
 				<label id="close-label">[[translate('Close')]]</label>
 			</d2l-offscreen>
-			<div
+			<d2l-button-icon
+				icon="d2l-tier1:close-small"
+				class="close-button"
+				on-tap="_cancel"
+				aria-labelledby="close-label"
+				dir$="[[documentTextDirection]]"
+			></d2l-button-icon>
+
+			<!-- <div
 				class="close-button"
 				tabindex="0"
 				role="button"
@@ -127,7 +121,7 @@
 				dir$="[[documentTextDirection]]"
 			>
 				<d2l-icon icon="d2l-tier1:close-small"></d2l-icon>
-			</div>
+			</div> -->
 		</div>
 	</template>
 
