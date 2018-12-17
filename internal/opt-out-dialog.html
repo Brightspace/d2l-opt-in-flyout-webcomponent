@@ -1,4 +1,5 @@
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../d2l-button/d2l-button-icon.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-offscreen/d2l-offscreen.html">
 <link rel="import" href="../../d2l-icons/d2l-icons.html">
@@ -11,45 +12,46 @@
 	<template strip-whitespace>
 		<style>
 			:host {
-				position: absolute;
-				width: 100%;
 				height: 100%;
 				overflow: hidden;
-				z-index: 950;
 				pointer-events: auto;
+				position: absolute;
+				width: 100%;
+				z-index: 950;
 			}
 
 			.opt-out-modal-fade {
+				background-color: var(--d2l-color-white);
+				height: 100%;
+				opacity: 0.7;
 				position: absolute;
 				width: 100%;
-				height: 100%;
-				background-color: var(--d2l-color-white);
-				opacity: 0.7;
 				z-index: 1;
 			}
 
 			.dialog {
-				position: absolute;
+				background-color: var(--d2l-color-white);
+				border: 1px solid var(--d2l-color-mica);
+				border-radius: 0.3rem;
+				box-shadow: 0 2px 12px rgba( 86, 90, 92, 0.25);
 				box-sizing: border-box;
-				top: 7.5%;
 				left: 50%;
-				width: 90%;
 				max-width: 680px;
 				padding: 1rem;
+				position: absolute;
+				top: 7.5%;
 				transform: translateX( -50% );
+				width: 90%;
 				z-index: 2;
-
-				border-radius: 0.4rem;
-				border: 1px solid var(--d2l-color-mica);
-				background-color: var(--d2l-color-white);
-				box-shadow: 0 2px 12px rgba( 86, 90, 92, 0.25);
 			}
 
 			label {
+				display: block;
 				margin-bottom: 0.5rem;
 			}
 
 			#title-label {
+				display: inline;
 				font-weight: bold;
 				margin-bottom: 0;
 			}
@@ -65,31 +67,14 @@
 			}
 
 			.close-button {
-				box-sizing: border-box;
 				position: absolute;
-				top: 1rem;
-				right: 1rem;
-				height: 1.4rem;
-				width: 1.4rem;
-
-				border: 1px solid transparent;
-				border-radius: 0.3rem;
-			}
-
-			.close-button > d2l-icon {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate( -50%, -50% );
-			}
-
-			.close-button:hover, .close-button:focus {
-				border-color: var(--d2l-color-mica);
+				top: 0.6rem;
+				right: 0.6rem;
 			}
 
 			.close-button[dir="rtl"] {
-				right: unset;
-				left: 1rem;
+				left: 0.6rem;
+				right: auto;
 			}
 
 		</style>
@@ -104,6 +89,7 @@
 					id="reason-selector"
 					aria-labelledby="reason-label"
 					selected="{{_reason}}"
+					dir$="[[documentTextDirection]]"
 				><slot></slot></opt-out-reason-selector>
 			</div>
 			<div>
@@ -114,19 +100,13 @@
 				<d2l-button disabled="[[!_reason]]" primary on-tap="_confirm">[[translate('Done')]]</d2l-button>
 				<d2l-button on-tap="_cancel">[[translate('Cancel')]]</d2l-button>
 			</div>
-			<d2l-offscreen>
-				<label id="close-label">[[translate('Close')]]</label>
-			</d2l-offscreen>
-			<div
+			<d2l-button-icon
+				icon="d2l-tier1:close-small"
 				class="close-button"
-				tabindex="0"
-				role="button"
-				aria-labelledby="close-label"
 				on-tap="_cancel"
+				text="[[translate('Close')]]"
 				dir$="[[documentTextDirection]]"
-			>
-				<d2l-icon icon="d2l-tier1:close-small"></d2l-icon>
-			</div>
+			></d2l-button-icon>
 		</div>
 	</template>
 
