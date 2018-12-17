@@ -392,7 +392,9 @@
 				if( tutorialLink && helpDocsLink ) {
 					var translation = translate( 'TutorialAndHelpMessage' );
 					var videoFirst = translation.indexOf( '*' ) < translation.indexOf( '~' );
-					return videoFirst ? tutorialLink : helpDocsLink;
+					
+					var links = videoFirst ? [ tutorialLink, helpDocsLink ] : [ helpDocsLink, tutorialLink ];
+					return links[i];
 				}
 				return tutorialLink || helpDocsLink || null;
 			}
