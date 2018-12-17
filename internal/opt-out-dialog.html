@@ -100,14 +100,11 @@
 				<d2l-button disabled="[[!_reason]]" primary on-tap="_confirm">[[translate('Done')]]</d2l-button>
 				<d2l-button on-tap="_cancel">[[translate('Cancel')]]</d2l-button>
 			</div>
-			<d2l-offscreen>
-				<label id="close-label">[[translate('Close')]]</label>
-			</d2l-offscreen>
 			<d2l-button-icon
 				icon="d2l-tier1:close-small"
 				class="close-button"
 				on-tap="_cancel"
-				aria-labelledby="close-label"
+				text="[[translate('Close')]]"
 				dir$="[[documentTextDirection]]"
 			></d2l-button-icon>
 		</div>

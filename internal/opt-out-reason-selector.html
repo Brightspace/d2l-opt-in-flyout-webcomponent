@@ -26,6 +26,12 @@
 				display: none;
 			}
 
+			/* for ie11 - prevent background box from covering select arrow */
+			select::-ms-value {
+				background-color: transparent;
+				color: var(--d2l-input-color);
+			}
+
 			:dir(rtl) select {
 				background-position: left center;
 			}

@@ -93,7 +93,8 @@
 			}
 
 			.flyout-buttons d2l-button {
-				margin-left: 1rem;
+				margin-left: 0.5rem;
+				margin-right: 0.5rem;
 			}
 
 			.flyout-tab-container {
@@ -123,7 +124,7 @@
 				width: 5rem;
 			}
 
-			.flyout-tab:hover {
+			.flyout-tab:hover, .flyout-tab:focus {
 				background-color: var(--d2l-color-regolith);
 			}
 
@@ -195,7 +196,7 @@
 					aria-labelledby="tab-label"
 					on-tap="_clickTab"
 				>
-					<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></span>
+					<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></d2l-icon>
 				</div>
 			</div>
 		</div>
