@@ -1,37 +1,37 @@
 {
-	"name": "d2l-opt-in-flyout-webcomponent",
-	"description": "A webcomponent for an opt-in/opt-out flyout widget",
-	"main": [
-		"d2l-opt-in-flyout.html",
-		"d2l-opt-out-flyout.html"
-	],
-	"private": true,
-	"ignore": [
-		"/.*",
-		"/package.json",
-		"README.md",
-		"CODEOWNERS"
-	],
-	"dependencies": {
-		"polymer": "1 - 2",
-		"d2l-colors": "^3.1.2",
-		"d2l-icons": "^5.0.3",
-		"d2l-inputs": "^1.0.2",
-		"d2l-offscreen": "^3.0.3",
-		"d2l-button": "BrightspaceUI/button#^4.5.0",
-		"d2l-typography": "^6.1.2"
-	},
-	"resolutions": {
-		"webcomponentsjs": "^1.0.22"
-	},
-	"variants": {
-		"1.x": {
-			"dependencies": {
-				"polymer": "^1.11.2"
-			},
-			"resolutions": {
-				"webcomponentsjs": "^0.7.24"
-			}
-		}
-	}
+  "name": "d2l-opt-in-flyout-webcomponent",
+  "description": "A webcomponent for an opt-in/opt-out flyout widget",
+  "main": [
+    "d2l-opt-in-flyout.html",
+    "d2l-opt-out-flyout.html"
+  ],
+  "private": true,
+  "ignore": [
+    "/.*",
+    "/package.json",
+    "README.md",
+    "CODEOWNERS"
+  ],
+  "dependencies": {
+    "polymer": "1 - 2",
+    "d2l-colors": "^3.1.2",
+    "d2l-icons": "^5.0.3",
+    "d2l-inputs": "^1.0.2",
+    "d2l-offscreen": "^3.0.3",
+    "d2l-button": "BrightspaceUI/button#^4.5.0",
+    "d2l-typography": "^6.1.2"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.22"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "^1.11.2"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7.24"
+      }
+    }
+  }
 }
