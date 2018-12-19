@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+		<title>d2l-opt-in-flyout-webcomponent tests</title>
+		<script src="../../web-component-tester/browser.js"></script>
+		<style>
+		  #subsuites {
+				height: 800px;
+				width: 800px;
+		  }
+		</style>
+	</head>
+	<body>
+		<script>
+		WCT.loadSuites([
+			'd2l-opt-in-flyout.html?wc-shadydom=true&wc-ce=true',
+			'd2l-opt-in-flyout.html?dom=shadow&lazyRegister=true&useNativeCSSProperties=true',
+			'd2l-opt-out-flyout.html?wc-shadydom=true&wc-ce=true',
+			'd2l-opt-out-flyout.html?dom=shadow&lazyRegister=true&useNativeCSSProperties=true',
+			'opt-out-dialog.html?wc-shadydom=true&wc-ce=true',
+			'opt-out-dialog.html?dom=shadow&lazyRegister=true&useNativeCSSProperties=true'
+		]);
+		</script>
+	</body>
+</html>

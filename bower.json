@@ -33,5 +33,9 @@
         "webcomponentsjs": "^0.7.24"
       }
     }
+  },
+  "devDependencies": {
+    "iron-test-helpers": "^2.0.0",
+    "web-component-tester": "^6.5.0"
   }
 }
