@@ -372,7 +372,8 @@
 				} else if (position === 'center' || position === 'centre') {
 					position = '50%';
 				} else if (!/^\d+(?:\.\d+)?%$/.test(position)) {
-					console.warn('Invalid position supplied to opt-in flyout'); // eslint-disable no-console
+					/* eslint-disable no-console */
+					console.warn('Invalid position supplied to opt-in flyout');
 					position = 'calc(2.5rem + 15px)';
 					rtl = !rtl;
 				}

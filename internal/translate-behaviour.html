@@ -51,7 +51,7 @@
 
 			return function(langTag, fallbackLangTag, langTerm) {
 				/* eslint-disable no-constant-condition */
-				while(true) {
+				while (true) {
 					var languagePack = this['translations_' + langTag];
 					var translation = tryGetTerm(languagePack, langTerm);
 					if (translation) {
