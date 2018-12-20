@@ -113,36 +113,36 @@
 		<script>
 			'use strict';
 
-			var printEvent = function( loggingElement, event ) {
-				if( loggingElement.textContent ) {
+			var printEvent = function(loggingElement, event) {
+				if (loggingElement.textContent) {
 					loggingElement.textContent += '\n';
 				} else {
 					loggingElement.textContent = '';
 				}
 				loggingElement.textContent += event.type;
-				if( event.detail ) {
-					loggingElement.textContent += ': ' + JSON.stringify( event.detail, null, 2 );
+				if (event.detail) {
+					loggingElement.textContent += ': ' + JSON.stringify(event.detail, null, 2);
 				}
 			};
 
-			[ 'opt-in', 'opt-out', 'opt-out-2' ].forEach( function( demo ) {
-				var flyout = document.getElementById( demo );
-				var log = document.getElementById( demo + '-log' );
+			[ 'opt-in', 'opt-out', 'opt-out-2' ].forEach(function(demo) {
+				var flyout = document.getElementById(demo);
+				var log = document.getElementById(demo + '-log');
 
-				flyout.addEventListener( 'flyout-opened', printEvent.bind( null, log ) );
-				flyout.addEventListener( 'flyout-closed', printEvent.bind( null, log ) );
-				flyout.addEventListener( 'opt-in', printEvent.bind( null, log ) );
-				flyout.addEventListener( 'opt-out', printEvent.bind( null, log ) );
+				flyout.addEventListener('flyout-opened', printEvent.bind(null, log));
+				flyout.addEventListener('flyout-closed', printEvent.bind(null, log));
+				flyout.addEventListener('opt-in', printEvent.bind(null, log));
+				flyout.addEventListener('opt-out', printEvent.bind(null, log));
 			});
 
-			var changeLang = function( langTag, textDirection ) {
-				document.documentElement.setAttribute( 'lang', langTag );
-				document.body.setAttribute( 'dir', textDirection );
+			var changeLang = function(langTag, textDirection) {
+				document.documentElement.setAttribute('lang', langTag);
+				document.body.setAttribute('dir', textDirection);
 			};
 
-			document.getElementById( 'lang-en' ).onclick = changeLang.bind( null, 'en-CA', 'ltr' );
-			document.getElementById( 'lang-ja' ).onclick = changeLang.bind( null, 'ja-JP', 'ltr' );
-			document.getElementById( 'lang-ar' ).onclick = changeLang.bind( null, 'ar', 'rtl' );
+			document.getElementById('lang-en').onclick = changeLang.bind(null, 'en-CA', 'ltr');
+			document.getElementById('lang-ja').onclick = changeLang.bind(null, 'ja-JP', 'ltr');
+			document.getElementById('lang-ar').onclick = changeLang.bind(null, 'ar', 'rtl');
 		</script>
 	</body>
 </html>
