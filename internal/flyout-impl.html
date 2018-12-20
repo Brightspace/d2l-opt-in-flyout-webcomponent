@@ -155,16 +155,16 @@
 				<div class="flyout-text">
 					<h1 id="title">[[title]]</h1>
 					<p id="description">
-						<span>[[_getDescriptionPart(translate,0)]]</span>
-						<strong>[[_getDescriptionPart(translate,1)]]</strong>
-						<span>[[_getDescriptionPart(translate,2)]]</span>
+						<span>[[_getDescriptionPart(translate,0,optOut)]]</span>
+						<strong>[[_getDescriptionPart(translate,1,optOut)]]</strong>
+						<span>[[_getDescriptionPart(translate,2,optOut)]]</span>
 					</p>
 					<p class="flyout-details" hidden="[[!details]]">
 						[[details]]
 					</p>
 					<p class="flyout-tutorial">
 
-						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]">
+						<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,1)]]">
 							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
 							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
 								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
@@ -172,7 +172,12 @@
 							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
 						</template>
 
-						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]">
+						<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,2)]]">
+							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
+							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
+							</a>
+							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
 							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
 								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,3)]]
 							</a>
@@ -266,6 +271,18 @@
 
 			detached: function() {
 				this.$.flyout.removeEventListener( 'transitionend', this._onTransitionComplete );
+			},
+
+			_checkNumberOfLinks: function( tutorialLink, helpDocsLink, expectedNumber ) {
+				var result;
+				if( tutorialLink && helpDocsLink ) {
+					result = 2;
+				} else if( tutorialLink || helpDocsLink ) {
+					result = 1;
+				} else {
+					result = 0;
+				}
+				return result === expectedNumber;
 			},
 
 			_getPrimaryButtonText: function( translate, optOut ) {
@@ -374,8 +391,8 @@
 				}
 			},
 
-			_getDescriptionPart: function( translate, i ) {
-				return translate( this.optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
+			_getDescriptionPart: function( translate, i, optOut ) {
+				return translate( optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
 			},
 
 			_getTutorialTextPart: function( translate, tutorialLink, helpDocsLink, i ) {
@@ -394,7 +411,7 @@
 				if( tutorialLink && helpDocsLink ) {
 					var translation = translate( 'TutorialAndHelpMessage' );
 					var videoFirst = translation.indexOf( '*' ) < translation.indexOf( '~' );
-					
+
 					var links = videoFirst ? [ tutorialLink, helpDocsLink ] : [ helpDocsLink, tutorialLink ];
 					return links[i];
 				}
