@@ -372,7 +372,7 @@
 				} else if (position === 'center' || position === 'centre') {
 					position = '50%';
 				} else if (!/^\d+(?:\.\d+)?%$/.test(position)) {
-					console.warn('Invalid position supplied to opt-in flyout');
+					console.warn('Invalid position supplied to opt-in flyout'); // eslint-disable no-console
 					position = 'calc(2.5rem + 15px)';
 					rtl = !rtl;
 				}
@@ -387,7 +387,7 @@
 				if (visibleState === 'CLOSED' || visibleState === 'CLOSING') {
 					return 'd2l-tier1:chevron-down';
 				} else {
-					return 'd2l-tier1:chevron-up'
+					return 'd2l-tier1:chevron-up';
 				}
 			},
 
@@ -397,11 +397,11 @@
 
 			_getTutorialTextPart: function(translate, tutorialLink, helpDocsLink, i) {
 				if (tutorialLink && helpDocsLink) {
-					var translation = translate('TutorialAndHelpMessage');
-					return translation.split( /\*|~/)[i] || '';
+					var tutorialHelpMessage = translate('TutorialAndHelpMessage');
+					return tutorialHelpMessage.split(/\*|~/)[i] || '';
 				} else if (tutorialLink || helpDocsLink) {
-					var translation = translate(tutorialLink ? 'TutorialMessage' : 'HelpMessage');
-					return translation.split('*')[i] || '';
+					var individualMessage = translate(tutorialLink ? 'TutorialMessage' : 'HelpMessage');
+					return individualMessage.split('*')[i] || '';
 				} else {
 					return null;
 				}
