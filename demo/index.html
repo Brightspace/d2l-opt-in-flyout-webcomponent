@@ -6,14 +6,25 @@
 
 		<title>flyout demo</title>
 
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<link rel="import" href="../../d2l-typography/d2l-typography.html">
+		<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script type="module" src="../../d2l-typography/d2l-typography.js"></script>
 
-		<link rel="import" href="../d2l-opt-in-flyout.html">
-		<link rel="import" href="../d2l-opt-out-flyout.html">
-		<link rel="import" href="../d2l-opt-out-reason.html">
+		<script type="module" src="../d2l-opt-in-flyout.js"></script>
+		<script type="module" src="../d2l-opt-out-flyout.js"></script>
+		<script type="module" src="../d2l-opt-out-reason.js"></script>
 
-		<custom-style include="d2l-typography">
+		<!-- FIXME(polymer-modulizer):
+		These imperative modules that innerHTML your HTML are
+		a hacky way to be sure that any mixins in included style
+		modules are ready before any elements that reference them are
+		instantiated, otherwise the CSS @apply mixin polyfill won't be
+		able to expand the underlying CSS custom properties.
+		See: https://github.com/Polymer/polymer-modulizer/issues/154
+		-->
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style include="d2l-typography">
 			<style is="custom-style" include="d2l-typography">
 				html {
 					font-size: 20px;
@@ -54,95 +65,104 @@
 					box-sizing: border-box;
 				}
 			</style>
-		</custom-style>
+		</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 	</head>
 
 	<body class="d2l-typography">
-		<div dir="ltr">
+		<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div dir="ltr">
 			<a id="lang-en" href="#">English</a>
 			:
 			<a id="lang-ja" href="#">Japanese</a>
 			:
 			<a id="lang-ar" href="#">Arabic</a>
 			<br><br>
-		</div>
+		</div>`;
 
-		<div class="vertical-split">
+document.body.appendChild($_documentContainer.content);
+</script>
+
+		<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-split">
 			<div class="flyout-region">
-				<d2l-opt-in-flyout id="opt-in"
-					open
-					title="Flyout Demo"
-					details="This is a demo of the opt-in flyout."
-					tab-position="right"
-					tutorial-link="https://www.example.com#tutorial"
-					help-docs-link="https://www.example.com#documentation"
-				></d2l-opt-in-flyout>
+				<d2l-opt-in-flyout id="opt-in" open="" title="Flyout Demo" details="This is a demo of the opt-in flyout." tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation"></d2l-opt-in-flyout>
 			</div>
 			<pre id="opt-in-log" dir="ltr"></pre>
-		</div>
-		<div class="vertical-split">
+		</div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+		<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-split">
 			<div class="flyout-region">
-				<d2l-opt-out-flyout id="opt-out"
-					open
-					title="Flyout Demo"
-					details="This is a demo of the opt-out flyout with default opt-out reasons."
-					tab-position="right"
-					tutorial-link="https://www.example.com#tutorial"
-					help-docs-link="https://www.example.com#documentation"
-				></d2l-opt-out-flyout>
+				<d2l-opt-out-flyout id="opt-out" open="" title="Flyout Demo" details="This is a demo of the opt-out flyout with default opt-out reasons." tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation"></d2l-opt-out-flyout>
 			</div>
 			<pre id="opt-out-log" dir="ltr"></pre>
-		</div>
-		<div class="vertical-split">
+		</div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+		<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-split">
 			<div class="flyout-region">
-				<d2l-opt-out-flyout id="opt-out-2"
-					open
-					title="Flyout Demo"
-					details="This is a demo of the opt-out flyout with custom opt-out reasons."
-					tab-position="right"
-					tutorial-link="https://www.example.com#tutorial"
-					help-docs-link="https://www.example.com#documentation"
-				>
+				<d2l-opt-out-flyout id="opt-out-2" open="" title="Flyout Demo" details="This is a demo of the opt-out flyout with custom opt-out reasons." tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation">
 					<d2l-opt-out-reason key="test-1" text="Test Option 1"></d2l-opt-out-reason>
 					<d2l-opt-out-reason key="test-2" text="Test Option 2"></d2l-opt-out-reason>
 				</d2l-opt-out-flyout>
 			</div>
 			<pre id="opt-out-2-log" dir="ltr"></pre>
-		</div>
+		</div>`;
 
-		<script>
-			'use strict';
+document.body.appendChild($_documentContainer.content);
+</script>
 
-			var printEvent = function(loggingElement, event) {
-				if (loggingElement.textContent) {
-					loggingElement.textContent += '\n';
-				} else {
-					loggingElement.textContent = '';
-				}
-				loggingElement.textContent += event.type;
-				if (event.detail) {
-					loggingElement.textContent += ': ' + JSON.stringify(event.detail, null, 2);
-				}
-			};
+		<script type="module">
+import 'd2l-typography/d2l-typography.js';
+import '../d2l-opt-in-flyout.js';
+import '../d2l-opt-out-flyout.js';
+import '../d2l-opt-out-reason.js';
 
-			[ 'opt-in', 'opt-out', 'opt-out-2' ].forEach(function(demo) {
-				var flyout = document.getElementById(demo);
-				var log = document.getElementById(demo + '-log');
+var printEvent = function(loggingElement, event) {
+	if (loggingElement.textContent) {
+		loggingElement.textContent += '\n';
+	} else {
+		loggingElement.textContent = '';
+	}
+	loggingElement.textContent += event.type;
+	if (event.detail) {
+		loggingElement.textContent += ': ' + JSON.stringify(event.detail, null, 2);
+	}
+};
 
-				flyout.addEventListener('flyout-opened', printEvent.bind(null, log));
-				flyout.addEventListener('flyout-closed', printEvent.bind(null, log));
-				flyout.addEventListener('opt-in', printEvent.bind(null, log));
-				flyout.addEventListener('opt-out', printEvent.bind(null, log));
-			});
+[ 'opt-in', 'opt-out', 'opt-out-2' ].forEach(function(demo) {
+	var flyout = document.getElementById(demo);
+	var log = document.getElementById(demo + '-log');
 
-			var changeLang = function(langTag, textDirection) {
-				document.documentElement.setAttribute('lang', langTag);
-				document.body.setAttribute('dir', textDirection);
-			};
+	flyout.addEventListener('flyout-opened', printEvent.bind(null, log));
+	flyout.addEventListener('flyout-closed', printEvent.bind(null, log));
+	flyout.addEventListener('opt-in', printEvent.bind(null, log));
+	flyout.addEventListener('opt-out', printEvent.bind(null, log));
+});
 
-			document.getElementById('lang-en').onclick = changeLang.bind(null, 'en-CA', 'ltr');
-			document.getElementById('lang-ja').onclick = changeLang.bind(null, 'ja-JP', 'ltr');
-			document.getElementById('lang-ar').onclick = changeLang.bind(null, 'ar', 'rtl');
-		</script>
+var changeLang = function(langTag, textDirection) {
+	document.documentElement.setAttribute('lang', langTag);
+	document.body.setAttribute('dir', textDirection);
+};
+
+document.getElementById('lang-en').onclick = changeLang.bind(null, 'en-CA', 'ltr');
+document.getElementById('lang-ja').onclick = changeLang.bind(null, 'ja-JP', 'ltr');
+document.getElementById('lang-ar').onclick = changeLang.bind(null, 'ar', 'rtl');
+</script>
 	</body>
 </html>
