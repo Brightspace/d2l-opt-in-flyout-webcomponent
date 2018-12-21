@@ -5,8 +5,13 @@
 	"private": true,
 	"scripts": {
 		"postinstall": "polymer install --variants",
-		"lint": "polymer lint && eslint *.html",
-		"serve": "polymer serve"
+		"start": "polymer serve",
+		"test": "npm run test:lint && npm run test:polymer:local",
+		"test:lint": "npm run test:lint:js && npm run test:lint:wc",
+		"test:lint:js": "eslint *.html test/*.html demo/*.html",
+		"test:lint:wc": "polymer lint",
+		"test:polymer:local": "polymer test --skip-plugin sauce",
+		"test:polymer:sauce": "polymer test --skip-plugin local"
 	},
 	"repository": {
 		"type": "git",

@@ -19,58 +19,59 @@
 	window.D2L = window.D2L || {};
 	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 	window.D2L.PolymerBehaviors.OptInFlyout = window.D2L.PolymerBehaviors.OptInFlyout || {};
-	
+
 	/** @polymerBehavior D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior */
 	D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl = {
-		
+
 		properties: {
-			
+
 			translate: {
 				type: Function,
 				computed: '_getTranslateFunction(documentLanguage,documentFallbackLanguage)'
 			}
-			
+
 		},
-		
-		_getTranslateFunction: function( documentLanguage, documentFallbackLanguage ) {
-			var tryGetTerm = function( langPack, langTerm ) {
-				var langPath = langTerm.split( '.' );
-				langPath.forEach( function( langPart ) {
-					if( !langPack || typeof langPack !== 'object' ) {
+
+		_getTranslateFunction: function(documentLanguage, documentFallbackLanguage) {
+			var tryGetTerm = function(langPack, langTerm) {
+				var langPath = langTerm.split('.');
+				langPath.forEach(function(langPart) {
+					if (!langPack || typeof langPack !== 'object') {
 						return null;
 					}
 					langPack = langPack[langPart];
 				});
-				
-				if( typeof langPack !== 'string' ) {
+
+				if (typeof langPack !== 'string') {
 					return null;
 				}
-				
+
 				return langPack;
 			};
-			
-			return function( langTag, fallbackLangTag, langTerm ) {
-				while( true ) {
+
+			return function(langTag, fallbackLangTag, langTerm) {
+				/* eslint-disable no-constant-condition */
+				while (true) {
 					var languagePack = this['translations_' + langTag];
-					var translation = tryGetTerm( languagePack, langTerm ); 
-					if( translation ) {
+					var translation = tryGetTerm(languagePack, langTerm);
+					if (translation) {
 						return translation;
-					} else if( langTag.indexOf( '-' ) > -1 ) {
-						langTag = langTag.substring( 0, langTag.indexOf( '-' ) );
-					} else if( fallbackLangTag ) {
+					} else if (langTag.indexOf('-') > -1) {
+						langTag = langTag.substring(0, langTag.indexOf('-'));
+					} else if (fallbackLangTag) {
 						langTag = fallbackLangTag;
 						fallbackLangTag = null;
-					} else if( langTag !== 'en' ) {
+					} else if (langTag !== 'en') {
 						langTag = 'en';
 					} else {
 						return null;
 					}
 				}
-			}.bind( this, documentLanguage, documentFallbackLanguage );
+			}.bind(this, documentLanguage, documentFallbackLanguage);
 		}
-		
+
 	};
-	
+
 	/** @polymerBehavior */
 	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = [
 		D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl,

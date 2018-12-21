@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+		<title>d2l-opt-out-flyout test</title>
+
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		<script src="../../iron-test-helpers/mock-interactions.js"></script>
+
+		<link rel="import" href="../d2l-opt-out-flyout.html">
+	</head>
+	<body>
+		<test-fixture id="FlyoutEmptyFixture">
+			<template>
+				<d2l-opt-out-flyout
+					open
+				></d2l-opt-out-flyout>
+			</template>
+		</test-fixture>
+		<test-fixture id="FlyoutPropertiesFixture">
+			<template>
+				<d2l-opt-out-flyout
+					open
+					title="Flyout Demo"
+					details="This is a demo of the opt-out flyout."
+					tab-position="right"
+					tutorial-link="https://www.testlink1.com"
+					help-docs-link="https://www.testlink2.com"
+				></d2l-opt-out-flyout>
+			</template>
+		</test-fixture>
+		<test-fixture id="FlyoutEmptyClosedFixture">
+			<template>
+				<d2l-opt-out-flyout
+				></d2l-opt-out-flyout>
+			</template>
+		</test-fixture>
+		<script>
+			describe('<d2l-opt-out-flyout>', function() {
+				describe('when properties use default values', function() {
+
+					var flyout, innerFlyout;
+
+					beforeEach(function() {
+						flyout = fixture('FlyoutEmptyFixture');
+						innerFlyout = flyout.$$('flyout-impl');
+					});
+
+					it('should contain opt in message', function() {
+						var message = innerFlyout.$$('#description');
+						expect(message.textContent).to.contain('turned on');
+					});
+
+					it('should not contain title', function() {
+						var title = innerFlyout.$$('#title');
+						expect(title.textContent).to.equal(' ');
+					});
+
+					it('should not contain details', function() {
+						var details = innerFlyout.$$('.flyout-details');
+						expect(details.hidden).to.be.true;
+					});
+
+					it('should not contain tutorial link or help documentation if not set', function(done) {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
+							var tutorial = innerFlyout.$$('.flyout-tutorial');
+							var link = tutorial.querySelector('a');
+
+							expect(link).to.not.exist;
+
+							done();
+						});
+					});
+
+					it('should not display reason dialog', function() {
+						var dialog = innerFlyout.$$('opt-out-dialog');
+						expect(dialog).to.equal(null);
+					});
+				});
+
+				describe('when properties are specified', function() {
+					var flyout, innerFlyout;
+
+					beforeEach(function() {
+						flyout = fixture('FlyoutPropertiesFixture');
+						innerFlyout = flyout.$$('flyout-impl');
+					});
+
+					it('should contain opt in message', function() {
+						var message = innerFlyout.$$('#description');
+						expect(message.textContent).to.contain('turned on');
+					});
+
+					it('should contain title', function() {
+						var title = innerFlyout.$$('#title');
+						expect(title.textContent).to.equal('Flyout Demo');
+					});
+
+					it('should reflect title attribute to property', function() {
+						var newTitle = 'new title';
+
+						flyout.setAttribute('title', newTitle);
+						expect(flyout.title).to.equal(newTitle);
+						var title = flyout.$$('flyout-impl').$$('#title');
+						expect(title.textContent).to.equal(newTitle);
+					});
+
+					it('should contain details', function() {
+						var details = innerFlyout.$$('.flyout-details');
+						expect(details.hidden).to.be.false;
+						expect(details.textContent).to.contain('This is a demo of the opt-out flyout');
+					});
+
+					it('should contain tutorial link', function(done) {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
+							var tutorial = innerFlyout.$$('.flyout-tutorial');
+							var links = tutorial.querySelectorAll('a');
+
+							expect(links.length).to.equal(2);
+
+							expect(links[0].href).to.contain('https://www.testlink1.com');
+							expect(links[0].textContent).to.contain('tutorials');
+
+							done();
+						});
+					});
+
+					it('should contain help documentation link', function(done) {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
+							var tutorial = innerFlyout.$$('.flyout-tutorial');
+							var links = tutorial.querySelectorAll('a');
+
+							expect(links.length).to.equal(2);
+
+							expect(links[1].href).to.contain('https://www.testlink2.com');
+							expect(links[1].textContent).to.contain('help documentation');
+
+							done();
+						});
+					});
+
+					it('should contain only tutorial specific text when only tutorial link specified', function(done) {
+						innerFlyout.helpDocsLink = null;
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
+							var tutorial = innerFlyout.$$('.flyout-tutorial');
+							var links = tutorial.querySelectorAll('a');
+
+							expect(links.length).to.equal(1);
+
+							expect(links[0].href).to.contain('https://www.testlink1.com');
+							expect(links[0].textContent).to.contain('tutorials');
+
+							done();
+						});
+					});
+
+					it('should contain only help documentation specific text when only help link specified', function(done) {
+						innerFlyout.tutorialLink = null;
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
+							var tutorial = innerFlyout.$$('.flyout-tutorial');
+							var links = tutorial.querySelectorAll('a');
+
+							expect(links.length).to.equal(1);
+
+							expect(links[0].href).to.contain('https://www.testlink2.com');
+							expect(links[0].textContent).to.contain('help documentation');
+
+							done();
+						});
+					});
+
+					it('should contain enable button', function() {
+						var button = innerFlyout.$$('d2l-button[primary]');
+						expect(button.textContent).to.equal('Leave it on');
+						expect(button).to.exist;
+					});
+
+					it('should contain turn it off button', function() {
+						var button = innerFlyout.$$('d2l-button:not([primary])');
+						expect(button.textContent).to.equal('Turn it off');
+						expect(button).to.exist;
+					});
+
+					it('should fire opt-in event when "leave it on" button clicked', function(done) {
+						flyout.addEventListener('opt-in', function() {
+							done();
+						});
+
+						var button = innerFlyout.$$('d2l-button[primary]');
+						MockInteractions.tap(button);
+					});
+
+					it('should fire flyout-closed event when "leave it on" button clicked and not display dialog', function(done) {
+						flyout.addEventListener('flyout-closed', function() {
+							var dialog = innerFlyout.$$('opt-out-dialog');
+							expect(dialog).to.not.exist;
+							done();
+						});
+
+						var button = innerFlyout.$$('d2l-button[primary]');
+						MockInteractions.tap(button);
+					});
+
+					it('should open reason dialog when "turn it off" button clicked', function(done) {
+						var button = innerFlyout.$$('d2l-button:not([primary])');
+						MockInteractions.tap(button);
+
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
+							var dialog = innerFlyout.$$('opt-out-dialog');
+							expect(dialog).to.exist;
+							done();
+						});
+					});
+
+					it('should fire flyout-closed event when tab clicked', function(done) {
+						flyout.addEventListener('flyout-closed', function() {
+							done();
+						});
+
+						var tab = innerFlyout.$$('.flyout-tab');
+						MockInteractions.tap(tab);
+					});
+				});
+
+				describe('when flyout is closed', function() {
+					it('should fire flyout-opened event when tab clicked', function(done) {
+						var flyout = fixture('FlyoutEmptyClosedFixture');
+						flyout.addEventListener('flyout-opened', function() {
+							done();
+						});
+
+						var tab = flyout.$$('flyout-impl').$$('.flyout-tab');
+						MockInteractions.tap(tab);
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

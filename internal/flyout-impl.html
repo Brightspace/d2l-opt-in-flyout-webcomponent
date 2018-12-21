@@ -41,10 +41,10 @@
 			}
 
 			.flyout-opened {
-				transform: translateY( 0 );
+				transform: translateY(0);
 			}
 			.flyout-closed {
-				transform: translateY( -100% );
+				transform: translateY(-100%);
 			}
 
 			.flyout-content {
@@ -104,7 +104,7 @@
 				pointer-events: none;
 				position: absolute;
 				top: 100%;
-				transform: translateX( -50% );
+				transform: translateX(-50%);
 				width: 100%;
 			}
 
@@ -155,16 +155,16 @@
 				<div class="flyout-text">
 					<h1 id="title">[[title]]</h1>
 					<p id="description">
-						<span>[[_getDescriptionPart(translate,0)]]</span>
-						<strong>[[_getDescriptionPart(translate,1)]]</strong>
-						<span>[[_getDescriptionPart(translate,2)]]</span>
+						<span>[[_getDescriptionPart(translate,0,optOut)]]</span>
+						<strong>[[_getDescriptionPart(translate,1,optOut)]]</strong>
+						<span>[[_getDescriptionPart(translate,2,optOut)]]</span>
 					</p>
 					<p class="flyout-details" hidden="[[!details]]">
 						[[details]]
 					</p>
 					<p class="flyout-tutorial">
 
-						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]">
+						<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,1)]]">
 							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
 							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
 								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
@@ -172,7 +172,12 @@
 							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
 						</template>
 
-						<template is="dom-if" if="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]">
+						<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,2)]]">
+							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
+							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
+							</a>
+							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
 							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
 								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,3)]]
 							</a>
@@ -260,141 +265,154 @@
 				this._visibleState = this.open ? 'OPENED' : 'CLOSED';
 
 				// Polymer doesn't correctly support this event, so we have to add it manually
-				this._onTransitionComplete = this._onTransitionComplete.bind( this );
-				this.$.flyout.addEventListener( 'transitionend', this._onTransitionComplete );
+				this._onTransitionComplete = this._onTransitionComplete.bind(this);
+				this.$.flyout.addEventListener('transitionend', this._onTransitionComplete);
 			},
 
 			detached: function() {
-				this.$.flyout.removeEventListener( 'transitionend', this._onTransitionComplete );
+				this.$.flyout.removeEventListener('transitionend', this._onTransitionComplete);
 			},
 
-			_getPrimaryButtonText: function( translate, optOut ) {
-				return translate( optOut ? 'LeaveOn' : 'TurnOn' );
+			_checkNumberOfLinks: function(tutorialLink, helpDocsLink, expectedNumber) {
+				var result;
+				if (tutorialLink && helpDocsLink) {
+					result = 2;
+				} else if (tutorialLink || helpDocsLink) {
+					result = 1;
+				} else {
+					result = 0;
+				}
+				return result === expectedNumber;
 			},
 
-			_getSecondaryButtonText: function( translate, optOut ) {
-				return translate( optOut ? 'TurnOff' : 'LeaveOff' );
+			_getPrimaryButtonText: function(translate, optOut) {
+				return translate(optOut ? 'LeaveOn' : 'TurnOn');
 			},
 
-			_openChanged: function( open, previousValue ) {
-				if( open && this._visibleState === 'CLOSED' || this._visibleState === 'CLOSING' ) {
+			_getSecondaryButtonText: function(translate, optOut) {
+				return translate(optOut ? 'TurnOff' : 'LeaveOff');
+			},
+
+			_openChanged: function(open, previousValue) {
+				if (open && this._visibleState === 'CLOSED' || this._visibleState === 'CLOSING') {
 					this._visibleState = 'OPENING';
-				} else if( !open && this._visibleState === 'OPENED' || this._visibleState === 'OPENING' ) {
+				} else if (!open && this._visibleState === 'OPENED' || this._visibleState === 'OPENING') {
 					this._visibleState = 'CLOSING';
 				}
 
-				if( previousValue !== undefined ) {
-					this.fire( open ? 'flyout-opened' : 'flyout-closed' );
+				if (previousValue !== undefined) {
+					this.fire(open ? 'flyout-opened' : 'flyout-closed');
 				}
 			},
 
-			_onTransitionComplete: function( event ) {
-				if( event.target.id !== 'flyout' || event.propertyName !== 'transform' ) {
+			_onTransitionComplete: function(event) {
+				if (event.target.id !== 'flyout' || event.propertyName !== 'transform') {
 					return null;
 				}
 
-				if( this._visibleState === 'OPENING' ) {
+				if (this._visibleState === 'OPENING') {
 					this._visibleState = 'OPENED';
-				} else if( this._visibleState === 'CLOSING' ) {
+				} else if (this._visibleState === 'CLOSING') {
 					this._visibleState = 'CLOSED';
 				}
 			},
 
 			_clickTab: function() {
-				if( this._visibleState === 'OPENED' || this._visibleState === 'CLOSED' ) {
+				if (this._visibleState === 'OPENED' || this._visibleState === 'CLOSED') {
 					this.open = !this.open;
 				}
 			},
 
 			_clickOptIn: function() {
-				this.fire( 'opt-in' );
+				this.fire('opt-in');
 				this.open = false;
 			},
 
 			_clickOptOut: function() {
-				if( this.optOut ) {
+				if (this.optOut) {
 					this._optOutDialogOpen = true;
 				} else {
-					this.fire( 'opt-out' );
+					this.fire('opt-out');
 					this.open = false;
 				}
 			},
 
-			_cancelOptOut: function( event ) {
+			_cancelOptOut: function(event) {
 				this._optOutDialogOpen = false;
 				event.stopPropagation();
 			},
 
-			_confirmOptOut: function( event ) {
+			_confirmOptOut: function(event) {
 				this._optOutDialogOpen = false;
-				this.fire( 'opt-out', event.detail );
+				this.fire('opt-out', event.detail);
 				this.open = false;
 				event.stopPropagation();
 			},
 
-			_getContentStyle: function( visibleState ) {
+			_getContentStyle: function(visibleState) {
 				return visibleState === 'CLOSED' ? 'visibility: hidden;' : 'visibility: visible;';
 			},
 
-			_getFlyoutClass: function( visibleState ) {
-				if( visibleState === 'OPENING' || visibleState === 'OPENED' ) {
+			_getFlyoutClass: function(visibleState) {
+				if (visibleState === 'OPENING' || visibleState === 'OPENED') {
 					return 'flyout-opened';
 				} else {
 					return 'flyout-closed';
 				}
 			},
 
-			_getTabStyle: function( position, documentTextDirection ) {
+			_getTabStyle: function(position, documentTextDirection) {
 				var rtl = documentTextDirection === 'rtl';
 
-				if( position === 'left' ) {
-					position = 'calc( 2.5rem + 15px )';
-				} else if( position === 'right' || position === 'default' || !position ) {
-					position = 'calc( 2.5rem + 15px )';
+				if (position === 'left') {
+					position = 'calc(2.5rem + 15px)';
+				} else if (position === 'right' || position === 'default' || !position) {
+					position = 'calc(2.5rem + 15px)';
 					rtl = !rtl;
-				} else if( position === 'center' || position === 'centre' ) {
+				} else if (position === 'center' || position === 'centre') {
 					position = '50%';
-				} else if( !/^\d+(?:\.\d+)?%$/.test( position ) ) {
-					console.warn( 'Invalid position supplied to opt-in flyout' );
-					position = 'calc( 2.5rem + 15px )';
+				} else if (!/^\d+(?:\.\d+)?%$/.test(position)) {
+					/* eslint-disable no-console */
+					console.warn('Invalid position supplied to opt-in flyout');
+					position = 'calc(2.5rem + 15px)';
 					rtl = !rtl;
 				}
 
 				var side = rtl ? 'right' : 'left';
 				var shift = rtl ? '50%' : '-50%';
 
-				return side + ': ' + position + '; transform: translateX( ' + shift + ' );';
+				return side + ': ' + position + '; transform: translateX(' + shift + ');';
 			},
 
-			_getTabIcon: function( visibleState ) {
-				if( visibleState === 'CLOSED' || visibleState === 'CLOSING') {
+			_getTabIcon: function(visibleState) {
+				if (visibleState === 'CLOSED' || visibleState === 'CLOSING') {
 					return 'd2l-tier1:chevron-down';
 				} else {
-					return 'd2l-tier1:chevron-up'
+					return 'd2l-tier1:chevron-up';
 				}
 			},
 
-			_getDescriptionPart: function( translate, i ) {
-				return translate( this.optOut ? 'TurnOffMessage' : 'TurnOnMessage' ).split('*')[i];
+			_getDescriptionPart: function(translate, i, optOut) {
+				return translate(optOut ? 'TurnOffMessage' : 'TurnOnMessage').split('*')[i];
 			},
 
-			_getTutorialTextPart: function( translate, tutorialLink, helpDocsLink, i ) {
-				if( tutorialLink && helpDocsLink ) {
-					var translation = translate( 'TutorialAndHelpMessage' );
-					return translation.split(  /\*|~/ )[i] || '';
-				} else if( tutorialLink || helpDocsLink ) {
-					var translation = translate( tutorialLink ? 'TutorialMessage' : 'HelpMessage' );
-					return translation.split( '*' )[i] || '';
+			_getTutorialTextPart: function(translate, tutorialLink, helpDocsLink, i) {
+				if (tutorialLink && helpDocsLink) {
+					var tutorialHelpMessage = translate('TutorialAndHelpMessage');
+					return tutorialHelpMessage.split(/\*|~/)[i] || '';
+				} else if (tutorialLink || helpDocsLink) {
+					var individualMessage = translate(tutorialLink ? 'TutorialMessage' : 'HelpMessage');
+					return individualMessage.split('*')[i] || '';
 				} else {
 					return null;
 				}
 			},
 
-			_getTutorialLink: function( translate, tutorialLink, helpDocsLink, i ) {
-				if( tutorialLink && helpDocsLink ) {
-					var translation = translate( 'TutorialAndHelpMessage' );
-					var videoFirst = translation.indexOf( '*' ) < translation.indexOf( '~' );
-					
+			_getTutorialLink: function(translate, tutorialLink, helpDocsLink, i) {
+				if (tutorialLink && helpDocsLink) {
+					var translation = translate('TutorialAndHelpMessage');
+					var videoFirst = translation.indexOf('*') < translation.indexOf('~');
+
 					var links = videoFirst ? [ tutorialLink, helpDocsLink ] : [ helpDocsLink, tutorialLink ];
 					return links[i];
 				}

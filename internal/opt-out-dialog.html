@@ -33,14 +33,14 @@
 				background-color: var(--d2l-color-white);
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 0.3rem;
-				box-shadow: 0 2px 12px rgba( 86, 90, 92, 0.25);
+				box-shadow: 0 2px 12px rgba(86, 90, 92, 0.25);
 				box-sizing: border-box;
 				left: 50%;
 				max-width: 680px;
 				padding: 1rem;
 				position: absolute;
 				top: 7.5%;
-				transform: translateX( -50% );
+				transform: translateX(-50%);
 				width: 90%;
 				z-index: 2;
 			}
@@ -126,15 +126,15 @@
 			],
 
 			_cancel: function() {
-				this.fire( 'cancel' );
+				this.fire('cancel');
 			},
 
 			_confirm: function() {
-				if( !this._reason ) {
+				if (!this._reason) {
 					return;
 				}
 
-				this.fire( 'confirm', {
+				this.fire('confirm', {
 					reason: this._reason,
 					feedback: (this.$.feedback.value || '').trim()
 				});

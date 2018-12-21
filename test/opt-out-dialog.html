@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+		<title>d2l-opt-in-flyout test</title>
+
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		<script src="../../iron-test-helpers/mock-interactions.js"></script>
+
+		<link rel="import" href="../internal/opt-out-dialog.html">
+		<link rel="import" href="../d2l-opt-out-reason.html">
+	</head>
+	<body>
+		<test-fixture id="DialogDefaultOptions">
+			<template>
+				<opt-out-dialog></opt-out-dialog>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="DialogCustomOptions">
+			<template>
+				<opt-out-dialog>
+					<d2l-opt-out-reason key="test-1" text="Test Option 1"></d2l-opt-out-reason>
+					<d2l-opt-out-reason key="test-2" text="Test Option 2"></d2l-opt-out-reason>
+				</opt-out-dialog>
+			</template>
+		</test-fixture>
+		<script>
+			describe('<opt-out-dialog>', function() {
+
+				describe('with no options specified', function() {
+					var flyout;
+
+					beforeEach(function() {
+						flyout = fixture('DialogDefaultOptions');
+					});
+
+					it('should contain a title', function() {
+						var message = flyout.$$('#title-label');
+						expect(message.textContent).to.contain('Let us know how to improve!');
+					});
+
+					it('should contain opt-out-reason-selector', function() {
+						var selector = flyout.$$('opt-out-reason-selector');
+						expect(selector).to.exist;
+					});
+
+					it('should contain feedback text input box', function() {
+						var feedback = flyout.$$('#feedback');
+						expect(feedback).to.exist;
+					});
+
+					it('should have the done button disabled until a reason is selected', function() {
+						var button = flyout.$$('d2l-button[primary]');
+						expect(button.disabled).to.be.true;
+					});
+
+					it('should contain cancel button', function() {
+						var cancelButton = flyout.$$('d2l-button:not([primary])');
+						expect(cancelButton).to.exist;
+					});
+
+					it('should fire confirm event when reason selected and done clicked (no feedback)', function(done) {
+						flyout.addEventListener('confirm', function(e) {
+							expect(e.detail.reason).to.equal('PreferOldExperience');
+							expect(e.detail.feedback).to.equal('');
+							done();
+						});
+
+						var select = flyout.$$('opt-out-reason-selector').$$('select');
+						MockInteractions.tap(select);
+						flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
+
+						var evt = document.createEvent('HTMLEvents');
+						evt.initEvent('change', false, true);
+						select.dispatchEvent(evt);
+
+						var doneButton = flyout.$$('d2l-button[primary]');
+						MockInteractions.tap(doneButton);
+					});
+
+					it('should fire confirm event when reason selected and done clicked with feedback', function(done) {
+						var textFeedback = 'not a fan';
+
+						flyout.addEventListener('confirm', function(e) {
+							expect(e.detail.reason).to.equal('PreferOldExperience');
+							expect(e.detail.feedback).to.equal(textFeedback);
+							done();
+						});
+
+						var select = flyout.$$('opt-out-reason-selector').$$('select');
+						MockInteractions.tap(select);
+						flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
+
+						var feedback = flyout.$$('d2l-input-textarea');
+						feedback.value = textFeedback;
+
+						var evt = document.createEvent('HTMLEvents');
+						evt.initEvent('change', false, true);
+						select.dispatchEvent(evt);
+
+						var doneButton = flyout.$$('d2l-button[primary]');
+						MockInteractions.tap(doneButton);
+					});
+				});
+
+				describe('with options specified', function() {
+					var flyout;
+
+					beforeEach(function() {
+						flyout = fixture('DialogCustomOptions');
+					});
+
+					it('should contain the first option', function(done) {
+						flyout.addEventListener('confirm', function(e) {
+							expect(e.detail.reason).to.equal('test-1');
+							done();
+						});
+
+						var select = flyout.$$('opt-out-reason-selector').$$('select');
+						MockInteractions.tap(select);
+						flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
+
+						var evt = document.createEvent('HTMLEvents');
+						evt.initEvent('change', false, true);
+						select.dispatchEvent(evt);
+
+						var doneButton = flyout.$$('d2l-button[primary]');
+						MockInteractions.tap(doneButton);
+					});
+
+					it('should contain the second option', function(done) {
+						flyout.addEventListener('confirm', function(e) {
+							expect(e.detail.reason).to.equal('test-2');
+							done();
+						});
+
+						var select = flyout.$$('opt-out-reason-selector').$$('select');
+						MockInteractions.tap(select);
+						flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 2;
+
+						var evt = document.createEvent('HTMLEvents');
+						evt.initEvent('change', false, true);
+						select.dispatchEvent(evt);
+
+						var doneButton = flyout.$$('d2l-button[primary]');
+						MockInteractions.tap(doneButton);
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

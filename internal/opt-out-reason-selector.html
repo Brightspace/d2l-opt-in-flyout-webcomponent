@@ -85,8 +85,8 @@
 
 			attached: function() {
 				// Polymer 1 compatability
-				if( this.$['options-slot'].tagName !== 'SLOT' ) {
-					this._observer = Polymer.dom( this.$.options ).observeNodes( this._onSlotChanged.bind( this ) );
+				if (this.$['options-slot'].tagName !== 'SLOT') {
+					this._observer = Polymer.dom(this.$.options).observeNodes(this._onSlotChanged.bind(this));
 					this._onSlotChanged();
 				} else {
 					// This is required for Safari to work correctly.
@@ -96,8 +96,8 @@
 
 			detached: function() {
 				// Polymer 1 compatability
-				if( this._observer && this.$['options-slot'].tagName !== 'SLOT' ) {
-					Polymer.dom( this.$.options ).unobserveNodes( this._observer );
+				if (this._observer && this.$['options-slot'].tagName !== 'SLOT') {
+					Polymer.dom(this.$.options).unobserveNodes(this._observer);
 				}
 			},
 
@@ -110,30 +110,30 @@
 				this.$.selector.selectedIndex = 0;
 				var children = [];
 
-				if( this.$['options-slot'].tagName === 'SLOT' ) {
+				if (this.$['options-slot'].tagName === 'SLOT') {
 					// Polymer 2
 					children = this.$['options-slot'].assignedNodes({ flatten: true });
 				} else {
 					// Polymer 1
-					children = Polymer.dom( this.$.options ).getEffectiveChildNodes();
+					children = Polymer.dom(this.$.options).getEffectiveChildNodes();
 				}
 
-				children = children.filter( function( child ) {
+				children = children.filter(function(child) {
 					return child && child.tagName === 'D2L-OPT-OUT-REASON' && child.key && child.text;
-				}).map( function( child ) {
+				}).map(function(child) {
 					return {
 						key: child.key,
 						text: child.text
 					};
 				});
 
-				if( children.length <= 0 ) {
+				if (children.length <= 0) {
 					// Use default options if no valid options were provided
 					children = [
-						{ key: 'PreferOldExperience', text: this.translate( 'Feedback.Reason.PreferOldExperience' ) },
-						{ key: 'MissingFeature', text: this.translate( 'Feedback.Reason.MissingFeature' ) },
-						{ key: 'NotReadyForSomethingNew', text: this.translate( 'Feedback.Reason.NotReadyForSomethingNew' ) },
-						{ key: 'JustCheckingSomething', text: this.translate( 'Feedback.Reason.JustCheckingSomething' ) }
+						{ key: 'PreferOldExperience', text: this.translate('Feedback.Reason.PreferOldExperience') },
+						{ key: 'MissingFeature', text: this.translate('Feedback.Reason.MissingFeature') },
+						{ key: 'NotReadyForSomethingNew', text: this.translate('Feedback.Reason.NotReadyForSomethingNew') },
+						{ key: 'JustCheckingSomething', text: this.translate('Feedback.Reason.JustCheckingSomething') }
 					];
 				}
 
@@ -141,34 +141,34 @@
 				this._reasons = children;
 			},
 
-			_reasonSelected: function( event ) {
+			_reasonSelected: function() {
 				var selectionIndex = this.$.selector.selectedIndex;
-				if( selectionIndex < 1 ) {
-					this._setSelected( null );
+				if (selectionIndex < 1) {
+					this._setSelected(null);
 					return;
 				}
 
 				var selection = this.$.selector.options[selectionIndex];
-				if( !selection || !selection.value ) {
-					this._setSelected( null );
+				if (!selection || !selection.value) {
+					this._setSelected(null);
 					return;
 				}
 
-				this._setSelected( selection.value );
+				this._setSelected(selection.value);
 			},
 
-			_reasonsChanged: function( reasons ) {
+			_reasonsChanged: function(reasons) {
 				// [Workaround] dom-repeat inside a <select> element doesn't work in IE11
 				var selectElement = this.$.selector;
-				while( selectElement.childNodes.length > 2 ) {
-					selectElement.removeChild( selectElement.childNodes[1] );
+				while (selectElement.childNodes.length > 2) {
+					selectElement.removeChild(selectElement.childNodes[1]);
 				}
 
-				reasons.forEach( function( reason ) {
-					var option = document.createElement( 'option' );
+				reasons.forEach(function(reason) {
+					var option = document.createElement('option');
 					option.value = reason.key;
 					option.textContent = reason.text;
-					selectElement.insertBefore( option, selectElement.lastChild );
+					selectElement.insertBefore(option, selectElement.lastChild);
 				});
 			}
 
