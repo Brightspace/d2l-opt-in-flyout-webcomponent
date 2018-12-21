@@ -2,6 +2,7 @@
 
 This is the webcomponent version of the opt-in/opt-out flyout. For the substantially more performant plain javascript version, see [this repository](https://github.com/Brightspace/d2l-opt-in-flyout-fra).
 
+**NOTE:** When testing on the demo page, you will need to manually append `/demo` to the URL after clicking on the version to view.
 
 This repo provides 3 webcomponents: `<d2l-opt-in-flyout>`, `<d2l-opt-out-flyout>`, and `<d2l-opt-out-reason>`.
 
