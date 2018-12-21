@@ -98,8 +98,7 @@ Polymer({
 		 */
 
 		this.$.selector.selectedIndex = 0;
-		var children = [];
-		children = this.$['options-slot'].assignedNodes({ flatten: true });
+		var children = this.$['options-slot'].assignedNodes({ flatten: true });
 
 		children = children.filter(function(child) {
 			return child && child.tagName === 'D2L-OPT-OUT-REASON' && child.key && child.text;
