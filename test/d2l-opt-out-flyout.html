@@ -65,14 +65,14 @@
 					});
 
 					it('should not contain tutorial link or help documentation if not set', function(done) {
-						setTimeout(function() {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
 							var tutorial = innerFlyout.$$('.flyout-tutorial');
 							var link = tutorial.querySelector('a');
 
 							expect(link).to.not.exist;
 
 							done();
-						}, 0);
+						});
 					});
 
 					it('should not display reason dialog', function() {
@@ -115,7 +115,7 @@
 					});
 
 					it('should contain tutorial link', function(done) {
-						setTimeout(function() {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
 							var tutorial = innerFlyout.$$('.flyout-tutorial');
 							var links = tutorial.querySelectorAll('a');
 
@@ -125,11 +125,11 @@
 							expect(links[0].textContent).to.contain('tutorials');
 
 							done();
-						}, 0);
+						});
 					});
 
 					it('should contain help documentation link', function(done) {
-						setTimeout(function() {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
 							var tutorial = innerFlyout.$$('.flyout-tutorial');
 							var links = tutorial.querySelectorAll('a');
 
@@ -139,12 +139,12 @@
 							expect(links[1].textContent).to.contain('help documentation');
 
 							done();
-						}, 0);
+						});
 					});
 
 					it('should contain only tutorial specific text when only tutorial link specified', function(done) {
 						innerFlyout.helpDocsLink = null;
-						setTimeout(function() {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
 							var tutorial = innerFlyout.$$('.flyout-tutorial');
 							var links = tutorial.querySelectorAll('a');
 
@@ -154,12 +154,12 @@
 							expect(links[0].textContent).to.contain('tutorials');
 
 							done();
-						}, 0);
+						});
 					});
 
 					it('should contain only help documentation specific text when only help link specified', function(done) {
 						innerFlyout.tutorialLink = null;
-						setTimeout(function() {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
 							var tutorial = innerFlyout.$$('.flyout-tutorial');
 							var links = tutorial.querySelectorAll('a');
 
@@ -169,7 +169,7 @@
 							expect(links[0].textContent).to.contain('help documentation');
 
 							done();
-						}, 0);
+						});
 					});
 
 					it('should contain enable button', function() {
@@ -208,11 +208,11 @@
 						var button = innerFlyout.$$('d2l-button:not([primary])');
 						MockInteractions.tap(button);
 
-						setTimeout(function() {
+						Polymer.RenderStatus.afterNextRender(flyout, function() {
 							var dialog = innerFlyout.$$('opt-out-dialog');
 							expect(dialog).to.exist;
 							done();
-						}, 0);
+						});
 					});
 
 					it('should fire flyout-closed event when tab clicked', function(done) {
