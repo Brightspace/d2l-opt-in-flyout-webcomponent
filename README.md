@@ -2,7 +2,7 @@
 
 This is the webcomponent version of the opt-in/opt-out flyout. For the substantially more performant plain javascript version, see [this repository](https://github.com/Brightspace/d2l-opt-in-flyout-fra).
 
-**NOTE:** When testing on the demo page, you will need to manually append `/demo` to the URL after clicking on the version to view.
+**NOTE:** The code in master was automatically generated from the Polymer 1/2 Hybrid version using the [Polymer 3 Converter](https://github.com/Brightspace/polymer-3-converter). Go to [this branch](https://github.com/Brightspace/d2l-opt-in-flyout-webcomponent/tree/hybrid) for the original source code.
 
 This repo provides 3 webcomponents: `<d2l-opt-in-flyout>`, `<d2l-opt-out-flyout>`, and `<d2l-opt-out-reason>`.
 
