@@ -54,7 +54,7 @@
 						expect(message.textContent).to.contain('turned off');
 					});
 
-					it('should not contain', function() {
+					it('should not contain title', function() {
 						var title = innerFlyout.$$('#title');
 						expect(title.textContent).to.equal(' ');
 					});
@@ -112,10 +112,12 @@
 					it('should contain tutorial link', function(done) {
 						setTimeout(function() {
 							var tutorial = innerFlyout.$$('.flyout-tutorial');
-							var link = tutorial.querySelector('a');
+							var links = tutorial.querySelectorAll('a');
 
-							expect(link.href).to.contain('https://www.testlink1.com');
-							expect(link.textContent).to.contain('tutorials');
+							expect(links.length).to.equal(2);
+
+							expect(links[0].href).to.contain('https://www.testlink1.com');
+							expect(links[0].textContent).to.contain('tutorials');
 
 							done();
 						}, 0);
