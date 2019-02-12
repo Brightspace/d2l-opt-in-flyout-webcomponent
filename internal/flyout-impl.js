@@ -108,6 +108,8 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 				top: 100%;
 				transform: translateX(-50%);
 				width: 100%;
+				overflow: hidden;
+				padding-bottom: 4px;
 			}
 
 			.flyout-tab {
@@ -127,7 +129,14 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 			}
 
 			.flyout-tab:hover, .flyout-tab:focus {
-				background-color: var(--d2l-color-regolith);
+				background-color: var(--d2l-color-gypsum);
+			}
+
+			.flyout-tab:focus {
+				border-color: rgba(0, 111, 191, 0.4);
+  				border-style: solid;
+  				border-width: 0 1px 1px 1px;
+  				box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
 			}
 
 			.flyout-tab:active, .flyout-tab:focus {
