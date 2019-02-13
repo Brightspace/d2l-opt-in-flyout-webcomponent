@@ -188,17 +188,17 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 					</p>
 				</div>
 				<div class="flyout-buttons">
-					<d2l-button primary="" on-tap="_clickOptIn">[[_primaryButtonText]]</d2l-button>
-					<d2l-button on-tap="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
+					<d2l-button primary="" on-click="_clickOptIn">[[_primaryButtonText]]</d2l-button>
+					<d2l-button on-click="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
 				</div>
 			</div>
 			<d2l-offscreen>
 				<label id="tab-label">[[translate('Close')]]</label>
 			</d2l-offscreen>
 			<div class="flyout-tab-container">
-				<div class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection)]]" tabindex="0" aria-labelledby="tab-label" on-tap="_clickTab">
+				<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection)]]" tabindex="0" aria-labelledby="tab-label" on-click="_clickTab">
 					<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></d2l-icon>
-				</div>
+				</button>
 			</div>
 		</div>
 	</template>

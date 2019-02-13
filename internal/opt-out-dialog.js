@@ -94,10 +94,10 @@ $_documentContainer.innerHTML = `<dom-module id="opt-out-dialog">
 				<d2l-input-textarea id="feedback" aria-labelledby="feedback-label"></d2l-input-textarea>
 			</div>
 			<div>
-				<d2l-button disabled="[[!_reason]]" primary="" on-tap="_confirm">[[translate('Done')]]</d2l-button>
-				<d2l-button on-tap="_cancel">[[translate('Cancel')]]</d2l-button>
+				<d2l-button primary="" on-click="_confirm">[[translate('Done')]]</d2l-button>
+				<d2l-button on-click="_cancel">[[translate('Cancel')]]</d2l-button>
 			</div>
-			<d2l-button-icon icon="d2l-tier1:close-small" class="close-button" on-tap="_cancel" text="[[translate('Close')]]" dir$="[[documentTextDirection]]"></d2l-button-icon>
+			<d2l-button-icon icon="d2l-tier1:close-small" class="close-button" on-click="_cancel" text="[[translate('Close')]]" dir$="[[documentTextDirection]]"></d2l-button-icon>
 		</div>
 	</template>
 
@@ -124,12 +124,8 @@ Polymer({
 	},
 
 	_confirm: function() {
-		if (!this._reason) {
-			return;
-		}
-
 		this.fire('confirm', {
-			reason: this._reason,
+			reason: this._reason || '',
 			feedback: (this.$.feedback.value || '').trim()
 		});
 	},
