@@ -49,11 +49,6 @@
 						innerFlyout = flyout.$$('flyout-impl');
 					});
 
-					it('should contain opt in message', function() {
-						var message = innerFlyout.$$('#description');
-						expect(message.textContent).to.contain('turned on');
-					});
-
 					it('should not contain title', function() {
 						var title = innerFlyout.$$('#title');
 						expect(title.textContent).to.equal(' ');
@@ -87,11 +82,6 @@
 					beforeEach(function() {
 						flyout = fixture('FlyoutPropertiesFixture');
 						innerFlyout = flyout.$$('flyout-impl');
-					});
-
-					it('should contain opt in message', function() {
-						var message = innerFlyout.$$('#description');
-						expect(message.textContent).to.contain('turned on');
 					});
 
 					it('should contain title', function() {

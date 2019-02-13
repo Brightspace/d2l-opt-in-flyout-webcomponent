@@ -62,11 +62,6 @@
 				margin-right: auto;
 			}
 
-			#description {
-				margin-bottom: 0.5rem;
-				margin-top: 0;
-			}
-
 			.flyout-details {
 				margin: auto;
 				margin-bottom: 0;
@@ -148,17 +143,12 @@
 			id="flyout"
 			role="dialog"
 			aria-labelledby="title"
-			aria-describedby="description"
+			aria-describedby="flyout-details"
 			class$="[[_getFlyoutClass(_visibleState)]]"
 		>
 			<div class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
 				<div class="flyout-text">
 					<h1 id="title">[[title]]</h1>
-					<p id="description">
-						<span>[[_getDescriptionPart(translate,0,optOut)]]</span>
-						<strong>[[_getDescriptionPart(translate,1,optOut)]]</strong>
-						<span>[[_getDescriptionPart(translate,2,optOut)]]</span>
-					</p>
 					<p class="flyout-details" hidden="[[!details]]">
 						[[details]]
 					</p>
@@ -390,10 +380,6 @@
 				} else {
 					return 'd2l-tier1:chevron-up';
 				}
-			},
-
-			_getDescriptionPart: function(translate, i, optOut) {
-				return translate(optOut ? 'TurnOffMessage' : 'TurnOnMessage').split('*')[i];
 			},
 
 			_getTutorialTextPart: function(translate, tutorialLink, helpDocsLink, i) {
