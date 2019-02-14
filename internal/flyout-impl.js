@@ -141,7 +141,7 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 		</style>
 
 		<template is="dom-if" if="[[_optOutDialogOpen]]" restamp="true">
-			<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="_confirmOptOut"><slot></slot></opt-out-dialog>
+			<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="_confirmOptOut" hide-reason="[[hideReason]]" hide-feedback="[[hideFeedback]]"><slot></slot></opt-out-dialog>
 		</template>
 		<div id="flyout" role="dialog" aria-labelledby="title" aria-describedby="description" class$="[[_getFlyoutClass(_visibleState)]]">
 			<div class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
@@ -244,7 +244,9 @@ Polymer({
 		_visibleState: {
 			type: String,
 			value: 'CLOSED'
-		}
+		},
+		hideReason: Boolean,
+		hideFeedback: Boolean
 	},
 
 	behaviors: [

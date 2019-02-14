@@ -28,6 +28,20 @@
 				</opt-out-dialog>
 			</template>
 		</test-fixture>
+		<test-fixture id="HiddenReasonDialog">
+			<template>
+				<opt-out-dialog hide-reason>
+					<d2l-opt-out-reason key="test-1" text="Test Option 1"></d2l-opt-out-reason>
+					<d2l-opt-out-reason key="test-2" text="Test Option 2"></d2l-opt-out-reason>
+				</opt-out-dialog>
+			</template>
+		</test-fixture>
+		<test-fixture id="HiddenFeedbackDialog">
+			<template>
+				<opt-out-dialog hide-feedback>
+				</opt-out-dialog>
+			</template>
+		</test-fixture>
 		<script type="module">
 import '../internal/opt-out-dialog.js';
 import '../d2l-opt-out-reason.js';
@@ -147,6 +161,49 @@ describe('<opt-out-dialog>', function() {
 			var evt = document.createEvent('HTMLEvents');
 			evt.initEvent('change', false, true);
 			select.dispatchEvent(evt);
+
+			var doneButton = flyout.$$('d2l-button[primary]');
+			MockInteractions.tap(doneButton);
+		});
+	});
+
+	describe('with reason hidden', function() {
+		var flyout;
+
+		beforeEach(function() {
+			flyout = fixture('HiddenReasonDialog');
+		});
+
+		it('fires confirm with no reason', function(done) {
+			flyout.addEventListener('confirm', function(e) {
+				expect(e.detail.reason).to.equal('');
+				done();
+			});
+
+			var hiddenReason = flyout.$$('div[hidden] > #reason-selector');
+			expect(hiddenReason).to.exist;
+
+			var doneButton = flyout.$$('d2l-button[primary]');
+			MockInteractions.tap(doneButton);
+		});
+
+	});
+
+	describe('with feedback hidden', function() {
+		var flyout;
+
+		beforeEach(function() {
+			flyout = fixture('HiddenFeedbackDialog');
+		});
+
+		it('fires confirm with no feedback', function(done) {
+			flyout.addEventListener('confirm', function(e) {
+				expect(e.detail.feedback).to.equal('');
+				done();
+			});
+
+			var hiddenFeedback = flyout.$$('div[hidden] > #feedback');
+			expect(hiddenFeedback).to.exist;
 
 			var doneButton = flyout.$$('d2l-button[primary]');
 			MockInteractions.tap(doneButton);
