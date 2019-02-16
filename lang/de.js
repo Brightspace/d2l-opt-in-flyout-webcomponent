@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangDeBehavior = {
 	['translations_de']: {
-		'TurnOffMessage': 'Die Einstellung für das neue Nutzererlebnis ist *an*.',
-		'TurnOnMessage': 'Die Einstellung für das neue Nutzererlebnis ist *aus*.',
 		'LeaveOn': 'Angeschaltet lassen',
 		'LeaveOff': 'Ausgeschaltet lassen',
 		'TurnOn': 'Anschalten',

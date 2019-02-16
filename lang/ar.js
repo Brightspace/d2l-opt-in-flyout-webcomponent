@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangArBehavior = {
 	['translations_ar']: {
-		'TurnOffMessage': 'تم *تشغيل* التجربة الجديدة.',
-		'TurnOnMessage': 'تم *إيقاف* تشغيل التجربة الجديدة.',
 		'LeaveOn': 'تركها قيد التشغيل',
 		'LeaveOff': 'المحافظة على إيقاف التشغيل',
 		'TurnOn': 'التشغيل',

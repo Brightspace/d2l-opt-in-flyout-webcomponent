@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangSvBehavior = {
 	['translations_sv']: {
-		'TurnOffMessage': 'Den nya upplevelsen ha slagits *på*.',
-		'TurnOnMessage': 'Den nya upplevelsen har stängts *av*.',
 		'LeaveOn': 'Låt den vara på',
 		'LeaveOff': 'Lämna av',
 		'TurnOn': 'Sätt på',

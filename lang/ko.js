@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangKoBehavior = {
 	['translations_ko']: {
-		'TurnOffMessage': '새 환경이 *활성화되었습니다*.',
-		'TurnOnMessage': '새 환경이 *비활성화되었습니다*.',
 		'LeaveOn': '활성화 유지',
 		'LeaveOff': '비활성화 유지',
 		'TurnOn': '활성화',
