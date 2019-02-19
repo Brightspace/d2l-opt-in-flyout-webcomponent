@@ -25,7 +25,8 @@
 				<d2l-opt-out-flyout
 					open
 					title="Flyout Demo"
-					details="This is a demo of the opt-out flyout."
+					short-description="This is a short description"
+					long-description="This is a long description"
 					tab-position="right"
 					tutorial-link="https://www.testlink1.com"
 					help-docs-link="https://www.testlink2.com"
@@ -41,6 +42,7 @@
 		<script type="module">
 import '../d2l-opt-out-flyout.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 describe('<d2l-opt-out-flyout>', function() {
 	describe('when properties use default values', function() {
 
@@ -51,9 +53,9 @@ describe('<d2l-opt-out-flyout>', function() {
 			innerFlyout = flyout.$$('flyout-impl');
 		});
 
-		it('should contain opt in message', function() {
-			var message = innerFlyout.$$('#description');
-			expect(message.textContent).to.contain('turned on');
+		it('should contain short description', function() {
+			var shortDescription = innerFlyout.$$('#short-description');
+			expect(shortDescription.hidden).to.be.true;
 		});
 
 		it('should not contain title', function() {
@@ -61,9 +63,9 @@ describe('<d2l-opt-out-flyout>', function() {
 			expect(title.textContent).to.equal(' ');
 		});
 
-		it('should not contain details', function() {
-			var details = innerFlyout.$$('.flyout-details');
-			expect(details.hidden).to.be.true;
+		it('should not contain long description', function() {
+			var longDescription = innerFlyout.$$('#long-description');
+			expect(longDescription.hidden).to.be.true;
 		});
 
 		it('should not contain tutorial link or help documentation if not set', function(done) {
@@ -91,9 +93,11 @@ describe('<d2l-opt-out-flyout>', function() {
 			innerFlyout = flyout.$$('flyout-impl');
 		});
 
-		it('should contain opt in message', function() {
-			var message = innerFlyout.$$('#description');
-			expect(message.textContent).to.contain('turned on');
+		it('should contain short description', function() {
+			var shortDescription = innerFlyout.$$('#short-description');
+			expect(shortDescription.hidden).to.be.false;
+			var content = dom(innerFlyout.root).querySelector('#short-description s-html').shadowRoot;
+			expect(content.textContent).to.equal('This is a short description');
 		});
 
 		it('should contain title', function() {
@@ -110,10 +114,11 @@ describe('<d2l-opt-out-flyout>', function() {
 			expect(title.textContent).to.equal(newTitle);
 		});
 
-		it('should contain details', function() {
-			var details = innerFlyout.$$('.flyout-details');
-			expect(details.hidden).to.be.false;
-			expect(details.textContent).to.contain('This is a demo of the opt-out flyout');
+		it('should contain long description', function() {
+			var longDescription = innerFlyout.$$('#long-description');
+			expect(longDescription.hidden).to.be.false;
+			var content = dom(innerFlyout.root).querySelector('#long-description s-html').shadowRoot;
+			expect(content.textContent).to.equal('This is a long description');
 		});
 
 		it('should contain tutorial link', function(done) {

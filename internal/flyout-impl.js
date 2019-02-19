@@ -4,6 +4,7 @@ import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-icons/d2l-icons.js';
 import 'd2l-button/d2l-button.js';
+import 's-html/s-html.js';
 import './opt-out-dialog.js';
 import './translate-behaviour.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -64,12 +65,12 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 				margin-right: auto;
 			}
 
-			#description {
+			#short-description {
 				margin-bottom: 0.5rem;
 				margin-top: 0;
 			}
 
-			.flyout-details {
+			#long-description {
 				margin: auto;
 				margin-bottom: 0;
 				max-width: 800px;
@@ -156,13 +157,11 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 			<div class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
 				<div class="flyout-text">
 					<h1 id="title">[[title]]</h1>
-					<p id="description">
-						<span>[[_getDescriptionPart(translate,0,optOut)]]</span>
-						<strong>[[_getDescriptionPart(translate,1,optOut)]]</strong>
-						<span>[[_getDescriptionPart(translate,2,optOut)]]</span>
+					<p id="short-description" hidden="[[!shortDescription]]">
+						<s-html html="[[shortDescription]]"></s-html>
 					</p>
-					<p class="flyout-details" hidden="[[!details]]">
-						[[details]]
+					<p id="long-description" hidden="[[!longDescription]]">
+						<s-html html="[[longDescription]]"></s-html>
 					</p>
 					<p class="flyout-tutorial">
 
@@ -203,7 +202,7 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 		</div>
 	</template>
 
-	
+
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -222,7 +221,11 @@ Polymer({
 			observer: '_openChanged'
 		},
 		title: String,
-		details: {
+		shortDescription: {
+			type: String,
+			value: ''
+		},
+		longDescription: {
 			type: String,
 			value: ''
 		},
@@ -391,10 +394,6 @@ Polymer({
 		} else {
 			return 'd2l-tier1:chevron-up';
 		}
-	},
-
-	_getDescriptionPart: function(translate, i, optOut) {
-		return translate(optOut ? 'TurnOffMessage' : 'TurnOnMessage').split('*')[i];
 	},
 
 	_getTutorialTextPart: function(translate, tutorialLink, helpDocsLink, i) {

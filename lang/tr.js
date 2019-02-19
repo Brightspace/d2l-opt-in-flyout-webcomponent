@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangTrBehavior = {
 	['translations_tr']: {
-		'TurnOffMessage': 'Yeni deneyim *açıldı*.',
-		'TurnOnMessage': 'Yeni deneyim *kapatıldı*.',
 		'LeaveOn': 'Açık bırak',
 		'LeaveOff': 'Kapalı bırak',
 		'TurnOn': 'Aç',

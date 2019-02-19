@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangNlBehavior = {
 	['translations_nl']: {
-		'TurnOffMessage': 'De nieuwe ervaring is *ingeschakeld*.',
-		'TurnOnMessage': 'De nieuwe ervaring is *uitgeschakeld*.',
 		'LeaveOn': 'Ingeschakeld laten',
 		'LeaveOff': 'Uitgeschakeld laten',
 		'TurnOn': 'Inschakelen',

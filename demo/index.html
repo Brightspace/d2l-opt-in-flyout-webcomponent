@@ -92,7 +92,7 @@ const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<div class="vertical-split">
 			<div class="flyout-region">
-				<d2l-opt-in-flyout id="opt-in" open="" title="Flyout Demo" details="This is a demo of the opt-in flyout." tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation"></d2l-opt-in-flyout>
+				<d2l-opt-in-flyout id="opt-in" open="" title="Flyout Demo Opt-in" short-description="This is a <b>short</b> description" long-description="This is a <b>long</b> description" tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation"></d2l-opt-in-flyout>
 			</div>
 			<pre id="opt-in-log" dir="ltr"></pre>
 		</div>`;
@@ -104,7 +104,7 @@ const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<div class="vertical-split">
 			<div class="flyout-region">
-				<d2l-opt-out-flyout id="opt-out" open="" title="Flyout Demo" details="This is a demo of the opt-out flyout with default opt-out reasons." tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation"></d2l-opt-out-flyout>
+				<d2l-opt-out-flyout id="opt-out" open="" title="Flyout Demo Opt-out" short-description="This is a <b>short</b> description" long-description="This is a <b>long</b> description" tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation"></d2l-opt-out-flyout>
 			</div>
 			<pre id="opt-out-log" dir="ltr"></pre>
 		</div>`;
@@ -116,7 +116,7 @@ const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<div class="vertical-split">
 			<div class="flyout-region">
-				<d2l-opt-out-flyout id="opt-out-2" open="" title="Flyout Demo" details="This is a demo of the opt-out flyout with custom opt-out reasons." tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation">
+				<d2l-opt-out-flyout id="opt-out-2" open="" title="Flyout Demo Opt-out" short-description="This is a <b>short</b> description" long-description="This is a <b>long</b> description" tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation">
 					<d2l-opt-out-reason key="test-1" text="Test Option 1"></d2l-opt-out-reason>
 					<d2l-opt-out-reason key="test-2" text="Test Option 2"></d2l-opt-out-reason>
 				</d2l-opt-out-flyout>

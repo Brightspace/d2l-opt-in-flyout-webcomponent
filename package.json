@@ -44,6 +44,7 @@
     "d2l-inputs": "BrightspaceUI/inputs#semver:^2",
     "d2l-offscreen": "BrightspaceUI/offscreen#semver:^4",
     "d2l-button": "BrightspaceUI/button#semver:^5",
-    "d2l-typography": "BrightspaceUI/typography#semver:^7"
+    "d2l-typography": "BrightspaceUI/typography#semver:^7",
+    "s-html": "Brightspace/s-html#semver:^2.0.0"
   }
 }
