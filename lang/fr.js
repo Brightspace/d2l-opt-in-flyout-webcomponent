@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangFrBehavior = {
 	['translations_fr']: {
-		'TurnOffMessage': 'La nouvelle expérience est *activée*.',
-		'TurnOnMessage': 'La nouvelle expérience est *désactivée*.',
 		'LeaveOn': 'Laisser activé',
 		'LeaveOff': 'Laisser désactivé',
 		'TurnOn': 'Activer',

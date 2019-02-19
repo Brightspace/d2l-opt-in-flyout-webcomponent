@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangJaBehavior = {
 	['translations_ja']: {
-		'TurnOffMessage': '新しいエクスペリエンスが*オン*になっています。',
-		'TurnOnMessage': '新しいエクスペリエンスが*オフ*になっています。',
 		'LeaveOn': 'オンのままにする',
 		'LeaveOff': 'オフのままにする',
 		'TurnOn': 'オンにする',

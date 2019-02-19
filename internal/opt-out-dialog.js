@@ -85,11 +85,11 @@ $_documentContainer.innerHTML = `<dom-module id="opt-out-dialog">
 		<div class="dialog" role="dialog" arial-labelledby="title-label">
 			<label id="title-label">[[translate('Feedback.Title')]]</label>
 			<br><br>
-			<div>
+			<div hidden="[[hideReason]]">
 				<label id="reason-label">[[translate('Feedback.ReasonLabel')]]</label>
 				<opt-out-reason-selector id="reason-selector" aria-labelledby="reason-label" selected="{{_reason}}" dir$="[[documentTextDirection]]"><slot></slot></opt-out-reason-selector>
 			</div>
-			<div>
+			<div hidden="[[hideFeedback]]">
 				<label id="feedback-label">[[translate('Feedback.FeedbackLabel')]]</label>
 				<d2l-input-textarea id="feedback" aria-labelledby="feedback-label"></d2l-input-textarea>
 			</div>
@@ -112,6 +112,14 @@ Polymer({
 		_reason: {
 			type: String,
 			value: null
+		},
+		hideReason: {
+			type: Boolean,
+			value: false
+		},
+		hideFeedback: {
+			type: Boolean,
+			value: false
 		}
 	},
 

@@ -10,8 +10,6 @@ window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBe
  */
 D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangZhBehavior = {
 	['translations_zh']: {
-		'TurnOffMessage': '已*开启*新体验。',
-		'TurnOnMessage': '已*关闭*新体验。',
 		'LeaveOn': '保持开启',
 		'LeaveOff': '保持关闭',
 		'TurnOn': '开启',

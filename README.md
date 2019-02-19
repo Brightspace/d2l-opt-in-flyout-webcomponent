@@ -10,10 +10,15 @@ This repo provides 3 webcomponents: `<d2l-opt-in-flyout>`, `<d2l-opt-out-flyout>
 The `<d2l-opt-in-flyout>` and `<d2l-opt-out-flyout>` components take in the following properties:
 * `open` - A boolean flag used to make the flyout start expanded.
 * `title` - The title to display at the top of the flyout
-* `details` *(Optional)* - Additional text to display beneath the current opt-in status
+* `short-description` *(Optional)* - Descriptive text shown beneath the `title`
+* `long-description` *(Optional)* - Additional text shown beneath `short-description`
 * `tab-position` *(Optional)* - The position to display the expand/collapse tab. Can either be an integer percentage (including the `%` character) or the string `left`, `right`, or `center`/`centre`. If the document's text direction is RTL, this position is flipped. Defaults to `"right"`.
 * `tutorial-link` *(Optional)* - A URL for a tutorial of the new experience or feature
 * `help-docs-link` *(Optional)* - A URL for help documentation on the new experience or feature
+
+### `<d2l-opt-out-flyout>` specific properties
+* `hide-reason` *(Optional)* - A boolean that hides the reason field from the opt-out dialog
+* `hide-feedback` *(Optional)* - A boolean that hides the feedback textarea field from the opt-out dialog
 
 If the `<d2l-opt-out-flyout>` has children, any `<d2l-opt-out-reason>` child elements will be used to provide the list of reasons that can be selected from the drop down for opting out. An opt-out reason with key `Other` will automatically be added and does not need to be provided. The `<d2l-opt-out-reason>` component has the following 2 required properties:
 * `key` - A key that identifies the opt-out reason. This value is passed to the `opt-out` event (see below) and is not displayed to the user. It should be the same across all languages and localizations.
