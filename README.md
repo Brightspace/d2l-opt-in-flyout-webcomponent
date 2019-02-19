@@ -15,6 +15,10 @@ The `<d2l-opt-in-flyout>` and `<d2l-opt-out-flyout>` components take in the foll
 * `tutorial-link` *(Optional)* - A URL for a tutorial of the new experience or feature
 * `help-docs-link` *(Optional)* - A URL for help documentation on the new experience or feature
 
+### `<d2l-opt-out-flyout>` specific properties
+* `hide-reason` *(Optional)* - A boolean that hides the reason field from the opt-out dialog
+* `hide-feedback` *(Optional)* - A boolean that hides the feedback textarea field from the opt-out dialog
+
 If the `<d2l-opt-out-flyout>` has children, any `<d2l-opt-out-reason>` child elements will be used to provide the list of reasons that can be selected from the drop down for opting out. An opt-out reason with key `Other` will automatically be added and does not need to be provided. The `<d2l-opt-out-reason>` component has the following 2 required properties:
 * `key` - A key that identifies the opt-out reason. This value is passed to the `opt-out` event (see below) and is not displayed to the user. It should be the same across all languages and localizations.
 * `text` - The text that will be displayed to the user. This string *should* be localized.
