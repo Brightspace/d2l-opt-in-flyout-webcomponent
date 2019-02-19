@@ -28,10 +28,10 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 				overflow: visible;
 				padding-bottom: 2rem;
 				pointer-events: auto;
-				position: absolute;
-				top: 0;
+				position: var(--custom-element-position, absolute);
+				top: var(--custom-element-top, 0);
 				width: 100%;
-				z-index: 900;
+				z-index: var(--custom-element-z-index, 900);
 			}
 
 			#flyout.flyout-opened {
@@ -196,7 +196,7 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 				<label id="tab-label">[[translate('Close')]]</label>
 			</d2l-offscreen>
 			<div class="flyout-tab-container">
-				<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection)]]" tabindex="0" aria-labelledby="tab-label" on-click="_clickTab">
+				<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection, noTransform)]]" tabindex="0" aria-labelledby="tab-label" on-click="_clickTab">
 					<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></d2l-icon>
 				</button>
 			</div>
@@ -229,6 +229,10 @@ Polymer({
 		tabPosition: {
 			type: String,
 			value: 'right'
+		},
+		noTransform: {
+			type: Boolean,
+			value: false
 		},
 		tutorialLink: {
 			type: String,
@@ -360,7 +364,7 @@ Polymer({
 		}
 	},
 
-	_getTabStyle: function(position, documentTextDirection) {
+	_getTabStyle: function(position, documentTextDirection, noTransform) {
 		var rtl = documentTextDirection === 'rtl';
 
 		if (position === 'left') {
@@ -380,7 +384,13 @@ Polymer({
 		var side = rtl ? 'right' : 'left';
 		var shift = rtl ? '50%' : '-50%';
 
-		return side + ': ' + position + '; transform: translateX(' + shift + ');';
+		var tabStyle = side + ': ' + position + ';';
+
+		if (noTransform) {
+			return tabStyle;
+		}
+
+		return tabStyle + ' transform: translateX(' + shift + ');';
 	},
 
 	_getTabIcon: function(visibleState) {
