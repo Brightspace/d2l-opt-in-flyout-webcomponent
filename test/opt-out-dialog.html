@@ -69,11 +69,6 @@ describe('<opt-out-dialog>', function() {
 			expect(feedback).to.exist;
 		});
 
-		it('should have the done button disabled until a reason is selected', function() {
-			var button = flyout.$$('d2l-button[primary]');
-			expect(button.disabled).to.be.true;
-		});
-
 		it('should contain cancel button', function() {
 			var cancelButton = flyout.$$('d2l-button:not([primary])');
 			expect(cancelButton).to.exist;
