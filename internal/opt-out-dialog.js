@@ -85,19 +85,19 @@ $_documentContainer.innerHTML = `<dom-module id="opt-out-dialog">
 		<div class="dialog" role="dialog" arial-labelledby="title-label">
 			<label id="title-label">[[translate('Feedback.Title')]]</label>
 			<br><br>
-			<div>
+			<div hidden="[[hideReason]]">
 				<label id="reason-label">[[translate('Feedback.ReasonLabel')]]</label>
 				<opt-out-reason-selector id="reason-selector" aria-labelledby="reason-label" selected="{{_reason}}" dir$="[[documentTextDirection]]"><slot></slot></opt-out-reason-selector>
 			</div>
-			<div>
+			<div hidden="[[hideFeedback]]">
 				<label id="feedback-label">[[translate('Feedback.FeedbackLabel')]]</label>
 				<d2l-input-textarea id="feedback" aria-labelledby="feedback-label"></d2l-input-textarea>
 			</div>
 			<div>
-				<d2l-button disabled="[[!_reason]]" primary="" on-tap="_confirm">[[translate('Done')]]</d2l-button>
-				<d2l-button on-tap="_cancel">[[translate('Cancel')]]</d2l-button>
+				<d2l-button primary="" on-click="_confirm">[[translate('Done')]]</d2l-button>
+				<d2l-button on-click="_cancel">[[translate('Cancel')]]</d2l-button>
 			</div>
-			<d2l-button-icon icon="d2l-tier1:close-small" class="close-button" on-tap="_cancel" text="[[translate('Close')]]" dir$="[[documentTextDirection]]"></d2l-button-icon>
+			<d2l-button-icon icon="d2l-tier1:close-small" class="close-button" on-click="_cancel" text="[[translate('Close')]]" dir$="[[documentTextDirection]]"></d2l-button-icon>
 		</div>
 	</template>
 
@@ -112,6 +112,14 @@ Polymer({
 		_reason: {
 			type: String,
 			value: null
+		},
+		hideReason: {
+			type: Boolean,
+			value: false
+		},
+		hideFeedback: {
+			type: Boolean,
+			value: false
 		}
 	},
 
@@ -124,12 +132,8 @@ Polymer({
 	},
 
 	_confirm: function() {
-		if (!this._reason) {
-			return;
-		}
-
 		this.fire('confirm', {
-			reason: this._reason,
+			reason: this._reason || '',
 			feedback: (this.$.feedback.value || '').trim()
 		});
 	},
