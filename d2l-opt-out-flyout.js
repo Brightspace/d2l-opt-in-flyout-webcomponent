@@ -9,7 +9,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-opt-out-flyout">
 		<style include="d2l-typography">
 			flyout-impl { font-size: 20px; }
 		</style>
-		<flyout-impl class="d2l-typography" opt-out="" open="{{open}}" title="[[title]]" details="[[details]]" tab-position="[[tabPosition]]" tutorial-link="[[tutorialLink]]" help-docs-link="[[helpDocsLink]]"><slot></slot></flyout-impl>
+		<flyout-impl class="d2l-typography" opt-out="" open="{{open}}" title="[[title]]" details="[[details]]" tab-position="[[tabPosition]]" tutorial-link="[[tutorialLink]]" help-docs-link="[[helpDocsLink]]" hide-reason="[[hideReason]]" hide-feedback="[[hideFeedback]]"><slot></slot></flyout-impl>
 	</template>
 	
 </dom-module>`;
@@ -29,7 +29,9 @@ Polymer({
 		details: String,
 		tabPosition: String,
 		tutorialLink: String,
-		helpDocsLink: String
+		helpDocsLink: String,
+		hideReason: Boolean,
+		hideFeedback: Boolean
 	}
 
 });
