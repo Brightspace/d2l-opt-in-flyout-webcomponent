@@ -10,7 +10,7 @@
     "url": "https://github.com/Brightspace/d2l-opt-in-flyout-webcomponent.git"
   },
   "name": "d2l-opt-in-flyout-webcomponent",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "scripts": {
     "start": "polymer serve",
     "test": "npm run test:lint && npm run test:polymer:local",
@@ -45,6 +45,6 @@
     "d2l-offscreen": "BrightspaceUI/offscreen#semver:^4",
     "d2l-button": "BrightspaceUI/button#semver:^5",
     "d2l-typography": "BrightspaceUI/typography#semver:^7",
-    "s-html": "Brightspace/s-html#semver:^2.0.0"
+    "s-html": "Brightspace/s-html#semver:^2"
   }
 }
