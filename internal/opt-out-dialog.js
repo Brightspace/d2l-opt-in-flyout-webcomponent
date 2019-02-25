@@ -94,7 +94,7 @@ $_documentContainer.innerHTML = `<dom-module id="opt-out-dialog">
 				<d2l-input-textarea id="feedback" aria-labelledby="feedback-label"></d2l-input-textarea>
 			</div>
 			<div>
-				<d2l-button primary="" on-click="_confirm">[[translate('Done')]]</d2l-button>
+				<d2l-button id="done-button" primary="" on-click="_confirm">[[translate('Done')]]</d2l-button>
 				<d2l-button on-click="_cancel">[[translate('Cancel')]]</d2l-button>
 			</div>
 			<d2l-button-icon icon="d2l-tier1:close-small" class="close-button" on-click="_cancel" text="[[translate('Close')]]" dir$="[[documentTextDirection]]"></d2l-button-icon>
@@ -126,6 +126,16 @@ Polymer({
 	behaviors: [
 		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
 	],
+
+	attached: function() {
+		if (!this.hideReason) {
+			this.shadowRoot.getElementById('reason-selector').focus();
+		} else if (!this.hideFeedback) {
+			this.shadowRoot.getElementById('feedback').focus();
+		} else {
+			this.shadowRoot.getElementById('done-button').focus();
+		}
+	},
 
 	_cancel: function() {
 		this.fire('cancel');

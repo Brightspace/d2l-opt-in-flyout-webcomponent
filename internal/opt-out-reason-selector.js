@@ -91,6 +91,10 @@ Polymer({
 		this._onSlotChanged();
 	},
 
+	focus: function() {
+		this.shadowRoot.getElementById('selector').focus();
+	},
+
 	_onSlotChanged: function() {
 		/* Passing <option> elements directly into a <select> tag with a slot doesn't work.
 		 * Instead, pass in <d2l-opt-out-reason> elements, and this component will construct
