@@ -129,11 +129,11 @@ Polymer({
 
 	attached: function() {
 		if (!this.hideReason) {
-			this.shadowRoot.getElementById('reason-selector').focus();
+			this.$['reason-selector'].focus();
 		} else if (!this.hideFeedback) {
-			this.shadowRoot.getElementById('feedback').focus();
+			this.$['feedback'].focus();
 		} else {
-			this.shadowRoot.getElementById('done-button').focus();
+			this.$['done-button'].focus();
 		}
 	},
 
