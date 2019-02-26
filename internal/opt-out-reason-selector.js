@@ -92,7 +92,7 @@ Polymer({
 	},
 
 	focus: function() {
-		this.shadowRoot.getElementById('selector').focus();
+		this.$.selector.focus();
 	},
 
 	_onSlotChanged: function() {
