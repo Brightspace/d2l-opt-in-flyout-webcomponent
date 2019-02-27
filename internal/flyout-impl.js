@@ -101,7 +101,7 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 			}
 
 			.flyout-tab-container {
-				height: 1rem;
+				height: 1.2rem; //room for bottom shadow
 				left: 50%;
 				max-width: 1230px;
 				pointer-events: none;
@@ -110,7 +110,6 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 				transform: translateX(-50%);
 				width: 100%;
 				overflow: hidden;
-				padding-bottom: 4px;
 			}
 
 			.flyout-tab {
@@ -127,6 +126,7 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 				text-align: center;
 				top: 0;
 				width: 5rem;
+				min-height: unset; //fix for IE11 and Edge
 			}
 
 			.flyout-tab:hover, .flyout-tab:focus {
