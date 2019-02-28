@@ -50,7 +50,7 @@ describe('<d2l-opt-in-flyout>', function() {
 
 		beforeEach(function() {
 			flyout = fixture('FlyoutEmptyFixture');
-			innerFlyout = flyout.$$('flyout-impl');
+			innerFlyout = flyout.shadowRoot.querySelector('flyout-impl');
 		});
 
 		it('should contain short description', function() {
@@ -85,7 +85,7 @@ describe('<d2l-opt-in-flyout>', function() {
 
 		beforeEach(function() {
 			flyout = fixture('FlyoutPropertiesFixture');
-			innerFlyout = flyout.$$('flyout-impl');
+			innerFlyout = flyout.shadowRoot.querySelector('flyout-impl');
 		});
 
 		it('should contain short description', function() {
@@ -105,7 +105,7 @@ describe('<d2l-opt-in-flyout>', function() {
 
 			flyout.setAttribute('title', newTitle);
 			expect(flyout.title).to.equal(newTitle);
-			var title = flyout.$$('flyout-impl').$$('#title');
+			var title = flyout.shadowRoot.querySelector('flyout-impl').$$('#title');
 			expect(title.textContent).to.equal(newTitle);
 		});
 
@@ -239,7 +239,7 @@ describe('<d2l-opt-in-flyout>', function() {
 				done();
 			});
 
-			var tab = flyout.$$('flyout-impl').$$('.flyout-tab');
+			var tab = flyout.shadowRoot.querySelector('flyout-impl').$$('.flyout-tab');
 			MockInteractions.tap(tab);
 		});
 	});

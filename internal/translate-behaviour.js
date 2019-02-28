@@ -1,25 +1,21 @@
-import '@polymer/polymer/polymer-legacy.js';
-import './document-properties.js';
-import '../lang/ar.js';
-import '../lang/de.js';
-import '../lang/en.js';
-import '../lang/es.js';
-import '../lang/fr.js';
-import '../lang/ja.js';
-import '../lang/ko.js';
-import '../lang/nb.js';
-import '../lang/nl.js';
-import '../lang/pt.js';
-import '../lang/sv.js';
-import '../lang/tr.js';
-import '../lang/zh-TW.js';
-import '../lang/zh.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.OptInFlyout = window.D2L.PolymerBehaviors.OptInFlyout || {};
+import DocumentPropertiesBehavior from './document-properties.js';
 
-/** @polymerBehavior D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior */
-D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl = {
+import LangAr from '../lang/ar.js';
+import LangDe from '../lang/de.js';
+import LangEn from '../lang/en.js';
+import LangEs from '../lang/es.js';
+import LangFr from '../lang/fr.js';
+import LangJa from '../lang/ja.js';
+import LangKo from '../lang/ko.js';
+import LangNb from '../lang/nb.js';
+import LangNl from '../lang/nl.js';
+import LangPt from '../lang/pt.js';
+import LangSv from '../lang/sv.js';
+import LangTr from '../lang/tr.js';
+import LangTrTw from '../lang/zh-TW.js';
+import LangZh from '../lang/zh.js';
+
+const TranslateBehavior = {
 
 	properties: {
 
@@ -70,22 +66,21 @@ D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl = {
 
 };
 
-/** @polymerBehavior */
-D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = [
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehaviorImpl,
-	D2L.PolymerBehaviors.OptInFlyout.DocumentProperties,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangArBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangDeBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangEnBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangEsBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangFrBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangJaBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangKoBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangNbBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangNlBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangPtBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangSvBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangTrBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangZhBehavior,
-	D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangZhTwBehavior
+export default [
+	TranslateBehavior,
+	DocumentPropertiesBehavior,
+	LangAr,
+	LangDe,
+	LangEn,
+	LangEs,
+	LangFr,
+	LangJa,
+	LangKo,
+	LangNb,
+	LangNl,
+	LangPt,
+	LangSv,
+	LangTr,
+	LangTrTw,
+	LangZh
 ];

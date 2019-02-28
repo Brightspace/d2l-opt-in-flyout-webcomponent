@@ -1,10 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.OptInFlyout = window.D2L.PolymerBehaviors.OptInFlyout || {};
-
-/** @polymerBehavior D2L.PolymerBehaviors.OptInFlyout.DocumentProperties */
-D2L.PolymerBehaviors.OptInFlyout.DocumentPropertiesImpl = {
+const DocumentPropertiesBehavior = {
 
 	properties: {
 
@@ -75,7 +69,4 @@ D2L.PolymerBehaviors.OptInFlyout.DocumentPropertiesImpl = {
 
 };
 
-/** @polymerBehavior */
-D2L.PolymerBehaviors.OptInFlyout.DocumentProperties = [
-	D2L.PolymerBehaviors.OptInFlyout.DocumentPropertiesImpl
-];
+export default [ DocumentPropertiesBehavior ];

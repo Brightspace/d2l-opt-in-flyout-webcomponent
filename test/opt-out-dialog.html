@@ -55,22 +55,22 @@ describe('<opt-out-dialog>', function() {
 		});
 
 		it('should contain a title', function() {
-			var message = flyout.$$('#title-label');
+			var message = flyout.shadowRoot.querySelector('#title-label');
 			expect(message.textContent).to.contain('Let us know how to improve!');
 		});
 
 		it('should contain opt-out-reason-selector', function() {
-			var selector = flyout.$$('opt-out-reason-selector');
+			var selector = flyout.shadowRoot.querySelector('opt-out-reason-selector');
 			expect(selector).to.exist;
 		});
 
 		it('should contain feedback text input box', function() {
-			var feedback = flyout.$$('#feedback');
+			var feedback = flyout.shadowRoot.querySelector('#feedback');
 			expect(feedback).to.exist;
 		});
 
 		it('should contain cancel button', function() {
-			var cancelButton = flyout.$$('d2l-button:not([primary])');
+			var cancelButton = flyout.shadowRoot.querySelector('d2l-button:not([primary])');
 			expect(cancelButton).to.exist;
 		});
 
@@ -81,15 +81,15 @@ describe('<opt-out-dialog>', function() {
 				done();
 			});
 
-			var select = flyout.$$('opt-out-reason-selector').$$('select');
+			var select = flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('select');
 			MockInteractions.tap(select);
-			flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
+			flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
 
 			var evt = document.createEvent('HTMLEvents');
 			evt.initEvent('change', false, true);
 			select.dispatchEvent(evt);
 
-			var doneButton = flyout.$$('d2l-button[primary]');
+			var doneButton = flyout.shadowRoot.querySelector('d2l-button[primary]');
 			MockInteractions.tap(doneButton);
 		});
 
@@ -102,18 +102,18 @@ describe('<opt-out-dialog>', function() {
 				done();
 			});
 
-			var select = flyout.$$('opt-out-reason-selector').$$('select');
+			var select = flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('select');
 			MockInteractions.tap(select);
-			flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
+			flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
 
-			var feedback = flyout.$$('d2l-input-textarea');
+			var feedback = flyout.shadowRoot.querySelector('d2l-input-textarea');
 			feedback.value = textFeedback;
 
 			var evt = document.createEvent('HTMLEvents');
 			evt.initEvent('change', false, true);
 			select.dispatchEvent(evt);
 
-			var doneButton = flyout.$$('d2l-button[primary]');
+			var doneButton = flyout.shadowRoot.querySelector('d2l-button[primary]');
 			MockInteractions.tap(doneButton);
 		});
 	});
@@ -131,15 +131,15 @@ describe('<opt-out-dialog>', function() {
 				done();
 			});
 
-			var select = flyout.$$('opt-out-reason-selector').$$('select');
+			var select = flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('select');
 			MockInteractions.tap(select);
-			flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
+			flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('#selector').selectedIndex = 1;
 
 			var evt = document.createEvent('HTMLEvents');
 			evt.initEvent('change', false, true);
 			select.dispatchEvent(evt);
 
-			var doneButton = flyout.$$('d2l-button[primary]');
+			var doneButton = flyout.shadowRoot.querySelector('d2l-button[primary]');
 			MockInteractions.tap(doneButton);
 		});
 
@@ -149,15 +149,15 @@ describe('<opt-out-dialog>', function() {
 				done();
 			});
 
-			var select = flyout.$$('opt-out-reason-selector').$$('select');
+			var select = flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('select');
 			MockInteractions.tap(select);
-			flyout.$$('opt-out-reason-selector').$$('#selector').selectedIndex = 2;
+			flyout.shadowRoot.querySelector('opt-out-reason-selector').$$('#selector').selectedIndex = 2;
 
 			var evt = document.createEvent('HTMLEvents');
 			evt.initEvent('change', false, true);
 			select.dispatchEvent(evt);
 
-			var doneButton = flyout.$$('d2l-button[primary]');
+			var doneButton = flyout.shadowRoot.querySelector('d2l-button[primary]');
 			MockInteractions.tap(doneButton);
 		});
 	});
@@ -175,10 +175,10 @@ describe('<opt-out-dialog>', function() {
 				done();
 			});
 
-			var hiddenReason = flyout.$$('div[hidden] > #reason-selector');
+			var hiddenReason = flyout.shadowRoot.querySelector('div[hidden] > #reason-selector');
 			expect(hiddenReason).to.exist;
 
-			var doneButton = flyout.$$('d2l-button[primary]');
+			var doneButton = flyout.shadowRoot.querySelector('d2l-button[primary]');
 			MockInteractions.tap(doneButton);
 		});
 
@@ -197,10 +197,10 @@ describe('<opt-out-dialog>', function() {
 				done();
 			});
 
-			var hiddenFeedback = flyout.$$('div[hidden] > #feedback');
+			var hiddenFeedback = flyout.shadowRoot.querySelector('div[hidden] > #feedback');
 			expect(hiddenFeedback).to.exist;
 
-			var doneButton = flyout.$$('d2l-button[primary]');
+			var doneButton = flyout.shadowRoot.querySelector('d2l-button[primary]');
 			MockInteractions.tap(doneButton);
 		});
 	});

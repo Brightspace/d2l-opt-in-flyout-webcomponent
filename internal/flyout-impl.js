@@ -1,4 +1,5 @@
-import '@polymer/polymer/polymer-legacy.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
@@ -6,283 +7,299 @@ import 'd2l-icons/d2l-icons.js';
 import 'd2l-button/d2l-button.js';
 import 's-html/s-html.js';
 import './opt-out-dialog.js';
-import './translate-behaviour.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-const $_documentContainer = document.createElement('template');
+import TranslateBehavior from './translate-behaviour.js';
 
-$_documentContainer.innerHTML = `<dom-module id="flyout-impl">
-	<template strip-whitespace="">
-		<style>
-			:host {
-				height: 100%;
-				overflow: hidden;
-				pointer-events: none;
-				position: absolute;
-				width: 100%;
-				@apply --d2l-body-standard-text;
-			}
+class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 
-			#flyout {
-				background-color: white;
-				border-bottom: 1px solid var(--d2l-color-mica);
-				box-sizing: border-box;
-				overflow: visible;
-				padding-bottom: 2rem;
-				pointer-events: auto;
-				position: var(--custom-element-position, absolute);
-				top: var(--custom-element-top, 0);
-				width: 100%;
-				z-index: var(--custom-element-z-index, 900);
-			}
+	static get is() {
+		return 'flyout-impl';
+	}
 
-			#flyout.flyout-opened {
-				transition: transform 0.2s ease-out;
-			}
+	static get template() {
+		const template = html`
+			<style>
+				:host {
+					height: 100%;
+					overflow: hidden;
+					pointer-events: none;
+					position: absolute;
+					width: 100%;
+					@apply --d2l-body-standard-text;
+				}
 
-			#flyout.flyout-closed {
-				transition: transform 0.2s ease-in;
-			}
+				#flyout {
+					background-color: white;
+					border-bottom: 1px solid var(--d2l-color-mica);
+					box-sizing: border-box;
+					overflow: visible;
+					padding-bottom: 2rem;
+					pointer-events: auto;
+					position: var(--custom-element-position, absolute);
+					top: var(--custom-element-top, 0);
+					width: 100%;
+					z-index: var(--custom-element-z-index, 900);
+				}
 
-			.flyout-opened {
-				transform: translateY(0);
-			}
-			.flyout-closed {
-				transform: translateY(-100%);
-			}
+				#flyout.flyout-opened {
+					transition: transform 0.2s ease-out;
+				}
 
-			.flyout-content {
-				text-align: center;
-			}
+				#flyout.flyout-closed {
+					transition: transform 0.2s ease-in;
+				}
 
-			.flyout-content h1 {
-				@apply --d2l-heading-1;
-				margin-bottom: 1.2rem;
-			}
+				.flyout-opened {
+					transform: translateY(0);
+				}
+				.flyout-closed {
+					transform: translateY(-100%);
+				}
 
-			.flyout-text {
-				margin-bottom: 1.5rem;
-				margin-left: auto;
-				margin-right: auto;
-			}
+				.flyout-content {
+					text-align: center;
+				}
 
-			#short-description {
-				margin-bottom: 0.5rem;
-				margin-top: 0;
-			}
+				.flyout-content h1 {
+					@apply --d2l-heading-1;
+					margin-bottom: 1.2rem;
+				}
 
-			#long-description {
-				margin: auto;
-				margin-bottom: 0;
-				max-width: 800px;
-			}
+				.flyout-text {
+					margin-bottom: 1.5rem;
+					margin-left: auto;
+					margin-right: auto;
+				}
 
-			.flyout-tutorial {
-				margin: auto;
-				margin-top: 0.5em;
-			}
+				#short-description {
+					margin-bottom: 0.5rem;
+					margin-top: 0;
+				}
 
-			.flyout-tutorial a {
-				color: var(--d2l-color-celestine);
-				text-decoration: none;
-			}
+				#long-description {
+					margin: auto;
+					margin-bottom: 0;
+					max-width: 800px;
+				}
 
-			.flyout-tutorial a:hover, .flyout-tutorial a:focus {
-				text-decoration: underline;
-			}
+				.flyout-tutorial {
+					margin: auto;
+					margin-top: 0.5em;
+				}
 
-			.flyout-buttons {
-				margin-left: auto;
-				margin-right: auto;
-			}
+				.flyout-tutorial a {
+					color: var(--d2l-color-celestine);
+					text-decoration: none;
+				}
 
-			.flyout-buttons d2l-button {
-				margin-left: 0.5rem;
-				margin-right: 0.5rem;
-			}
+				.flyout-tutorial a:hover, .flyout-tutorial a:focus {
+					text-decoration: underline;
+				}
 
-			.flyout-tab-container {
-				height: 1.2rem;
-				left: 50%;
-				max-width: 1230px;
-				pointer-events: none;
-				position: absolute;
-				top: 100%;
-				transform: translateX(-50%);
-				width: 100%;
-				overflow: hidden;
-			}
+				.flyout-buttons {
+					margin-left: auto;
+					margin-right: auto;
+				}
 
-			.flyout-tab {
-				background-color: white;
-				border: 1px solid var(--d2l-color-mica);
-				border-radius: 0 0 8px 8px;
-				border-top: none;
-				box-sizing: border-box;
-				cursor: pointer;
-				height: 1rem;
-				padding: 1px;
-				pointer-events: auto;
-				position: absolute;
-				text-align: center;
-				top: 0;
-				width: 5rem;
-				min-height: 0;
-			}
+				.flyout-buttons d2l-button {
+					margin-left: 0.5rem;
+					margin-right: 0.5rem;
+				}
 
-			.flyout-tab:hover, .flyout-tab:focus {
-				background-color: var(--d2l-color-gypsum);
-			}
+				.flyout-tab-container {
+					height: 1.2rem;
+					left: 50%;
+					max-width: 1230px;
+					pointer-events: none;
+					position: absolute;
+					top: 100%;
+					transform: translateX(-50%);
+					width: 100%;
+					overflow: hidden;
+				}
 
-			.flyout-tab:focus {
-				border-color: rgba(0, 111, 191, 0.4);
-  				border-style: solid;
-  				border-width: 0 1px 1px 1px;
-  				box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
-			}
+				.flyout-tab {
+					background-color: white;
+					border: 1px solid var(--d2l-color-mica);
+					border-radius: 0 0 8px 8px;
+					border-top: none;
+					box-sizing: border-box;
+					cursor: pointer;
+					height: 1rem;
+					padding: 1px;
+					pointer-events: auto;
+					position: absolute;
+					text-align: center;
+					top: 0;
+					width: 5rem;
+					min-height: 0;
+				}
 
-			.flyout-tab:active, .flyout-tab:focus {
-				outline: 0;
-			}
+				.flyout-tab:hover, .flyout-tab:focus {
+					background-color: var(--d2l-color-gypsum);
+				}
 
-			.flyout-tab > d2l-icon {
-				margin: auto;
-				vertical-align: top !important;
-			}
-		</style>
+				.flyout-tab:focus {
+					border-color: rgba(0, 111, 191, 0.4);
+					border-style: solid;
+					border-width: 0 1px 1px 1px;
+					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
+				}
 
-		<template is="dom-if" if="[[_optOutDialogOpen]]" restamp="true">
-			<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="_confirmOptOut" hide-reason="[[hideReason]]" hide-feedback="[[hideFeedback]]"><slot></slot></opt-out-dialog>
-		</template>
-		<div id="flyout" role="dialog" aria-labelledby="title" aria-describedby="description" class$="[[_getFlyoutClass(_visibleState)]]">
-			<div class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
-				<div class="flyout-text">
-					<h1 id="title">[[title]]</h1>
-					<p id="short-description" hidden="[[!shortDescription]]">
-						<s-html html="[[shortDescription]]"></s-html>
-					</p>
-					<p id="long-description" hidden="[[!longDescription]]">
-						<s-html html="[[longDescription]]"></s-html>
-					</p>
-					<p class="flyout-tutorial">
+				.flyout-tab:active, .flyout-tab:focus {
+					outline: 0;
+				}
 
-						<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,1)]]">
-							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
-							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
-								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
-							</a>
-							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
-						</template>
+				.flyout-tab > d2l-icon {
+					margin: auto;
+					vertical-align: top !important;
+				}
+			</style>
 
-						<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,2)]]">
-							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
-							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
-								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
-							</a>
-							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
-							<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
-								[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,3)]]
-							</a>
-							<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,4)]]</span>
-						</template>
-					</p>
+			<template is="dom-if" if="[[_optOutDialogOpen]]" restamp="true">
+				<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="_confirmOptOut" hide-reason="[[hideReason]]" hide-feedback="[[hideFeedback]]"><slot></slot></opt-out-dialog>
+			</template>
+			<div id="flyout" role="dialog" aria-labelledby="title" aria-describedby="description" class$="[[_getFlyoutClass(_visibleState)]]">
+				<div class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
+					<div class="flyout-text">
+						<h1 id="title">[[title]]</h1>
+						<p id="short-description" hidden="[[!shortDescription]]">
+							<s-html html="[[shortDescription]]"></s-html>
+						</p>
+						<p id="long-description" hidden="[[!longDescription]]">
+							<s-html html="[[longDescription]]"></s-html>
+						</p>
+						<p class="flyout-tutorial">
+
+							<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,1)]]">
+								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
+								<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+									[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
+								</a>
+								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
+							</template>
+
+							<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,2)]]">
+								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
+								<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+									[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
+								</a>
+								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
+								<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,1)]]" target="_blank" rel="noopener">
+									[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,3)]]
+								</a>
+								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,4)]]</span>
+							</template>
+						</p>
+					</div>
+					<div class="flyout-buttons">
+						<d2l-button primary="" on-click="_clickOptIn">[[_primaryButtonText]]</d2l-button>
+						<d2l-button on-click="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
+					</div>
 				</div>
-				<div class="flyout-buttons">
-					<d2l-button primary="" on-click="_clickOptIn">[[_primaryButtonText]]</d2l-button>
-					<d2l-button on-click="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
+				<d2l-offscreen>
+					<label id="tab-label">[[translate('Close')]]</label>
+				</d2l-offscreen>
+				<div class="flyout-tab-container">
+					<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection, noTransform)]]" tabindex="0" aria-labelledby="tab-label" on-click="_clickTab">
+						<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></d2l-icon>
+					</button>
 				</div>
 			</div>
-			<d2l-offscreen>
-				<label id="tab-label">[[translate('Close')]]</label>
-			</d2l-offscreen>
-			<div class="flyout-tab-container">
-				<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection, noTransform)]]" tabindex="0" aria-labelledby="tab-label" on-click="_clickTab">
-					<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></d2l-icon>
-				</button>
-			</div>
-		</div>
-	</template>
+		`;
+		template.setAttribute('strip-whitespace', true);
+		return template;
+	}
 
+	static get properties() {
+		return {
+			optOut: {
+				type: Boolean,
+				value: false
+			},
+			open: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				observer: '_openChanged'
+			},
+			title: String,
+			shortDescription: {
+				type: String,
+				value: ''
+			},
+			longDescription: {
+				type: String,
+				value: ''
+			},
+			tabPosition: {
+				type: String,
+				value: 'right'
+			},
+			noTransform: {
+				type: Boolean,
+				value: false
+			},
+			tutorialLink: {
+				type: String,
+				value: null
+			},
+			helpDocsLink: {
+				type: String,
+				value: null
+			},
+			_optOutDialogOpen: {
+				type: Boolean,
+				value: false
+			},
+			_primaryButtonText: {
+				type: String,
+				computed: '_getPrimaryButtonText(translate,optOut)'
+			},
+			_secondaryButtonText: {
+				type: String,
+				computed: '_getSecondaryButtonText(translate,optOut)'
+			},
+			_visibleState: {
+				type: String,
+				value: 'CLOSED'
+			},
+			hideReason: Boolean,
+			hideFeedback: Boolean
+		};
+	}
 
-</dom-module>`;
+	constructor() {
+		super();
+		this._onTransitionComplete = this._onTransitionComplete.bind(this);
+	}
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
-	is: 'flyout-impl',
-
-	properties: {
-		optOut: {
-			type: Boolean,
-			value: false
-		},
-		open: {
-			type: Boolean,
-			value: false,
-			reflectToAttribute: true,
-			observer: '_openChanged'
-		},
-		title: String,
-		shortDescription: {
-			type: String,
-			value: ''
-		},
-		longDescription: {
-			type: String,
-			value: ''
-		},
-		tabPosition: {
-			type: String,
-			value: 'right'
-		},
-		noTransform: {
-			type: Boolean,
-			value: false
-		},
-		tutorialLink: {
-			type: String,
-			value: null
-		},
-		helpDocsLink: {
-			type: String,
-			value: null
-		},
-		_optOutDialogOpen: {
-			type: Boolean,
-			value: false
-		},
-		_primaryButtonText: {
-			type: String,
-			computed: '_getPrimaryButtonText(translate,optOut)'
-		},
-		_secondaryButtonText: {
-			type: String,
-			computed: '_getSecondaryButtonText(translate,optOut)'
-		},
-		_visibleState: {
-			type: String,
-			value: 'CLOSED'
-		},
-		hideReason: Boolean,
-		hideFeedback: Boolean
-	},
-
-	behaviors: [
-		D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior
-	],
-
-	attached: function() {
+	connectedCallback() {
+		super.connectedCallback();
 		this._visibleState = this.open ? 'OPENED' : 'CLOSED';
 
 		// Polymer doesn't correctly support this event, so we have to add it manually
-		this._onTransitionComplete = this._onTransitionComplete.bind(this);
 		this.$.flyout.addEventListener('transitionend', this._onTransitionComplete);
-	},
+	}
 
-	detached: function() {
+	disconnectedCallback() {
 		this.$.flyout.removeEventListener('transitionend', this._onTransitionComplete);
-	},
+		super.disconnectedCallback();
+	}
 
-	_checkNumberOfLinks: function(tutorialLink, helpDocsLink, expectedNumber) {
-		var result;
+	_fireEvent(name, details) {
+		this.dispatchEvent(
+			new CustomEvent(
+				name, {
+					bubbles: true,
+					composed: true,
+					detail: details
+				}
+			)
+		);
+	}
+
+	_checkNumberOfLinks(tutorialLink, helpDocsLink, expectedNumber) {
+		let result;
 		if (tutorialLink && helpDocsLink) {
 			result = 2;
 		} else if (tutorialLink || helpDocsLink) {
@@ -291,17 +308,17 @@ Polymer({
 			result = 0;
 		}
 		return result === expectedNumber;
-	},
+	}
 
-	_getPrimaryButtonText: function(translate, optOut) {
+	_getPrimaryButtonText(translate, optOut) {
 		return translate(optOut ? 'LeaveOn' : 'TurnOn');
-	},
+	}
 
-	_getSecondaryButtonText: function(translate, optOut) {
+	_getSecondaryButtonText(translate, optOut) {
 		return translate(optOut ? 'TurnOff' : 'LeaveOff');
-	},
+	}
 
-	_openChanged: function(open, previousValue) {
+	_openChanged(open, previousValue) {
 		if (open && this._visibleState === 'CLOSED' || this._visibleState === 'CLOSING') {
 			this._visibleState = 'OPENING';
 		} else if (!open && this._visibleState === 'OPENED' || this._visibleState === 'OPENING') {
@@ -309,11 +326,12 @@ Polymer({
 		}
 
 		if (previousValue !== undefined) {
-			this.fire(open ? 'flyout-opened' : 'flyout-closed');
+			//TODO
+			this._fireEvent(open ? 'flyout-opened' : 'flyout-closed');
 		}
-	},
+	}
 
-	_onTransitionComplete: function(event) {
+	_onTransitionComplete(event) {
 		if (event.target.id !== 'flyout' || event.propertyName !== 'transform') {
 			return null;
 		}
@@ -323,54 +341,54 @@ Polymer({
 		} else if (this._visibleState === 'CLOSING') {
 			this._visibleState = 'CLOSED';
 		}
-	},
+	}
 
-	_clickTab: function() {
+	_clickTab() {
 		if (this._visibleState === 'OPENED' || this._visibleState === 'CLOSED') {
 			this.open = !this.open;
 		}
-	},
+	}
 
-	_clickOptIn: function() {
-		this.fire('opt-in');
+	_clickOptIn() {
+		this._fireEvent('opt-in');
 		this.open = false;
-	},
+	}
 
-	_clickOptOut: function() {
+	_clickOptOut() {
 		if (this.optOut) {
 			this._optOutDialogOpen = true;
 		} else {
-			this.fire('opt-out');
+			this._fireEvent('opt-out');
 			this.open = false;
 		}
-	},
+	}
 
-	_cancelOptOut: function(event) {
+	_cancelOptOut(event) {
 		this._optOutDialogOpen = false;
 		event.stopPropagation();
-	},
+	}
 
-	_confirmOptOut: function(event) {
+	_confirmOptOut(event) {
 		this._optOutDialogOpen = false;
-		this.fire('opt-out', event.detail);
+		this._fireEvent('opt-out', event.detail);
 		this.open = false;
 		event.stopPropagation();
-	},
+	}
 
-	_getContentStyle: function(visibleState) {
+	_getContentStyle(visibleState) {
 		return visibleState === 'CLOSED' ? 'visibility: hidden;' : 'visibility: visible;';
-	},
+	}
 
-	_getFlyoutClass: function(visibleState) {
+	_getFlyoutClass(visibleState) {
 		if (visibleState === 'OPENING' || visibleState === 'OPENED') {
 			return 'flyout-opened';
 		} else {
 			return 'flyout-closed';
 		}
-	},
+	}
 
-	_getTabStyle: function(position, documentTextDirection, noTransform) {
-		var rtl = documentTextDirection === 'rtl';
+	_getTabStyle(position, documentTextDirection, noTransform) {
+		let rtl = documentTextDirection === 'rtl';
 
 		if (position === 'left') {
 			position = 'calc(2.5rem + 15px)';
@@ -386,47 +404,49 @@ Polymer({
 			rtl = !rtl;
 		}
 
-		var side = rtl ? 'right' : 'left';
-		var shift = rtl ? '50%' : '-50%';
+		const side = rtl ? 'right' : 'left';
+		const shift = rtl ? '50%' : '-50%';
 
-		var tabStyle = side + ': ' + position + ';';
+		const tabStyle = side + ': ' + position + ';';
 
 		if (noTransform) {
 			return tabStyle;
 		}
 
 		return tabStyle + ' transform: translateX(' + shift + ');';
-	},
+	}
 
-	_getTabIcon: function(visibleState) {
+	_getTabIcon(visibleState) {
 		if (visibleState === 'CLOSED' || visibleState === 'CLOSING') {
 			return 'd2l-tier1:chevron-down';
 		} else {
 			return 'd2l-tier1:chevron-up';
 		}
-	},
+	}
 
-	_getTutorialTextPart: function(translate, tutorialLink, helpDocsLink, i) {
+	_getTutorialTextPart(translate, tutorialLink, helpDocsLink, i) {
 		if (tutorialLink && helpDocsLink) {
-			var tutorialHelpMessage = translate('TutorialAndHelpMessage');
+			const tutorialHelpMessage = translate('TutorialAndHelpMessage');
 			return tutorialHelpMessage.split(/\*|~/)[i] || '';
 		} else if (tutorialLink || helpDocsLink) {
-			var individualMessage = translate(tutorialLink ? 'TutorialMessage' : 'HelpMessage');
+			const individualMessage = translate(tutorialLink ? 'TutorialMessage' : 'HelpMessage');
 			return individualMessage.split('*')[i] || '';
 		} else {
 			return null;
 		}
-	},
+	}
 
-	_getTutorialLink: function(translate, tutorialLink, helpDocsLink, i) {
+	_getTutorialLink(translate, tutorialLink, helpDocsLink, i) {
 		if (tutorialLink && helpDocsLink) {
-			var translation = translate('TutorialAndHelpMessage');
-			var videoFirst = translation.indexOf('*') < translation.indexOf('~');
+			const translation = translate('TutorialAndHelpMessage');
+			const videoFirst = translation.indexOf('*') < translation.indexOf('~');
 
-			var links = videoFirst ? [ tutorialLink, helpDocsLink ] : [ helpDocsLink, tutorialLink ];
+			const links = videoFirst ? [ tutorialLink, helpDocsLink ] : [ helpDocsLink, tutorialLink ];
 			return links[i];
 		}
 		return tutorialLink || helpDocsLink || null;
 	}
 
-});
+}
+
+customElements.define(FlyoutImplementation.is, FlyoutImplementation);
