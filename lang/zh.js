@@ -1,14 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.OptInFlyout = window.D2L.PolymerBehaviors.OptInFlyout || {};
-window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior || {};
-
-/*
-* Ar lang terms
-* @polymerBehavior D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangZhBehavior
- */
-D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangZhBehavior = {
+export default {
 	['translations_zh']: {
 		'LeaveOn': '保持开启',
 		'LeaveOff': '保持关闭',

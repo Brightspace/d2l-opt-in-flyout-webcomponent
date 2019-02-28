@@ -10,9 +10,10 @@
     "url": "https://github.com/Brightspace/d2l-opt-in-flyout-webcomponent.git"
   },
   "name": "d2l-opt-in-flyout-webcomponent",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "scripts": {
-    "start": "polymer serve",
+    "serve": "FOR /F \"tokens=*\" %F IN ('hostname') DO polymer serve --hostname %F.desire2learn.d2l",
+    "serve:local": "polymer serve",
     "test": "npm run test:lint && npm run test:polymer:local",
     "test:lint": "npm run test:lint:wc && npm run test:lint:js",
     "test:lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",

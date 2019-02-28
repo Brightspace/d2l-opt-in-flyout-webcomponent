@@ -1,14 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.OptInFlyout = window.D2L.PolymerBehaviors.OptInFlyout || {};
-window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior = window.D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior || {};
-
-/*
-* Ar lang terms
-* @polymerBehavior D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangSvBehavior
- */
-D2L.PolymerBehaviors.OptInFlyout.TranslateBehavior.LangSvBehavior = {
+export default {
 	['translations_sv']: {
 		'LeaveOn': 'Låt den vara på',
 		'LeaveOff': 'Lämna av',
