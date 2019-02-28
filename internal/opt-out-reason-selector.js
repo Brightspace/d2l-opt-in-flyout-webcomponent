@@ -4,7 +4,7 @@ import 'd2l-inputs/d2l-input-shared-styles.js';
 import '../d2l-opt-out-reason.js';
 import TranslateBehavior from './translate-behaviour.js';
 
-class OptOutReasonSelector extends mixinBehaviors( TranslateBehavior, PolymerElement ) {
+class OptOutReasonSelector extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 
 	static get is() {
 		return 'opt-out-reason-selector';
@@ -104,7 +104,7 @@ class OptOutReasonSelector extends mixinBehaviors( TranslateBehavior, PolymerEle
 		this.$.selector.selectedIndex = 0;
 		let children = this.$['options-slot'].assignedNodes({ flatten: true });
 
-		children = children.filter(child => 
+		children = children.filter(child =>
 			child &&
 			child.tagName === 'D2L-OPT-OUT-REASON' &&
 			child.key &&
@@ -161,4 +161,4 @@ class OptOutReasonSelector extends mixinBehaviors( TranslateBehavior, PolymerEle
 
 }
 
-customElements.define( OptOutReasonSelector.is, OptOutReasonSelector );
+customElements.define(OptOutReasonSelector.is, OptOutReasonSelector);

@@ -9,7 +9,7 @@ import 'd2l-inputs/d2l-input-textarea.js';
 import './opt-out-reason-selector.js';
 import TranslateBehavior from './translate-behaviour.js';
 
-class OptOutDialog extends mixinBehaviors( TranslateBehavior, PolymerElement ) {
+class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 
 	static get is() {
 		return 'opt-out-dialog';
@@ -165,4 +165,4 @@ class OptOutDialog extends mixinBehaviors( TranslateBehavior, PolymerElement ) {
 
 }
 
-customElements.define( OptOutDialog.is, OptOutDialog );
+customElements.define(OptOutDialog.is, OptOutDialog);

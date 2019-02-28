@@ -37,4 +37,4 @@ class OptInFlyout extends PolymerElement {
 
 }
 
-customElements.define( OptInFlyout.is, OptInFlyout );
+customElements.define(OptInFlyout.is, OptInFlyout);

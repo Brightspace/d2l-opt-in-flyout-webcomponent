@@ -24,4 +24,4 @@ class OptOutReason extends PolymerElement {
 	}
 }
 
-customElements.define( OptOutReason.is, OptOutReason );
+customElements.define(OptOutReason.is, OptOutReason);

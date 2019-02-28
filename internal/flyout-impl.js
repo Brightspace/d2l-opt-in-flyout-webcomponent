@@ -9,7 +9,7 @@ import 's-html/s-html.js';
 import './opt-out-dialog.js';
 import TranslateBehavior from './translate-behaviour.js';
 
-class FlyoutImplementation extends mixinBehaviors( TranslateBehavior, PolymerElement ) {
+class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 
 	static get is() {
 		return 'flyout-impl';
@@ -449,4 +449,4 @@ class FlyoutImplementation extends mixinBehaviors( TranslateBehavior, PolymerEle
 
 }
 
-customElements.define( FlyoutImplementation.is, FlyoutImplementation );
+customElements.define(FlyoutImplementation.is, FlyoutImplementation);
