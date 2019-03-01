@@ -29,10 +29,14 @@ $_documentContainer.innerHTML = `<dom-module id="flyout-impl">
 				overflow: visible;
 				padding-bottom: 2rem;
 				pointer-events: auto;
-				position: var(--custom-element-position, absolute);
+				position: absolute;
 				top: var(--custom-element-top, 0);
 				width: 100%;
 				z-index: var(--custom-element-z-index, 900);
+			}
+
+			:host([fixed]) #flyout {
+				position: fixed;
 			}
 
 			#flyout.flyout-opened {
@@ -232,6 +236,11 @@ Polymer({
 		tabPosition: {
 			type: String,
 			value: 'right'
+		},
+		fixed: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true
 		},
 		noTransform: {
 			type: Boolean,

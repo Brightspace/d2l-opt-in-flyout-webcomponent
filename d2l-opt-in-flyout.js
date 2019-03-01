@@ -9,7 +9,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-opt-in-flyout">
 		<style include="d2l-typography">
 			flyout-impl { font-size: 20px; }
 		</style>
-		<flyout-impl class="d2l-typography" open="{{open}}" title="[[title]]" short-description="[[shortDescription]]" long-description="[[longDescription]]" tab-position="[[tabPosition]]" tutorial-link="[[tutorialLink]]" help-docs-link="[[helpDocsLink]]"></flyout-impl>
+		<flyout-impl class="d2l-typography" open="{{open}}" title="[[title]]" short-description="[[shortDescription]]" long-description="[[longDescription]]" tab-position="[[tabPosition]]" fixed="[[fixed]]" tutorial-link="[[tutorialLink]]" help-docs-link="[[helpDocsLink]]"></flyout-impl>
 	</template>
 	
 </dom-module>`;
@@ -29,6 +29,7 @@ Polymer({
 		shortDescription: String,
 		longDescription: String,
 		tabPosition: String,
+		fixed: Boolean,
 		tutorialLink: String,
 		helpDocsLink: String
 	}
