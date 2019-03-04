@@ -196,11 +196,8 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 						<d2l-button on-click="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
 					</div>
 				</div>
-				<d2l-offscreen>
-					<label id="tab-label">[[translate('Close')]]</label>
-				</d2l-offscreen>
 				<div class="flyout-tab-container">
-					<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection, noTransform)]]" tabindex="0" aria-labelledby="tab-label" on-click="_clickTab">
+					<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection, noTransform)]]" tabindex="0" aria-label$="[[_ariaLabel]]" on-click="_clickTab">
 						<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></d2l-icon>
 					</button>
 				</div>
@@ -262,6 +259,10 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 			_visibleState: {
 				type: String,
 				value: 'CLOSED'
+			},
+			_ariaLabel: {
+				type: String,
+				computed: '_getAriaLabelForTab(translate,open,optOut)' 
 			},
 			hideReason: Boolean,
 			hideFeedback: Boolean
@@ -422,6 +423,13 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 		} else {
 			return 'd2l-tier1:chevron-up';
 		}
+	}
+
+	_getAriaLabelForTab(translate, open, optOut) {
+		if (open) {
+			return translate('Close');
+		}
+		return translate(optOut ? 'OpenOptOut' : 'OpenOptIn');
 	}
 
 	_getTutorialTextPart(translate, tutorialLink, helpDocsLink, i) {
