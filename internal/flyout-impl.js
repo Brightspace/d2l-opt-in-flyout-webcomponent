@@ -159,7 +159,8 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 				<opt-out-dialog on-cancel="_cancelOptOut" on-confirm="_confirmOptOut" hide-reason="[[hideReason]]" hide-feedback="[[hideFeedback]]"><slot></slot></opt-out-dialog>
 			</template>
 			<div id="flyout" class$="[[_getFlyoutClass(_visibleState)]]">
-				<div class="flyout-content" role="dialog" aria-labelledby="title" aria-describedby="description" style$="[[_getContentStyle(_visibleState)]]">
+				<span tabindex$="[[_tabIndex]]" on-focus="_shiftToFirst"/>
+				<div id="flyout-content" role="dialog" aria-labelledby="title" aria-describedby="long-description" class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
 					<div class="flyout-text">
 						<h1 id="title">[[title]]</h1>
 						<p id="short-description" hidden="[[!shortDescription]]">
@@ -172,7 +173,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 
 							<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,1)]]">
 								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
-								<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+								<a id="tutorial-link-1" href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
 									[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
 								</a>
 								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
@@ -180,7 +181,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 
 							<template is="dom-if" if="[[_checkNumberOfLinks(tutorialLink,helpDocsLink,2)]]">
 								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,0)]]</span>
-								<a href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
+								<a id="tutorial-link-2" href="[[_getTutorialLink(translate,tutorialLink,helpDocsLink,0)]]" target="_blank" rel="noopener">
 									[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,1)]]
 								</a>
 								<span>[[_getTutorialTextPart(translate,tutorialLink,helpDocsLink,2)]]</span>
@@ -197,10 +198,11 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 					</div>
 				</div>
 				<div class="flyout-tab-container">
-					<button class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection, noTransform)]]" tabindex="0" aria-label$="[[_ariaLabel]]" on-click="_clickTab">
+					<button id="flyout-tab" class="flyout-tab" style$="[[_getTabStyle(tabPosition,documentTextDirection, noTransform)]]" tabindex="0" aria-label$="[[_ariaLabel]]" on-click="_clickTab">
 						<d2l-icon icon="[[_getTabIcon(_visibleState)]]"></d2l-icon>
 					</button>
 				</div>
+				<span tabindex$="[[_tabIndex]]" on-focus="_shiftToLast"/>
 			</div>
 		`;
 		template.setAttribute('strip-whitespace', true);
@@ -263,6 +265,10 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 			_ariaLabel: {
 				type: String,
 				computed: '_getAriaLabelForTab(translate,open,optOut)' 
+			},
+			_tabIndex: {
+				type: String,
+				computed: '_getTabIndex(open)'
 			},
 			hideReason: Boolean,
 			hideFeedback: Boolean
@@ -454,6 +460,28 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 			return links[i];
 		}
 		return tutorialLink || helpDocsLink || null;
+	}
+
+	_getTabIndex(open) {
+		return open ? "0" : "-1";
+	}
+
+	_shiftToFirst() {
+		console.log("to first");
+		if (this.tutorialLink && this.helpDocsLink) {
+			this.$['tutorial-link-2'].focus();
+		} else if (this.tutorialLink || this.helpDocsLink) {
+			this.$['tutorial-link-1'].focus();
+		} else {
+			this.$['primary-button'].focus();
+		}
+	}
+
+	_shiftToLast() {
+		console.log("to last");
+		if (this.open) {
+			this.$['flyout-tab'].focus();
+		}
 	}
 
 }
