@@ -348,6 +348,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 			this.$['primary-button'].focus();
 		} else if (this._visibleState === 'CLOSING') {
 			this._visibleState = 'CLOSED';
+			this.$['flyout-tab'].focus();
 		}
 	}
 
