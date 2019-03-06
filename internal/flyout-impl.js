@@ -264,7 +264,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 			},
 			_ariaLabel: {
 				type: String,
-				computed: '_getAriaLabelForTab(translate,open,optOut)' 
+				computed: '_getAriaLabelForTab(translate,open,optOut)'
 			},
 			_tabIndex: {
 				type: String,
@@ -467,7 +467,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 	}
 
 	_getTabIndex(open) {
-		return open ? "0" : "-1";
+		return open ? '0' : '-1';
 	}
 
 	_shiftToFirst() {
