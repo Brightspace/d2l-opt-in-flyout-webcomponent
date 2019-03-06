@@ -160,7 +160,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 			</template>
 			<div id="flyout" class$="[[_getFlyoutClass(_visibleState)]]">
 				<span tabindex$="[[_tabIndex]]" on-focus="_shiftToFirst"/>
-				<div id="flyout-content" role="dialog" aria-labelledby="title" aria-describedby="long-description" class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
+				<div id="flyout-content" role="dialog" aria-labelledby="title" aria-describedby$="[[_getDescription(shortDescription, longDescription)]]" class="flyout-content" style$="[[_getContentStyle(_visibleState)]]">
 					<div class="flyout-text">
 						<h1 id="title">[[title]]</h1>
 						<p id="short-description" hidden="[[!shortDescription]]">
@@ -462,23 +462,25 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 		return tutorialLink || helpDocsLink || null;
 	}
 
+	_getDescription(shortDescription, longDescription) {
+		return shortDescription ? 'short-description' : (longDescription ? 'long-description' : '');
+	}
+
 	_getTabIndex(open) {
 		return open ? "0" : "-1";
 	}
 
 	_shiftToFirst() {
-		console.log("to first");
 		if (this.tutorialLink && this.helpDocsLink) {
-			this.$['tutorial-link-2'].focus();
+			this.$$('#tutorial-link-2').focus();
 		} else if (this.tutorialLink || this.helpDocsLink) {
-			this.$['tutorial-link-1'].focus();
+			this.$$('#tutorial-link-1').focus();
 		} else {
 			this.$['primary-button'].focus();
 		}
 	}
 
 	_shiftToLast() {
-		console.log("to last");
 		if (this.open) {
 			this.$['flyout-tab'].focus();
 		}
