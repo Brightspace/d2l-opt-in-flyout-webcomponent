@@ -293,6 +293,10 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 		super.disconnectedCallback();
 	}
 
+	focus() {
+		this._shiftToFirst();
+	}
+
 	_fireEvent(name, details) {
 		this.dispatchEvent(
 			new CustomEvent(
