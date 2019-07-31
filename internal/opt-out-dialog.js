@@ -88,6 +88,7 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 
 			<div class="opt-out-modal-fade"></div>
 			<div class="dialog" role="dialog" arial-labelledby="title-label">
+				<span tabindex="0" on-focus="_shiftToLast"/>
 				<label id="title-label">[[translate('Feedback.Title')]]</label>
 				<br><br>
 				<div hidden="[[hideReason]]">
@@ -102,7 +103,8 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 					<d2l-button id="done-button" primary="" on-click="_confirm">[[translate('Done')]]</d2l-button>
 					<d2l-button on-click="_cancel">[[translate('Cancel')]]</d2l-button>
 				</div>
-				<d2l-button-icon icon="d2l-tier1:close-small" class="close-button" on-click="_cancel" text="[[translate('Close')]]" dir$="[[documentTextDirection]]"></d2l-button-icon>
+				<d2l-button-icon icon="d2l-tier1:close-small" id="close-button" class="close-button" on-click="_cancel" text="[[translate('Close')]]" dir$="[[documentTextDirection]]"></d2l-button-icon>
+				<span tabindex="0" on-focus="_shiftToFirst"/>
 			</div>
 		`;
 		template.setAttribute('strip-whitespace', true);
@@ -128,13 +130,7 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (!this.hideReason) {
-			this.$['reason-selector'].focus();
-		} else if (!this.hideFeedback) {
-			this.$['feedback'].focus();
-		} else {
-			this.$['done-button'].focus();
-		}
+		this._setFocus();
 	}
 
 	_cancel() {
@@ -161,6 +157,24 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 				}
 			)
 		);
+	}
+
+	_setFocus() {
+		if (!this.hideReason) {
+			this.$['reason-selector'].focus();
+		} else if (!this.hideFeedback) {
+			this.$['feedback'].focus();
+		} else {
+			this.$['done-button'].focus();
+		}
+	}
+
+	_shiftToFirst() {
+		this._setFocus();
+	}
+
+	_shiftToLast() {
+		this.$['close-button'].focus();
 	}
 
 }
