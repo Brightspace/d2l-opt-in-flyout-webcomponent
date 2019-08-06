@@ -194,7 +194,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 					</div>
 					<div class="flyout-buttons">
 						<d2l-button id="primary-button" primary="" on-click="_clickOptIn">[[_primaryButtonText]]</d2l-button>
-						<d2l-button on-click="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
+						<d2l-button id="opt-out-button" on-click="_clickOptOut">[[_secondaryButtonText]]</d2l-button>
 					</div>
 				</div>
 				<div class="flyout-tab-container">
@@ -378,6 +378,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 
 	_cancelOptOut(event) {
 		this._optOutDialogOpen = false;
+		this.$['opt-out-button'].focus();
 		event.stopPropagation();
 	}
 
