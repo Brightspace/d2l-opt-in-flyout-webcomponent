@@ -1,10 +1,9 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import '@brightspace-ui/core/components/button/button.js';
+import '@brightspace-ui/core/components/colors/colors.js';
+import '@brightspace-ui/core/components/icons/icon.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
-import 'd2l-colors/d2l-colors.js';
-import 'd2l-offscreen/d2l-offscreen.js';
-import 'd2l-icons/d2l-icons.js';
-import 'd2l-button/d2l-button.js';
 import 's-html/s-html.js';
 import './opt-out-dialog.js';
 import TranslateBehavior from './translate-behaviour.js';
