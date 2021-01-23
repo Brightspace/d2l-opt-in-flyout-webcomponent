@@ -39,6 +39,7 @@
     "type-detect": "1.0.0"
   },
   "dependencies": {
+    "@brightspace-ui/core": "^1.113.4",
     "@polymer/polymer": "^3.0.0",
     "d2l-colors": "BrightspaceUI/colors#semver:^4",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
