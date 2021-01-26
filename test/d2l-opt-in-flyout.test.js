@@ -6,11 +6,18 @@ import TestUtil from './test-util.js';
 
 const emptyFixture = html`<d2l-opt-in-flyout open></d2l-opt-in-flyout>`;
 
-const propertiesFixture = html`<d2l-opt-in-flyout open title="Flyout Demo" short-description="This is a short description" long-description="This is a long description" tab-position="right" tutorial-link="https://www.testlink1.com" help-docs-link="https://www.testlink2.com"></d2l-opt-in-flyout>`;
+const propertiesFixture = html`<d2l-opt-in-flyout
+	open
+	title="Flyout Demo"
+	short-description="This is a short description"
+	long-description="This is a long description"
+	tab-position="right"
+	tutorial-link="https://www.testlink1.com"
+	help-docs-link="https://www.testlink2.com"></d2l-opt-in-flyout>`;
 
-describe('d2l-opt-in-flyout', function() {
+describe('d2l-opt-in-flyout', () => {
 
-	describe('defaults', function() {
+	describe('defaults', () => {
 
 		let flyout, innerFlyout;
 
@@ -42,7 +49,7 @@ describe('d2l-opt-in-flyout', function() {
 
 	});
 
-	describe('properties specified', function() {
+	describe('properties specified', () => {
 
 		let flyout, innerFlyout;
 
@@ -189,7 +196,7 @@ describe('d2l-opt-in-flyout', function() {
 
 	});
 
-	describe('flyout closed', function() {
+	describe('flyout closed', () => {
 
 		let flyout, innerFlyout;
 
