@@ -17,7 +17,7 @@ const reasonHiddenFixture = html`<opt-out-dialog hide-reason>
 
 const feedbackHiddenFixture = html`<opt-out-dialog hide-feedback></opt-out-dialog>`;
 
-describe('opt-out-dialog', () => {
+describe('opt-out-dialog', function() {
 
 	describe('defaults', function() {
 

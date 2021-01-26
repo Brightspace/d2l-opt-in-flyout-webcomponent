@@ -15,7 +15,7 @@ const propertiesFixture = html`<d2l-opt-out-flyout
 	tutorial-link="https://www.testlink1.com"
 	help-docs-link="https://www.testlink2.com"></d2l-opt-out-flyout>`;
 
-describe('d2l-opt-out-flyout', () => {
+describe('d2l-opt-out-flyout', function() {
 
 	describe('defaults', function() {
 
