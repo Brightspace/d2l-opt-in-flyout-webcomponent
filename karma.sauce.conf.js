@@ -21,13 +21,16 @@ const customLaunchers = {
 	edge: {
 		base: 'SauceLabs',
 		browserName: 'microsoftedge',
-		platform: 'Windows 10'
+		platform: 'Windows 10',
+		version: 'latest'
 	}
 };
 
 module.exports = config => {
+	const defaultConfig = createDefaultConfig(config);
+	defaultConfig.browsers = []; // remove ChromeHeadless
 	config.set(
-		merge(createDefaultConfig(config), {
+		merge(defaultConfig, {
 			files: [
 				// runs all files ending with .test in the test folder,
 				// can be overwritten by passing a --grep flag. examples:
@@ -47,15 +50,14 @@ module.exports = config => {
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['dots', 'saucelabs'],
-			singleRun: true,
+			reporters: ['saucelabs'],
 			browserDisconnectTimeout : 50000, // default 2000
 			browserNoActivityTimeout: 300000, // default 30000
 			client: {
 				mocha: {
 					timeout : 10000 // default 2000, for legacy-Edge
 				}
-			}
+			},
 		}),
 	);
 	return config;
