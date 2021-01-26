@@ -1,6 +1,6 @@
+import { expect, fixture, html } from '@open-wc/testing';
 import '../d2l-opt-in-flyout.js';
 import '@polymer/iron-test-helpers/mock-interactions.js';
-import { expect, fixture, html } from '@open-wc/testing';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import TestUtil from './test-util.js';
 

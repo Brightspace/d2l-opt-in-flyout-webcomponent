@@ -1,7 +1,7 @@
+import { expect, fixture, html } from '@open-wc/testing';
 import '../internal/opt-out-dialog.js';
 import '../d2l-opt-out-reason.js';
 import '@polymer/iron-test-helpers/mock-interactions.js';
-import { expect, fixture, html } from '@open-wc/testing';
 
 const defaultOptionsFixture = html`<opt-out-dialog></opt-out-dialog>`;
 
