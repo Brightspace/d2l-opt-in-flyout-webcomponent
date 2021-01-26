@@ -7,7 +7,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Brightspace/d2l-opt-in-flyout-webcomponent.git"
+    "url": "https://github.com/BrightspaceUILabs/opt-in-flyout.git"
   },
   "name": "d2l-opt-in-flyout-webcomponent",
   "version": "2.1.9",
