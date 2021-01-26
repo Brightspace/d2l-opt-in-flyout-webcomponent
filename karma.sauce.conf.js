@@ -42,12 +42,20 @@ module.exports = config => {
 				nodeResolve: true,
 			},
 			sauceLabs: {
-				testName: 'Unit Tests'
+				testName: 'Unit Tests',
+				idleTimeout: 500 // default 90
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
 			reporters: ['dots', 'saucelabs'],
-			singleRun: true
+			singleRun: true,
+			browserDisconnectTimeout : 50000, // default 2000
+			browserNoActivityTimeout: 300000, // default 30000
+			client: {
+				mocha: {
+					timeout : 10000 // default 2000, for legacy-Edge
+				}
+			}
 		}),
 	);
 	return config;
