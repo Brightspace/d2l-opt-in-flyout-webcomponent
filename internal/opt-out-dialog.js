@@ -1,11 +1,9 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import 'd2l-button/d2l-button-icon.js';
-import 'd2l-colors/d2l-colors.js';
-import 'd2l-offscreen/d2l-offscreen.js';
-import 'd2l-icons/d2l-icons.js';
-import 'd2l-button/d2l-button.js';
-import 'd2l-inputs/d2l-input-textarea.js';
+import '@brightspace-ui/core/components/button/button.js';
+import '@brightspace-ui/core/components/button/button-icon.js';
+import '@brightspace-ui/core/components/colors/colors.js';
+import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import './opt-out-reason-selector.js';
 import TranslateBehavior from './translate-behaviour.js';
 
@@ -28,7 +26,7 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 				}
 
 				.opt-out-modal-fade {
-					background-color: var(--d2l-color-white);
+					background-color: #ffffff;
 					height: 100%;
 					opacity: 0.7;
 					position: absolute;
@@ -37,7 +35,7 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 				}
 
 				.dialog {
-					background-color: var(--d2l-color-white);
+					background-color: #ffffff;
 					border: 1px solid var(--d2l-color-mica);
 					border-radius: 0.3rem;
 					box-shadow: 0 2px 12px rgba(86, 90, 92, 0.25);
@@ -64,9 +62,7 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 				}
 
 				d2l-input-textarea {
-					height: 5rem;
 					margin-bottom: 1rem;
-					resize: none;
 				}
 
 				d2l-button {
@@ -97,7 +93,7 @@ class OptOutDialog extends mixinBehaviors(TranslateBehavior, PolymerElement) {
 				</div>
 				<div hidden="[[hideFeedback]]">
 					<label id="feedback-label">[[translate('Feedback.FeedbackLabel')]]</label>
-					<d2l-input-textarea id="feedback" aria-labelledby="feedback-label"></d2l-input-textarea>
+					<d2l-input-textarea id="feedback" aria-labelledby="feedback-label" rows="4" max-rows="4"></d2l-input-textarea>
 				</div>
 				<div>
 					<d2l-button id="done-button" primary="" on-click="_confirm">[[translate('Done')]]</d2l-button>
