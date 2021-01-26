@@ -12,12 +12,12 @@ const customLaunchers = {
 		base: 'SauceLabs',
 		browserName: 'firefox',
 		platform: 'OS X 10.15'
-	},
+	},/*
 	safari: {
 		base: 'SauceLabs',
 		browserName: 'safari',
 		platform: 'OS X 10.15'
-	},
+	},*/
 	edge: {
 		base: 'SauceLabs',
 		browserName: 'microsoftedge',
