@@ -12,25 +12,29 @@
   "name": "d2l-opt-in-flyout-webcomponent",
   "version": "2.1.10",
   "scripts": {
+    "lint": "npm run lint:eslint && npm run lint:polymer",
+    "lint:eslint": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
+    "lint:polymer": "polymer lint",
     "serve": "FOR /F \"tokens=*\" %F IN ('hostname') DO polymer serve --hostname %F.desire2learn.d2l",
     "serve:local": "polymer serve",
-    "test": "npm run test:lint && npm run test:polymer:local",
-    "test:lint": "npm run test:lint:wc && npm run test:lint:js",
-    "test:lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
-    "test:lint:wc": "polymer lint",
-    "test:polymer:local": "polymer test --skip-plugin sauce",
-    "test:polymer:sauce": "polymer test --skip-plugin local"
+    "test": "npm run lint && npm run test:headless",
+    "test:headless": "karma start",
+    "test:headless:watch": "karma start --auto-watch=true --single-run=false",
+    "test:sauce": "karma start karma.sauce.conf.js"
   },
   "author": "D2l Corporation",
   "devDependencies": {
+    "@open-wc/testing": "^2",
+    "@open-wc/testing-karma": "^3",
     "@polymer/iron-test-helpers": "^3.0.0",
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^4.19.1",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^4.0.5",
-    "polymer-cli": "^1.9.3",
-    "wct-browser-legacy": "^1.0.1"
+    "deepmerge": "^3",
+    "karma-sauce-launcher": "^2",
+    "polymer-cli": "^1.9.3"
   },
   "resolutions": {
     "inherits": "2.0.3",
