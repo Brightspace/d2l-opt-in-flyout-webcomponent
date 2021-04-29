@@ -126,6 +126,19 @@ $_documentContainer.innerHTML = `<div class="vertical-split">
 
 document.body.appendChild($_documentContainer.content);
 </script>
+<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-split">
+	<div class="flyout-region">
+		<d2l-opt-out-flyout hide-reason hide-feedback id="opt-out-3" open="" title="Flyout Demo Opt-out - dialog disabled" short-description="This is a <b>short</b> description" long-description="This is a <b>long</b> description" tab-position="right" tutorial-link="https://www.example.com#tutorial" help-docs-link="https://www.example.com#documentation">
+		</d2l-opt-out-flyout>
+	</div>
+	<pre id="opt-out-3-log" dir="ltr"></pre>
+</div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 
 		<script type="module">
 import 'd2l-typography/d2l-typography.js';
@@ -145,7 +158,7 @@ var printEvent = function(loggingElement, event) {
 	}
 };
 
-[ 'opt-in', 'opt-out', 'opt-out-2' ].forEach(function(demo) {
+[ 'opt-in', 'opt-out', 'opt-out-2', 'opt-out-3' ].forEach(function(demo) {
 	var flyout = document.getElementById(demo);
 	var log = document.getElementById(demo + '-log');
 
