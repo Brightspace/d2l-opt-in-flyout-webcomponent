@@ -10,7 +10,7 @@
     "url": "https://github.com/BrightspaceUILabs/opt-in-flyout.git"
   },
   "name": "d2l-opt-in-flyout-webcomponent",
-  "version": "2.1.10",
+  "version": "2.2.0",
   "scripts": {
     "lint": "npm run lint:eslint && npm run lint:polymer",
     "lint:eslint": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
