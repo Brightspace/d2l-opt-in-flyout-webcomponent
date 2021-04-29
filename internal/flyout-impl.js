@@ -367,7 +367,7 @@ class FlyoutImplementation extends mixinBehaviors(TranslateBehavior, PolymerElem
 	}
 
 	_clickOptOut() {
-		if (this.optOut) {
+		if (this.optOut && (!this.hideReason || !this.hideFeedback)) {
 			this._optOutDialogOpen = true;
 		} else {
 			this._fireEvent('opt-out');
